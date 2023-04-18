@@ -1,2 +1,7 @@
 # myweb3_java
-use java connect contract
+
+## use java connect contract
+
+### 使用 Web3j 将 Solidity 代码转换为 Java 代码
+
+https://github.com/web3j/web3j-maven-plugin
