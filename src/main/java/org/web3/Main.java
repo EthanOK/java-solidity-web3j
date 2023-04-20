@@ -1,6 +1,7 @@
 package org.web3;
 
 import io.github.cdimascio.dotenv.Dotenv;
+import org.web3.utils.GETTokenURIs;
 import org.web3.utils.NFTTokenURI;
 import org.web3.utils.NFTTokenURIOP;
 import org.web3j.crypto.Credentials;
@@ -22,6 +23,7 @@ public class Main {
 	static Dotenv dotenv = Dotenv.load();
 	static String RPC = dotenv.get("ALCHEMY_GOERLI_URL");
 	static String privatekey = dotenv.get("private_key");
+	static String privatekeyOperator = dotenv.get("private_key_operator");
 
 	public static void main(String[] args) throws Exception {
 
@@ -37,14 +39,15 @@ public class Main {
 		String[] tokenIds = { "1", "15", "10", "1" };
 
 		// 只读 任何人
-		getTokenURI(web3j, multicallAddressEveryone, contractAddress, tokenIds);
+		// getTokenURI(web3j, multicallAddressEveryone, contractAddress, tokenIds);
 
 		// 只读 only owner
-		getTokenURI(web3j, credentials, multicallAddressOwner, contractAddress, tokenIds);
+		// getTokenURI(web3j, credentials, multicallAddressOwner, contractAddress,
+		// tokenIds);
 
 		// 区块链写操作
 
-		changeData(web3j, credentials, multicallAddressOwner);
+		// changeData(web3j, credentials, multicallAddressOwner);
 
 		System.out.println("`````````````````````````````````````");
 
@@ -66,6 +69,11 @@ public class Main {
 
 		BigInteger blockNumber1 = contract1.getBlockNumber().sendAsync().get();
 		System.out.println("blockNumber:" + blockNumber1);
+
+		//
+		Credentials operator = Credentials.create(privatekeyOperator);
+		String nftexchange = "0x5D0C8b801d2Fd1dEEBB5aDfA89a8609becD01D83";
+		GETTokenURIs.getTokenURI(web3j, operator, nftexchange, contractAddress, tokenIds);
 	}
 
 	public static void getTokenURI(Web3j web3j, String multicalladdress, String tokenAddress,
