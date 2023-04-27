@@ -14,7 +14,7 @@ contract Multicall2Test {
     address private _owner;
     uint256 public number;
 
-    function setNumber(uint256 number_) external {
+    function setNumber(uint256 number_) external payable {
         number = number_;
     }
 

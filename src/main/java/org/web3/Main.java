@@ -126,8 +126,8 @@ public class Main {
 		// 同步 只有链上有结果返回还能得到hash
 		// TransactionReceipt tr = contract.setNumber(blockNumber).send();
 		// System.out.println("TransactionHash:" + tr.getTransactionHash());
-
-		CompletableFuture<TransactionReceipt> futureReceipt = contract.setNumber(blockNumber).sendAsync();
+		BigInteger weiValue = new BigInteger("0");
+		CompletableFuture<TransactionReceipt> futureReceipt = contract.setNumber(blockNumber, weiValue).sendAsync();
 		// 可以在这里执行一些异步的操作
 		// 添加回调方法，输出交易hash
 		String txHash = futureReceipt.thenApplyAsync(TransactionReceipt::getTransactionHash).get();
