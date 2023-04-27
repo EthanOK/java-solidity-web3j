@@ -74,6 +74,7 @@ public class Main {
 		Credentials operator = Credentials.create(privatekeyOperator);
 		String nftexchange = "0x5D0C8b801d2Fd1dEEBB5aDfA89a8609becD01D83";
 		GETTokenURIs.getTokenURI(web3j, operator, nftexchange, contractAddress, tokenIds);
+
 	}
 
 	public static void getTokenURI(Web3j web3j, String multicalladdress, String tokenAddress,
