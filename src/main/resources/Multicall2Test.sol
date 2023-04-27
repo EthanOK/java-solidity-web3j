@@ -13,9 +13,11 @@ contract Multicall2Test {
     }
     address private _owner;
     uint256 public number;
+    event SetNumber(uint256 number_);
 
     function setNumber(uint256 number_) external payable {
         number = number_;
+        emit SetNumber(number_);
     }
 
     /**
