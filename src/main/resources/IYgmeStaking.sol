@@ -25,6 +25,8 @@ interface IYgmeStaking {
         uint256 pledgeType
     );
 
+    function orderIsInvalid(uint256 orderId) external view returns (bool);
+
     event WithdrawERC20(uint256 orderId, address account, uint256 amount);
 
     function setPause() external;
