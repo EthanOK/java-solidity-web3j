@@ -6,9 +6,11 @@ import java.util.List;
 import org.web3j.model.OpenseaInterface;
 import org.web3j.model.OpenseaInterface.BasicOrderParameters;
 import org.web3j.model.OpenseaInterface.AdditionalRecipient;
+import org.web3j.model.OpenseaInterface.AdvancedOrder;
+import org.web3j.model.OpenseaInterface.CriteriaResolver;
+import org.web3j.model.OpenseaInterface.FulfillmentComponent;
 import org.web3j.tx.ReadonlyTransactionManager;
 import org.web3j.utils.Numeric;
-import io.github.cdimascio.dotenv.Dotenv;
 
 public class GetOpenSeaCallData {
 
@@ -25,6 +27,27 @@ public class GetOpenSeaCallData {
                                 .encodeFunctionCall();
                 System.out.println("calldata_fulfillBasicOrder:");
                 System.out.println(calldata_fulfillBasicOrder);
+
+                // TODO: fulfillAvailableAdvancedOrders(List<AdvancedOrder> advancedOrders,
+                // List<CriteriaResolver> criteriaResolvers, List<FulfillmentComponent>
+                // offerFulfillments, List<FulfillmentComponent> considerationFulfillments,
+                // byte[] fulfillerConduitKey, String recipient, BigInteger maximumFulfilled,
+                // BigInteger weiValue)
+                List<AdvancedOrder> advancedOrders = new ArrayList<>();
+                List<CriteriaResolver> criteriaResolvers = new ArrayList<>();
+                List<FulfillmentComponent> offerFulfillments = new ArrayList<>();
+                List<FulfillmentComponent> considerationFulfillments = new ArrayList<>();
+                byte[] fulfillerConduitKey = convertBytes("0x");
+                String recipient = "";
+                BigInteger maximumFulfilled = new BigInteger("0");
+                ;
+                String calldata_fulfillAvailableAdvancedOrders = OpenSea
+                                .fulfillAvailableAdvancedOrders(advancedOrders, criteriaResolvers, offerFulfillments,
+                                                considerationFulfillments, fulfillerConduitKey, recipient,
+                                                maximumFulfilled, weiValue)
+                                .encodeFunctionCall();
+                System.out.println("calldata_fulfillAvailableAdvancedOrders:");
+                System.out.println(calldata_fulfillAvailableAdvancedOrders);
 
         }
 
