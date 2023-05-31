@@ -18,24 +18,28 @@ import io.github.cdimascio.dotenv.Dotenv;
 
 public class GetYunGouCallData {
 
-    static Dotenv dotenv = Dotenv.load();
-    static String RPC = dotenv.get("ALCHEMY_GOERLI_URL");
-    static String YunGouAddress = "0x54dbd3ddc55af51947b115cb3d511214eca5d58f";
+    // static Dotenv dotenv = Dotenv.load();
+    // static String RPC = dotenv.get("ALCHEMY_GOERLI_URL");
+    // static String YunGouAddress = "0x54dbd3ddc55af51947b115cb3d511214eca5d58f";
 
     public static void main(String[] args) throws Exception {
 
-        Web3j web3j = Web3j
-                .build(new HttpService(RPC));
-        // System.out.println(web3j);
-        ContractGasProvider contractGasProvider = new DefaultGasProvider();
-        YunGouInterface YunGou = YunGouInterface.load(YunGouAddress, web3j,
-                new ReadonlyTransactionManager(web3j, null), contractGasProvider);
+        // Web3j web3j = Web3j
+        // .build(new HttpService(RPC));
+        // // System.out.println(web3j);
+        // ContractGasProvider contractGasProvider = new DefaultGasProvider();
+        // YunGouInterface YunGou = YunGouInterface.load(YunGouAddress, web3j,
+        // new ReadonlyTransactionManager(web3j, null), contractGasProvider);
+
+        YunGouInterface YunGou = YunGouInterface.load(null, null,
+                new ReadonlyTransactionManager(null, null), null);
 
         String receiver = "0x53188e798f2657576c9de8905478f46ac2f24b67";
         BigInteger weiValue = new BigInteger("0");
         BasicOrder basicOrder_7 = getBasicOrder_7();
         // TODO: get excuteWithETH calldata
         String calldata_excuteWithETH = YunGou.excuteWithETH(basicOrder_7, receiver, weiValue).encodeFunctionCall();
+        System.out.println("calldata_excuteWithETH:");
         System.out.println(calldata_excuteWithETH);
 
         // TODO: get batchExcuteWithETH calldata
@@ -45,6 +49,7 @@ public class GetYunGouCallData {
         orders.add(basicOrder_8);
         String calldata_batchExcuteWithETH = YunGou.batchExcuteWithETH(orders, receiver, weiValue)
                 .encodeFunctionCall();
+        System.out.println("calldata_batchExcuteWithETH:");
         System.out.println(calldata_batchExcuteWithETH);
     }
 
