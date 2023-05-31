@@ -1,7 +1,6 @@
 package org.web3j.model;
 
 import io.reactivex.Flowable;
-import io.reactivex.functions.Function;
 import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -30,11 +29,11 @@ import org.web3j.tx.gas.ContractGasProvider;
  * or the org.web3j.codegen.SolidityFunctionWrapperGenerator in the 
  * <a href="https://github.com/web3j/web3j/tree/master/codegen">codegen module</a> to update.
  *
- * <p>Generated with web3j version 4.9.4.
+ * <p>Generated with web3j version 4.10.0.
  */
 @SuppressWarnings("rawtypes")
 public class NFTExchangeLog extends Contract {
-    public static final String BINARY = "6080604052348015600f57600080fd5b50603f80601d6000396000f3fe6080604052600080fdfea26469706673582212203f53b8aff2126125d17291ff01034e352e87f4e2c4716ffca7344d8d07e35ac764736f6c63430007010033";
+    public static final String BINARY = "6080604052348015600f57600080fd5b50603f80601d6000396000f3fe6080604052600080fdfea264697066735822122044c357e8becdd224405fea8307f5aecb0d20225435a710786cf18c526038c97b64736f6c63430007060033";
 
     public static final Event EXCHANGE_EVENT = new Event("Exchange", 
             Arrays.<TypeReference<?>>asList(new TypeReference<Address>(true) {}, new TypeReference<Uint256>(true) {}, new TypeReference<Uint256>() {}, new TypeReference<Uint256>() {}, new TypeReference<Address>() {}, new TypeReference<Address>() {}, new TypeReference<Uint256>() {}, new TypeReference<Address>() {}, new TypeReference<Uint256>() {}, new TypeReference<Uint256>() {}, new TypeReference<Uint256>() {}));
@@ -80,27 +79,26 @@ public class NFTExchangeLog extends Contract {
         return responses;
     }
 
+    public static ExchangeEventResponse getExchangeEventFromLog(Log log) {
+        Contract.EventValuesWithLog eventValues = staticExtractEventParametersWithLog(EXCHANGE_EVENT, log);
+        ExchangeEventResponse typedResponse = new ExchangeEventResponse();
+        typedResponse.log = log;
+        typedResponse.sellToken = (String) eventValues.getIndexedValues().get(0).getValue();
+        typedResponse.sellTokenId = (BigInteger) eventValues.getIndexedValues().get(1).getValue();
+        typedResponse.sellAmount = (BigInteger) eventValues.getNonIndexedValues().get(0).getValue();
+        typedResponse.unitPrice = (BigInteger) eventValues.getNonIndexedValues().get(1).getValue();
+        typedResponse.seller = (String) eventValues.getNonIndexedValues().get(2).getValue();
+        typedResponse.buyToken = (String) eventValues.getNonIndexedValues().get(3).getValue();
+        typedResponse.buyTokenId = (BigInteger) eventValues.getNonIndexedValues().get(4).getValue();
+        typedResponse.buyer = (String) eventValues.getNonIndexedValues().get(5).getValue();
+        typedResponse.amount = (BigInteger) eventValues.getNonIndexedValues().get(6).getValue();
+        typedResponse.payPrice = (BigInteger) eventValues.getNonIndexedValues().get(7).getValue();
+        typedResponse.royaltyFee = (BigInteger) eventValues.getNonIndexedValues().get(8).getValue();
+        return typedResponse;
+    }
+
     public Flowable<ExchangeEventResponse> exchangeEventFlowable(EthFilter filter) {
-        return web3j.ethLogFlowable(filter).map(new Function<Log, ExchangeEventResponse>() {
-            @Override
-            public ExchangeEventResponse apply(Log log) {
-                Contract.EventValuesWithLog eventValues = extractEventParametersWithLog(EXCHANGE_EVENT, log);
-                ExchangeEventResponse typedResponse = new ExchangeEventResponse();
-                typedResponse.log = log;
-                typedResponse.sellToken = (String) eventValues.getIndexedValues().get(0).getValue();
-                typedResponse.sellTokenId = (BigInteger) eventValues.getIndexedValues().get(1).getValue();
-                typedResponse.sellAmount = (BigInteger) eventValues.getNonIndexedValues().get(0).getValue();
-                typedResponse.unitPrice = (BigInteger) eventValues.getNonIndexedValues().get(1).getValue();
-                typedResponse.seller = (String) eventValues.getNonIndexedValues().get(2).getValue();
-                typedResponse.buyToken = (String) eventValues.getNonIndexedValues().get(3).getValue();
-                typedResponse.buyTokenId = (BigInteger) eventValues.getNonIndexedValues().get(4).getValue();
-                typedResponse.buyer = (String) eventValues.getNonIndexedValues().get(5).getValue();
-                typedResponse.amount = (BigInteger) eventValues.getNonIndexedValues().get(6).getValue();
-                typedResponse.payPrice = (BigInteger) eventValues.getNonIndexedValues().get(7).getValue();
-                typedResponse.royaltyFee = (BigInteger) eventValues.getNonIndexedValues().get(8).getValue();
-                return typedResponse;
-            }
-        });
+        return web3j.ethLogFlowable(filter).map(log -> getExchangeEventFromLog(log));
     }
 
     public Flowable<ExchangeEventResponse> exchangeEventFlowable(DefaultBlockParameter startBlock, DefaultBlockParameter endBlock) {

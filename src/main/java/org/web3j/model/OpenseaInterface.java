@@ -49,6 +49,8 @@ public class OpenseaInterface extends Contract {
 
     public static final String FUNC_FULFILLBASICORDER = "fulfillBasicOrder";
 
+    public static final String FUNC_FULFILLBASICORDER_FULFILLMENTCOMPONENT = "fulfillBasicOrder_FulfillmentComponent";
+
     public static final String FUNC_FULFILLBASICORDER_EFFICIENT_6GL6YC = "fulfillBasicOrder_efficient_6GL6yc";
 
     public static final String FUNC_GETORDERSTATUS = "getOrderStatus";
@@ -80,12 +82,8 @@ public class OpenseaInterface extends Contract {
                 FUNC_FULFILLAVAILABLEADVANCEDORDERS, 
                 Arrays.<Type>asList(new org.web3j.abi.datatypes.DynamicArray<AdvancedOrder>(AdvancedOrder.class, advancedOrders), 
                 new org.web3j.abi.datatypes.DynamicArray<CriteriaResolver>(CriteriaResolver.class, criteriaResolvers), 
-                new org.web3j.abi.datatypes.DynamicArray<FulfillmentComponent>(
-                        FulfillmentComponent.class,
-                        org.web3j.abi.Utils.typeMap(offerFulfillments, FulfillmentComponent.class)), 
-                new org.web3j.abi.datatypes.DynamicArray<FulfillmentComponent>(
-                        FulfillmentComponent.class,
-                        org.web3j.abi.Utils.typeMap(considerationFulfillments, FulfillmentComponent.class)), 
+                new org.web3j.abi.datatypes.DynamicArray<FulfillmentComponent>(FulfillmentComponent.class, offerFulfillments), 
+                new org.web3j.abi.datatypes.DynamicArray<FulfillmentComponent>(FulfillmentComponent.class, considerationFulfillments), 
                 new org.web3j.abi.datatypes.generated.Bytes32(fulfillerConduitKey), 
                 new org.web3j.abi.datatypes.Address(160, recipient), 
                 new org.web3j.abi.datatypes.generated.Uint256(maximumFulfilled)), 
@@ -97,6 +95,14 @@ public class OpenseaInterface extends Contract {
         final Function function = new Function(
                 FUNC_FULFILLBASICORDER, 
                 Arrays.<Type>asList(parameters), 
+                Collections.<TypeReference<?>>emptyList());
+        return executeRemoteCallTransaction(function, weiValue);
+    }
+
+    public RemoteFunctionCall<TransactionReceipt> fulfillBasicOrder_FulfillmentComponent(FulfillmentComponent fulfillmentComponent, BigInteger weiValue) {
+        final Function function = new Function(
+                FUNC_FULFILLBASICORDER_FULFILLMENTCOMPONENT, 
+                Arrays.<Type>asList(fulfillmentComponent), 
                 Collections.<TypeReference<?>>emptyList());
         return executeRemoteCallTransaction(function, weiValue);
     }
@@ -346,6 +352,25 @@ public class OpenseaInterface extends Contract {
             super(amount, recipient);
             this.amount = amount.getValue();
             this.recipient = recipient.getValue();
+        }
+    }
+
+    public static class FulfillmentComponent extends StaticStruct {
+        public BigInteger orderIndex;
+
+        public BigInteger itemIndex;
+
+        public FulfillmentComponent(BigInteger orderIndex, BigInteger itemIndex) {
+            super(new org.web3j.abi.datatypes.generated.Uint256(orderIndex), 
+                    new org.web3j.abi.datatypes.generated.Uint256(itemIndex));
+            this.orderIndex = orderIndex;
+            this.itemIndex = itemIndex;
+        }
+
+        public FulfillmentComponent(Uint256 orderIndex, Uint256 itemIndex) {
+            super(orderIndex, itemIndex);
+            this.orderIndex = orderIndex.getValue();
+            this.itemIndex = itemIndex.getValue();
         }
     }
 

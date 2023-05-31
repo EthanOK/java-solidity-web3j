@@ -1,7 +1,6 @@
 package org.web3j.model;
 
 import io.reactivex.Flowable;
-import io.reactivex.functions.Function;
 import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -31,11 +30,11 @@ import org.web3j.tx.gas.ContractGasProvider;
  * or the org.web3j.codegen.SolidityFunctionWrapperGenerator in the 
  * <a href="https://github.com/web3j/web3j/tree/master/codegen">codegen module</a> to update.
  *
- * <p>Generated with web3j version 4.9.4.
+ * <p>Generated with web3j version 4.10.0.
  */
 @SuppressWarnings("rawtypes")
 public class NFTTransfer extends Contract {
-    public static final String BINARY = "6080604052348015600f57600080fd5b50603f80601d6000396000f3fe6080604052600080fdfea264697066735822122033f89302872cf37863a67dea2a2d98030624a841aa749c53fe64ee9fed0ac2d664736f6c63430007010033";
+    public static final String BINARY = "6080604052348015600f57600080fd5b50603f80601d6000396000f3fe6080604052600080fdfea264697066735822122047ded789ccb249fa15cbc2c0c03376a09f902565fdcbb9fbab4983708f05a28964736f6c63430007060033";
 
     public static final Event APPROVAL_EVENT = new Event("Approval", 
             Arrays.<TypeReference<?>>asList(new TypeReference<Address>(true) {}, new TypeReference<Address>(true) {}, new TypeReference<Uint256>(true) {}));
@@ -81,19 +80,18 @@ public class NFTTransfer extends Contract {
         return responses;
     }
 
+    public static ApprovalEventResponse getApprovalEventFromLog(Log log) {
+        Contract.EventValuesWithLog eventValues = staticExtractEventParametersWithLog(APPROVAL_EVENT, log);
+        ApprovalEventResponse typedResponse = new ApprovalEventResponse();
+        typedResponse.log = log;
+        typedResponse.owner = (String) eventValues.getIndexedValues().get(0).getValue();
+        typedResponse.approved = (String) eventValues.getIndexedValues().get(1).getValue();
+        typedResponse.tokenId = (BigInteger) eventValues.getIndexedValues().get(2).getValue();
+        return typedResponse;
+    }
+
     public Flowable<ApprovalEventResponse> approvalEventFlowable(EthFilter filter) {
-        return web3j.ethLogFlowable(filter).map(new Function<Log, ApprovalEventResponse>() {
-            @Override
-            public ApprovalEventResponse apply(Log log) {
-                Contract.EventValuesWithLog eventValues = extractEventParametersWithLog(APPROVAL_EVENT, log);
-                ApprovalEventResponse typedResponse = new ApprovalEventResponse();
-                typedResponse.log = log;
-                typedResponse.owner = (String) eventValues.getIndexedValues().get(0).getValue();
-                typedResponse.approved = (String) eventValues.getIndexedValues().get(1).getValue();
-                typedResponse.tokenId = (BigInteger) eventValues.getIndexedValues().get(2).getValue();
-                return typedResponse;
-            }
-        });
+        return web3j.ethLogFlowable(filter).map(log -> getApprovalEventFromLog(log));
     }
 
     public Flowable<ApprovalEventResponse> approvalEventFlowable(DefaultBlockParameter startBlock, DefaultBlockParameter endBlock) {
@@ -116,19 +114,18 @@ public class NFTTransfer extends Contract {
         return responses;
     }
 
+    public static ApprovalForAllEventResponse getApprovalForAllEventFromLog(Log log) {
+        Contract.EventValuesWithLog eventValues = staticExtractEventParametersWithLog(APPROVALFORALL_EVENT, log);
+        ApprovalForAllEventResponse typedResponse = new ApprovalForAllEventResponse();
+        typedResponse.log = log;
+        typedResponse.owner = (String) eventValues.getIndexedValues().get(0).getValue();
+        typedResponse.operator = (String) eventValues.getIndexedValues().get(1).getValue();
+        typedResponse.approved = (Boolean) eventValues.getNonIndexedValues().get(0).getValue();
+        return typedResponse;
+    }
+
     public Flowable<ApprovalForAllEventResponse> approvalForAllEventFlowable(EthFilter filter) {
-        return web3j.ethLogFlowable(filter).map(new Function<Log, ApprovalForAllEventResponse>() {
-            @Override
-            public ApprovalForAllEventResponse apply(Log log) {
-                Contract.EventValuesWithLog eventValues = extractEventParametersWithLog(APPROVALFORALL_EVENT, log);
-                ApprovalForAllEventResponse typedResponse = new ApprovalForAllEventResponse();
-                typedResponse.log = log;
-                typedResponse.owner = (String) eventValues.getIndexedValues().get(0).getValue();
-                typedResponse.operator = (String) eventValues.getIndexedValues().get(1).getValue();
-                typedResponse.approved = (Boolean) eventValues.getNonIndexedValues().get(0).getValue();
-                return typedResponse;
-            }
-        });
+        return web3j.ethLogFlowable(filter).map(log -> getApprovalForAllEventFromLog(log));
     }
 
     public Flowable<ApprovalForAllEventResponse> approvalForAllEventFlowable(DefaultBlockParameter startBlock, DefaultBlockParameter endBlock) {
@@ -151,19 +148,18 @@ public class NFTTransfer extends Contract {
         return responses;
     }
 
+    public static TransferEventResponse getTransferEventFromLog(Log log) {
+        Contract.EventValuesWithLog eventValues = staticExtractEventParametersWithLog(TRANSFER_EVENT, log);
+        TransferEventResponse typedResponse = new TransferEventResponse();
+        typedResponse.log = log;
+        typedResponse.from = (String) eventValues.getIndexedValues().get(0).getValue();
+        typedResponse.to = (String) eventValues.getIndexedValues().get(1).getValue();
+        typedResponse.tokenId = (BigInteger) eventValues.getIndexedValues().get(2).getValue();
+        return typedResponse;
+    }
+
     public Flowable<TransferEventResponse> transferEventFlowable(EthFilter filter) {
-        return web3j.ethLogFlowable(filter).map(new Function<Log, TransferEventResponse>() {
-            @Override
-            public TransferEventResponse apply(Log log) {
-                Contract.EventValuesWithLog eventValues = extractEventParametersWithLog(TRANSFER_EVENT, log);
-                TransferEventResponse typedResponse = new TransferEventResponse();
-                typedResponse.log = log;
-                typedResponse.from = (String) eventValues.getIndexedValues().get(0).getValue();
-                typedResponse.to = (String) eventValues.getIndexedValues().get(1).getValue();
-                typedResponse.tokenId = (BigInteger) eventValues.getIndexedValues().get(2).getValue();
-                return typedResponse;
-            }
-        });
+        return web3j.ethLogFlowable(filter).map(log -> getTransferEventFromLog(log));
     }
 
     public Flowable<TransferEventResponse> transferEventFlowable(DefaultBlockParameter startBlock, DefaultBlockParameter endBlock) {

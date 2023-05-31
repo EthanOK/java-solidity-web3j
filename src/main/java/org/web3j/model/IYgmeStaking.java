@@ -1,7 +1,6 @@
 package org.web3j.model;
 
 import io.reactivex.Flowable;
-import io.reactivex.functions.Function;
 import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -16,6 +15,7 @@ import org.web3j.abi.datatypes.DynamicArray;
 import org.web3j.abi.datatypes.DynamicBytes;
 import org.web3j.abi.datatypes.DynamicStruct;
 import org.web3j.abi.datatypes.Event;
+import org.web3j.abi.datatypes.Function;
 import org.web3j.abi.datatypes.Type;
 import org.web3j.abi.datatypes.generated.StaticArray3;
 import org.web3j.abi.datatypes.generated.Uint256;
@@ -41,7 +41,7 @@ import org.web3j.tx.gas.ContractGasProvider;
  * or the org.web3j.codegen.SolidityFunctionWrapperGenerator in the 
  * <a href="https://github.com/web3j/web3j/tree/master/codegen">codegen module</a> to update.
  *
- * <p>Generated with web3j version 4.9.4.
+ * <p>Generated with web3j version 4.10.0.
  */
 @SuppressWarnings("rawtypes")
 public class IYgmeStaking extends Contract {
@@ -114,22 +114,21 @@ public class IYgmeStaking extends Contract {
         return responses;
     }
 
+    public static StakingEventResponse getStakingEventFromLog(Log log) {
+        Contract.EventValuesWithLog eventValues = staticExtractEventParametersWithLog(STAKING_EVENT, log);
+        StakingEventResponse typedResponse = new StakingEventResponse();
+        typedResponse.log = log;
+        typedResponse.account = (String) eventValues.getIndexedValues().get(0).getValue();
+        typedResponse.tokenId = (BigInteger) eventValues.getIndexedValues().get(1).getValue();
+        typedResponse.nftContract = (String) eventValues.getIndexedValues().get(2).getValue();
+        typedResponse.startTime = (BigInteger) eventValues.getNonIndexedValues().get(0).getValue();
+        typedResponse.endTime = (BigInteger) eventValues.getNonIndexedValues().get(1).getValue();
+        typedResponse.pledgeType = (BigInteger) eventValues.getNonIndexedValues().get(2).getValue();
+        return typedResponse;
+    }
+
     public Flowable<StakingEventResponse> stakingEventFlowable(EthFilter filter) {
-        return web3j.ethLogFlowable(filter).map(new Function<Log, StakingEventResponse>() {
-            @Override
-            public StakingEventResponse apply(Log log) {
-                Contract.EventValuesWithLog eventValues = extractEventParametersWithLog(STAKING_EVENT, log);
-                StakingEventResponse typedResponse = new StakingEventResponse();
-                typedResponse.log = log;
-                typedResponse.account = (String) eventValues.getIndexedValues().get(0).getValue();
-                typedResponse.tokenId = (BigInteger) eventValues.getIndexedValues().get(1).getValue();
-                typedResponse.nftContract = (String) eventValues.getIndexedValues().get(2).getValue();
-                typedResponse.startTime = (BigInteger) eventValues.getNonIndexedValues().get(0).getValue();
-                typedResponse.endTime = (BigInteger) eventValues.getNonIndexedValues().get(1).getValue();
-                typedResponse.pledgeType = (BigInteger) eventValues.getNonIndexedValues().get(2).getValue();
-                return typedResponse;
-            }
-        });
+        return web3j.ethLogFlowable(filter).map(log -> getStakingEventFromLog(log));
     }
 
     public Flowable<StakingEventResponse> stakingEventFlowable(DefaultBlockParameter startBlock, DefaultBlockParameter endBlock) {
@@ -152,19 +151,18 @@ public class IYgmeStaking extends Contract {
         return responses;
     }
 
+    public static WithdrawERC20EventResponse getWithdrawERC20EventFromLog(Log log) {
+        Contract.EventValuesWithLog eventValues = staticExtractEventParametersWithLog(WITHDRAWERC20_EVENT, log);
+        WithdrawERC20EventResponse typedResponse = new WithdrawERC20EventResponse();
+        typedResponse.log = log;
+        typedResponse.orderId = (BigInteger) eventValues.getNonIndexedValues().get(0).getValue();
+        typedResponse.account = (String) eventValues.getNonIndexedValues().get(1).getValue();
+        typedResponse.amount = (BigInteger) eventValues.getNonIndexedValues().get(2).getValue();
+        return typedResponse;
+    }
+
     public Flowable<WithdrawERC20EventResponse> withdrawERC20EventFlowable(EthFilter filter) {
-        return web3j.ethLogFlowable(filter).map(new Function<Log, WithdrawERC20EventResponse>() {
-            @Override
-            public WithdrawERC20EventResponse apply(Log log) {
-                Contract.EventValuesWithLog eventValues = extractEventParametersWithLog(WITHDRAWERC20_EVENT, log);
-                WithdrawERC20EventResponse typedResponse = new WithdrawERC20EventResponse();
-                typedResponse.log = log;
-                typedResponse.orderId = (BigInteger) eventValues.getNonIndexedValues().get(0).getValue();
-                typedResponse.account = (String) eventValues.getNonIndexedValues().get(1).getValue();
-                typedResponse.amount = (BigInteger) eventValues.getNonIndexedValues().get(2).getValue();
-                return typedResponse;
-            }
-        });
+        return web3j.ethLogFlowable(filter).map(log -> getWithdrawERC20EventFromLog(log));
     }
 
     public Flowable<WithdrawERC20EventResponse> withdrawERC20EventFlowable(DefaultBlockParameter startBlock, DefaultBlockParameter endBlock) {
@@ -174,7 +172,7 @@ public class IYgmeStaking extends Contract {
     }
 
     public RemoteFunctionCall<Tuple2<BigInteger, List<byte[]>>> aggregateStaticCall(List<Call> calls) {
-        final org.web3j.abi.datatypes.Function function = new org.web3j.abi.datatypes.Function(FUNC_AGGREGATESTATICCALL, 
+        final Function function = new Function(FUNC_AGGREGATESTATICCALL, 
                 Arrays.<Type>asList(new org.web3j.abi.datatypes.DynamicArray<Call>(Call.class, calls)), 
                 Arrays.<TypeReference<?>>asList(new TypeReference<Uint256>() {}, new TypeReference<DynamicArray<DynamicBytes>>() {}));
         return new RemoteFunctionCall<Tuple2<BigInteger, List<byte[]>>>(function,
@@ -190,7 +188,7 @@ public class IYgmeStaking extends Contract {
     }
 
     public RemoteFunctionCall<List> getStakingPeriods() {
-        final org.web3j.abi.datatypes.Function function = new org.web3j.abi.datatypes.Function(FUNC_GETSTAKINGPERIODS, 
+        final Function function = new Function(FUNC_GETSTAKINGPERIODS, 
                 Arrays.<Type>asList(), 
                 Arrays.<TypeReference<?>>asList(new TypeReference<StaticArray3<Uint64>>() {}));
         return new RemoteFunctionCall<List>(function,
@@ -205,7 +203,7 @@ public class IYgmeStaking extends Contract {
     }
 
     public RemoteFunctionCall<List> getStakingTokenIds(String _account) {
-        final org.web3j.abi.datatypes.Function function = new org.web3j.abi.datatypes.Function(FUNC_GETSTAKINGTOKENIDS, 
+        final Function function = new Function(FUNC_GETSTAKINGTOKENIDS, 
                 Arrays.<Type>asList(new org.web3j.abi.datatypes.Address(160, _account)), 
                 Arrays.<TypeReference<?>>asList(new TypeReference<DynamicArray<Uint256>>() {}));
         return new RemoteFunctionCall<List>(function,
@@ -220,21 +218,21 @@ public class IYgmeStaking extends Contract {
     }
 
     public RemoteFunctionCall<String> getWithdrawSigner() {
-        final org.web3j.abi.datatypes.Function function = new org.web3j.abi.datatypes.Function(FUNC_GETWITHDRAWSIGNER, 
+        final Function function = new Function(FUNC_GETWITHDRAWSIGNER, 
                 Arrays.<Type>asList(), 
                 Arrays.<TypeReference<?>>asList(new TypeReference<Address>() {}));
         return executeRemoteCallSingleValueReturn(function, String.class);
     }
 
     public RemoteFunctionCall<Boolean> orderIsInvalid(BigInteger orderId) {
-        final org.web3j.abi.datatypes.Function function = new org.web3j.abi.datatypes.Function(FUNC_ORDERISINVALID, 
+        final Function function = new Function(FUNC_ORDERISINVALID, 
                 Arrays.<Type>asList(new org.web3j.abi.datatypes.generated.Uint256(orderId)), 
                 Arrays.<TypeReference<?>>asList(new TypeReference<Bool>() {}));
         return executeRemoteCallSingleValueReturn(function, Boolean.class);
     }
 
     public RemoteFunctionCall<TransactionReceipt> setOperator(String _account) {
-        final org.web3j.abi.datatypes.Function function = new org.web3j.abi.datatypes.Function(
+        final Function function = new Function(
                 FUNC_SETOPERATOR, 
                 Arrays.<Type>asList(new org.web3j.abi.datatypes.Address(160, _account)), 
                 Collections.<TypeReference<?>>emptyList());
@@ -242,7 +240,7 @@ public class IYgmeStaking extends Contract {
     }
 
     public RemoteFunctionCall<TransactionReceipt> setPause() {
-        final org.web3j.abi.datatypes.Function function = new org.web3j.abi.datatypes.Function(
+        final Function function = new Function(
                 FUNC_SETPAUSE, 
                 Arrays.<Type>asList(), 
                 Collections.<TypeReference<?>>emptyList());
@@ -250,7 +248,7 @@ public class IYgmeStaking extends Contract {
     }
 
     public RemoteFunctionCall<TransactionReceipt> setStakingPeriods(List<BigInteger> _periods) {
-        final org.web3j.abi.datatypes.Function function = new org.web3j.abi.datatypes.Function(
+        final Function function = new Function(
                 FUNC_SETSTAKINGPERIODS, 
                 Arrays.<Type>asList(new org.web3j.abi.datatypes.generated.StaticArray3<org.web3j.abi.datatypes.generated.Uint64>(
                         org.web3j.abi.datatypes.generated.Uint64.class,
@@ -260,7 +258,7 @@ public class IYgmeStaking extends Contract {
     }
 
     public RemoteFunctionCall<TransactionReceipt> setWithdrawSigner(String _withdrawSigner) {
-        final org.web3j.abi.datatypes.Function function = new org.web3j.abi.datatypes.Function(
+        final Function function = new Function(
                 FUNC_SETWITHDRAWSIGNER, 
                 Arrays.<Type>asList(new org.web3j.abi.datatypes.Address(160, _withdrawSigner)), 
                 Collections.<TypeReference<?>>emptyList());
@@ -268,7 +266,7 @@ public class IYgmeStaking extends Contract {
     }
 
     public RemoteFunctionCall<TransactionReceipt> staking(List<BigInteger> _tokenIds, BigInteger _stakeTime) {
-        final org.web3j.abi.datatypes.Function function = new org.web3j.abi.datatypes.Function(
+        final Function function = new Function(
                 FUNC_STAKING, 
                 Arrays.<Type>asList(new org.web3j.abi.datatypes.DynamicArray<org.web3j.abi.datatypes.generated.Uint256>(
                         org.web3j.abi.datatypes.generated.Uint256.class,
@@ -279,7 +277,7 @@ public class IYgmeStaking extends Contract {
     }
 
     public RemoteFunctionCall<TransactionReceipt> unStake(List<BigInteger> _tokenIds) {
-        final org.web3j.abi.datatypes.Function function = new org.web3j.abi.datatypes.Function(
+        final Function function = new Function(
                 FUNC_UNSTAKE, 
                 Arrays.<Type>asList(new org.web3j.abi.datatypes.DynamicArray<org.web3j.abi.datatypes.generated.Uint256>(
                         org.web3j.abi.datatypes.generated.Uint256.class,
@@ -289,7 +287,7 @@ public class IYgmeStaking extends Contract {
     }
 
     public RemoteFunctionCall<TransactionReceipt> withdrawERC20(byte[] data, byte[] signature) {
-        final org.web3j.abi.datatypes.Function function = new org.web3j.abi.datatypes.Function(
+        final Function function = new Function(
                 FUNC_WITHDRAWERC20, 
                 Arrays.<Type>asList(new org.web3j.abi.datatypes.DynamicBytes(data), 
                 new org.web3j.abi.datatypes.DynamicBytes(signature)), 

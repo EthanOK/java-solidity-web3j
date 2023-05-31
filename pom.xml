@@ -41,7 +41,7 @@
                 <plugin>
                     <groupId>org.web3j</groupId>
                     <artifactId>web3j-maven-plugin</artifactId>
-                    <version>4.9.4</version>
+                    <version>4.10.0</version>
                     <configuration>
                         <soliditySourceFiles/>
                     </configuration>

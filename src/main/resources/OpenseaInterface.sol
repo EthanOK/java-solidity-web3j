@@ -88,7 +88,10 @@ interface OpenseaInterface {
         // 1: Items that must be received
         CONSIDERATION
     }
-
+    struct FulfillmentComponent {
+        uint256 orderIndex;
+        uint256 itemIndex;
+    }
     struct BasicOrderParameters {
         // calldata offset
         address considerationToken; // 0x24
@@ -165,11 +168,6 @@ interface OpenseaInterface {
         bytes32[] criteriaProof;
     }
 
-    struct FulfillmentComponent {
-        uint256 orderIndex;
-        uint256 itemIndex;
-    }
-
     struct Execution {
         ReceivedItem item;
         address offerer;
@@ -200,6 +198,10 @@ interface OpenseaInterface {
         external
         payable
         returns (bool[] memory availableOrders, Execution[] memory executions);
+
+    function fulfillBasicOrder_FulfillmentComponent(
+        FulfillmentComponent calldata fulfillmentComponent
+    ) external payable returns (bool fulfilled);
 
     function fulfillBasicOrder_efficient_6GL6yc(
         BasicOrderParameters calldata parameters

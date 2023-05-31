@@ -1,7 +1,6 @@
 package org.web3j.model;
 
 import io.reactivex.Flowable;
-import io.reactivex.functions.Function;
 import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -30,7 +29,7 @@ import org.web3j.tx.gas.ContractGasProvider;
  * or the org.web3j.codegen.SolidityFunctionWrapperGenerator in the 
  * <a href="https://github.com/web3j/web3j/tree/master/codegen">codegen module</a> to update.
  *
- * <p>Generated with web3j version 4.9.4.
+ * <p>Generated with web3j version 4.10.0.
  */
 @SuppressWarnings("rawtypes")
 public class YgmeStakingDomain extends Contract {
@@ -79,22 +78,21 @@ public class YgmeStakingDomain extends Contract {
         return responses;
     }
 
+    public static StakingEventResponse getStakingEventFromLog(Log log) {
+        Contract.EventValuesWithLog eventValues = staticExtractEventParametersWithLog(STAKING_EVENT, log);
+        StakingEventResponse typedResponse = new StakingEventResponse();
+        typedResponse.log = log;
+        typedResponse.account = (String) eventValues.getIndexedValues().get(0).getValue();
+        typedResponse.tokenId = (BigInteger) eventValues.getIndexedValues().get(1).getValue();
+        typedResponse.nftContract = (String) eventValues.getIndexedValues().get(2).getValue();
+        typedResponse.startTime = (BigInteger) eventValues.getNonIndexedValues().get(0).getValue();
+        typedResponse.endTime = (BigInteger) eventValues.getNonIndexedValues().get(1).getValue();
+        typedResponse.pledgeType = (BigInteger) eventValues.getNonIndexedValues().get(2).getValue();
+        return typedResponse;
+    }
+
     public Flowable<StakingEventResponse> stakingEventFlowable(EthFilter filter) {
-        return web3j.ethLogFlowable(filter).map(new Function<Log, StakingEventResponse>() {
-            @Override
-            public StakingEventResponse apply(Log log) {
-                Contract.EventValuesWithLog eventValues = extractEventParametersWithLog(STAKING_EVENT, log);
-                StakingEventResponse typedResponse = new StakingEventResponse();
-                typedResponse.log = log;
-                typedResponse.account = (String) eventValues.getIndexedValues().get(0).getValue();
-                typedResponse.tokenId = (BigInteger) eventValues.getIndexedValues().get(1).getValue();
-                typedResponse.nftContract = (String) eventValues.getIndexedValues().get(2).getValue();
-                typedResponse.startTime = (BigInteger) eventValues.getNonIndexedValues().get(0).getValue();
-                typedResponse.endTime = (BigInteger) eventValues.getNonIndexedValues().get(1).getValue();
-                typedResponse.pledgeType = (BigInteger) eventValues.getNonIndexedValues().get(2).getValue();
-                return typedResponse;
-            }
-        });
+        return web3j.ethLogFlowable(filter).map(log -> getStakingEventFromLog(log));
     }
 
     public Flowable<StakingEventResponse> stakingEventFlowable(DefaultBlockParameter startBlock, DefaultBlockParameter endBlock) {
@@ -117,19 +115,18 @@ public class YgmeStakingDomain extends Contract {
         return responses;
     }
 
+    public static WithdrawERC20EventResponse getWithdrawERC20EventFromLog(Log log) {
+        Contract.EventValuesWithLog eventValues = staticExtractEventParametersWithLog(WITHDRAWERC20_EVENT, log);
+        WithdrawERC20EventResponse typedResponse = new WithdrawERC20EventResponse();
+        typedResponse.log = log;
+        typedResponse.orderId = (BigInteger) eventValues.getNonIndexedValues().get(0).getValue();
+        typedResponse.account = (String) eventValues.getNonIndexedValues().get(1).getValue();
+        typedResponse.amount = (BigInteger) eventValues.getNonIndexedValues().get(2).getValue();
+        return typedResponse;
+    }
+
     public Flowable<WithdrawERC20EventResponse> withdrawERC20EventFlowable(EthFilter filter) {
-        return web3j.ethLogFlowable(filter).map(new Function<Log, WithdrawERC20EventResponse>() {
-            @Override
-            public WithdrawERC20EventResponse apply(Log log) {
-                Contract.EventValuesWithLog eventValues = extractEventParametersWithLog(WITHDRAWERC20_EVENT, log);
-                WithdrawERC20EventResponse typedResponse = new WithdrawERC20EventResponse();
-                typedResponse.log = log;
-                typedResponse.orderId = (BigInteger) eventValues.getNonIndexedValues().get(0).getValue();
-                typedResponse.account = (String) eventValues.getNonIndexedValues().get(1).getValue();
-                typedResponse.amount = (BigInteger) eventValues.getNonIndexedValues().get(2).getValue();
-                return typedResponse;
-            }
-        });
+        return web3j.ethLogFlowable(filter).map(log -> getWithdrawERC20EventFromLog(log));
     }
 
     public Flowable<WithdrawERC20EventResponse> withdrawERC20EventFlowable(DefaultBlockParameter startBlock, DefaultBlockParameter endBlock) {
