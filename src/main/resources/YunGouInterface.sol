@@ -84,6 +84,4 @@ interface YunGouInterface {
     function getOrderHash(
         BasicOrderParameters calldata orderParameters
     ) external view returns (bytes32 orderHash);
-
-    // function demo(uint256[][] calldata x) external;
 }

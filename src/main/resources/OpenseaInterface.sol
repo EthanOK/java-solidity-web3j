@@ -201,9 +201,7 @@ interface OpenseaInterface {
         returns (bool[] memory availableOrders, Execution[] memory executions);
 
     function fulfillBasicOrder_FulfillmentComponent(
-        FulfillmentComponent calldata fulfillmentComponent0,
-        FulfillmentComponent[] calldata fulfillmentComponent1,
-        FulfillmentComponent[][] calldata fulfillmentComponent2
+        FulfillmentComponent calldata fulfillmentComponent0
     ) external payable returns (bool fulfilled);
 
     function fulfillBasicOrder_efficient_6GL6yc(

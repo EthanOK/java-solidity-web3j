@@ -99,12 +99,10 @@ public class OpenseaInterface extends Contract {
         return executeRemoteCallTransaction(function, weiValue);
     }
 
-    public RemoteFunctionCall<TransactionReceipt> fulfillBasicOrder_FulfillmentComponent(FulfillmentComponent fulfillmentComponent0, List<FulfillmentComponent> fulfillmentComponent1, List<FulfillmentComponent> fulfillmentComponent2, BigInteger weiValue) {
+    public RemoteFunctionCall<TransactionReceipt> fulfillBasicOrder_FulfillmentComponent(FulfillmentComponent fulfillmentComponent0, BigInteger weiValue) {
         final Function function = new Function(
                 FUNC_FULFILLBASICORDER_FULFILLMENTCOMPONENT, 
-                Arrays.<Type>asList(fulfillmentComponent0, 
-                new org.web3j.abi.datatypes.DynamicArray<FulfillmentComponent>(FulfillmentComponent.class, fulfillmentComponent1), 
-                new org.web3j.abi.datatypes.DynamicArray<FulfillmentComponent>(FulfillmentComponent.class, fulfillmentComponent2)), 
+                Arrays.<Type>asList(fulfillmentComponent0), 
                 Collections.<TypeReference<?>>emptyList());
         return executeRemoteCallTransaction(function, weiValue);
     }
