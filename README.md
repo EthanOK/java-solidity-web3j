@@ -4,6 +4,6 @@
 
 ### 使用 Web3j 将 Solidity 代码转换为 Java 代码
 
-mvn web3j:generate-sources
+`mvn web3j:generate-sources`
 
 https://github.com/web3j/web3j-maven-plugin
