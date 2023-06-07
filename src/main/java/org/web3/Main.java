@@ -36,7 +36,7 @@ public class Main {
 		String multicallAddressEveryone = "0xA9CfFab86C5c39AB4d345d7Bf527Ffbd0B5c5941";
 		String multicallAddressOwner = "0x342e003e42c4576d50fe1222a2e68bbe51728fa0";
 		String contractAddress = "0x0d3e02768ab63516ab5d386fad462214ca3e6a86";
-		String[] tokenIds = { "1", "15", "10", "1" };
+		String[] tokenIds = { "16", "32" };
 
 		// 只读 任何人
 		// getTokenURI(web3j, multicallAddressEveryone, contractAddress, tokenIds);
@@ -73,7 +73,7 @@ public class Main {
 		//
 		Credentials operator = Credentials.create(privatekeyOperator);
 		String nftexchange = "0x5D0C8b801d2Fd1dEEBB5aDfA89a8609becD01D83";
-		GETTokenURIs.getTokenURI(web3j, operator, nftexchange, contractAddress, tokenIds);
+		GETTokenURIs.getTokenURI(web3j, operator, multicallAddressEveryone, contractAddress, tokenIds);
 
 	}
 
