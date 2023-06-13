@@ -4,11 +4,15 @@ import java.math.BigInteger;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
 import org.web3j.abi.TypeReference;
 import org.web3j.abi.datatypes.Address;
+import org.web3j.abi.datatypes.DynamicArray;
+import org.web3j.abi.datatypes.DynamicStruct;
 import org.web3j.abi.datatypes.Function;
 import org.web3j.abi.datatypes.StaticStruct;
 import org.web3j.abi.datatypes.Type;
+import org.web3j.abi.datatypes.generated.Uint256;
 import org.web3j.crypto.Credentials;
 import org.web3j.protocol.Web3j;
 import org.web3j.protocol.core.RemoteCall;
@@ -29,7 +33,9 @@ import org.web3j.tx.gas.ContractGasProvider;
  */
 @SuppressWarnings("rawtypes")
 public class TestArray extends Contract {
-    public static final String BINARY = "608060405234801561001057600080fd5b5061019f806100206000396000f3fe608060405234801561001057600080fd5b50600436106100415760003560e01c80631f8bb20e14610046578063338eb90b1461005a578063fecceafa14610068575b600080fd5b610058610054366004610079565b5050565b005b6100586100543660046100ee565b610058610076366004610151565b50565b6000806020838503121561008c57600080fd5b823567ffffffffffffffff808211156100a457600080fd5b818501915085601f8301126100b857600080fd5b8135818111156100c757600080fd5b8660208260051b85010111156100dc57600080fd5b60209290920196919550909350505050565b6000806020838503121561010157600080fd5b823567ffffffffffffffff8082111561011957600080fd5b818501915085601f83011261012d57600080fd5b81358181111561013c57600080fd5b8660208260061b85010111156100dc57600080fd5b60006040828403121561016357600080fd5b5091905056fea264697066735822122051eaf6ac55fe4e34f6557cd749345a60d1d21fdd92a1c3310bebc9f4f414e64e64736f6c63430008110033";
+    public static final String BINARY = "608060405234801561001057600080fd5b506101d5806100206000396000f3fe608060405234801561001057600080fd5b506004361061004c5760003560e01c80631f8bb20e14610051578063338eb90b14610065578063deee8a1914610051578063fecceafa14610073575b600080fd5b61006361005f3660046100d0565b5050565b005b61006361005f366004610112565b610063610081366004610187565b50565b60008083601f84011261009657600080fd5b50813567ffffffffffffffff8111156100ae57600080fd5b6020830191508360208260051b85010111156100c957600080fd5b9250929050565b600080602083850312156100e357600080fd5b823567ffffffffffffffff8111156100fa57600080fd5b61010685828601610084565b90969095509350505050565b6000806020838503121561012557600080fd5b823567ffffffffffffffff8082111561013d57600080fd5b818501915085601f83011261015157600080fd5b81358181111561016057600080fd5b8660208260061b850101111561017557600080fd5b60209290920196919550909350505050565b60006040828403121561019957600080fd5b5091905056fea2646970667358221220d15f98656ea3fd872197b600ce7d491bd80260fa4e37673faff57990dd0b819564736f6c63430008110033";
+
+    public static final String FUNC_GET = "get";
 
     public static final String FUNC_SETORDER = "setOrder";
 
@@ -53,6 +59,14 @@ public class TestArray extends Contract {
 
     protected TestArray(String contractAddress, Web3j web3j, TransactionManager transactionManager, ContractGasProvider contractGasProvider) {
         super(BINARY, contractAddress, web3j, transactionManager, contractGasProvider);
+    }
+
+    public RemoteFunctionCall<TransactionReceipt> get(List<Array> param0) {
+        final Function function = new Function(
+                FUNC_GET, 
+                Arrays.<Type>asList(new org.web3j.abi.datatypes.DynamicArray<Array>(Array.class, param0)), 
+                Collections.<TypeReference<?>>emptyList());
+        return executeRemoteCallTransaction(function);
     }
 
     public RemoteFunctionCall<TransactionReceipt> setOrder(Order param0) {
@@ -113,6 +127,22 @@ public class TestArray extends Contract {
     @Deprecated
     public static RemoteCall<TestArray> deploy(Web3j web3j, TransactionManager transactionManager, BigInteger gasPrice, BigInteger gasLimit) {
         return deployRemoteCall(TestArray.class, web3j, transactionManager, gasPrice, gasLimit, BINARY, "");
+    }
+
+    public static class Array extends DynamicStruct {
+        public List<BigInteger> addresss;
+
+        public Array(List<BigInteger> addresss) {
+            super(new org.web3j.abi.datatypes.DynamicArray<org.web3j.abi.datatypes.generated.Uint256>(
+                            org.web3j.abi.datatypes.generated.Uint256.class,
+                            org.web3j.abi.Utils.typeMap(addresss, org.web3j.abi.datatypes.generated.Uint256.class)));
+            this.addresss = addresss;
+        }
+
+        public Array(DynamicArray<Uint256> addresss) {
+            super(addresss);
+            this.addresss = addresss.getValue().stream().map(v -> v.getValue()).collect(Collectors.toList());
+        }
     }
 
     public static class Order extends StaticStruct {

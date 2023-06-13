@@ -6,6 +6,9 @@ contract TestArray {
         address from;
         address to;
     }
+    struct Array {
+        uint256[] addresss;
+    }
 
     function setOrder(Order calldata) external {}
 
@@ -13,5 +16,5 @@ contract TestArray {
 
     function setOrderss(Order[][] calldata) external {}
 
-    // function get(uint256[][] calldata) external {}
+    function get(Array[] calldata) external {}
 }
