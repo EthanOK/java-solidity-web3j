@@ -13,7 +13,6 @@ interface YunGouInterface {
         ERC1155_TO_ERC20
     }
 
-    // buy it now
     struct BasicOrderParameters {
         OrderType orderType;
         address payable offerer;
@@ -43,16 +42,30 @@ interface YunGouInterface {
         bytes systemSignature;
     }
 
-    event Exchange(
+    struct OrderStatus {
+        // Validate
+        bool isValidated;
+        // Cancel
+        bool isCancelled;
+        // Total quantity sold
+        uint120 soldTotal;
+        // Total quantity on shelves
+        uint120 shelvesTotal;
+    }
+
+    event OrderFulfilled(
+        bytes32 orderHash,
         address indexed offerer,
         address indexed offerToken,
-        uint256 indexed offerTokenId,
-        address buyer,
+        uint256 offerTokenId,
+        address indexed buyer,
         uint256 buyAmount,
         uint256 totalPayment,
         uint256 totalRoyaltyFee,
         uint256 totalPlatformFee
     );
+
+    event OrderCancelled(bytes32 orderHash, address indexed account);
 
     function setBeneficiary(address payable newBeneficiary) external;
 
@@ -74,6 +87,10 @@ interface YunGouInterface {
         address receiver
     ) external payable returns (bool);
 
+    function cancel(
+        BasicOrderParameters[] calldata ordersParameters
+    ) external returns (bool cancelled);
+
     function name() external pure returns (string memory contractName);
 
     function information()
@@ -84,4 +101,8 @@ interface YunGouInterface {
     function getOrderHash(
         BasicOrderParameters calldata orderParameters
     ) external view returns (bytes32 orderHash);
+
+    function getOrderStatus(
+        bytes32 orderHash
+    ) external view returns (OrderStatus memory _orderStatus);
 }

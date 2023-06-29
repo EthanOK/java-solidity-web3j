@@ -8,6 +8,7 @@ import java.util.stream.Collectors;
 import org.web3j.abi.TypeReference;
 import org.web3j.abi.datatypes.Address;
 import org.web3j.abi.datatypes.DynamicArray;
+import org.web3j.abi.datatypes.DynamicBytes;
 import org.web3j.abi.datatypes.DynamicStruct;
 import org.web3j.abi.datatypes.Function;
 import org.web3j.abi.datatypes.StaticStruct;
@@ -33,7 +34,9 @@ import org.web3j.tx.gas.ContractGasProvider;
  */
 @SuppressWarnings("rawtypes")
 public class TestArray extends Contract {
-    public static final String BINARY = "608060405234801561001057600080fd5b506101d5806100206000396000f3fe608060405234801561001057600080fd5b506004361061004c5760003560e01c80631f8bb20e14610051578063338eb90b14610065578063deee8a1914610051578063fecceafa14610073575b600080fd5b61006361005f3660046100d0565b5050565b005b61006361005f366004610112565b610063610081366004610187565b50565b60008083601f84011261009657600080fd5b50813567ffffffffffffffff8111156100ae57600080fd5b6020830191508360208260051b85010111156100c957600080fd5b9250929050565b600080602083850312156100e357600080fd5b823567ffffffffffffffff8111156100fa57600080fd5b61010685828601610084565b90969095509350505050565b6000806020838503121561012557600080fd5b823567ffffffffffffffff8082111561013d57600080fd5b818501915085601f83011261015157600080fd5b81358181111561016057600080fd5b8660208260061b850101111561017557600080fd5b60209290920196919550909350505050565b60006040828403121561019957600080fd5b5091905056fea2646970667358221220d15f98656ea3fd872197b600ce7d491bd80260fa4e37673faff57990dd0b819564736f6c63430008110033";
+    public static final String BINARY = "608060405234801561000f575f80fd5b506102498061001d5f395ff3fe608060405260043610610049575f3560e01c80631f8bb20e1461004d578063338eb90b1461006d578063b7d52a251461004d578063b858183f14610087578063fecceafa146100ac575b5f80fd5b348015610058575f80fd5b5061006b610067366004610111565b5050565b005b348015610078575f80fd5b5061006b610067366004610150565b61009a6100953660046101bf565b505f90565b60405190815260200160405180910390f35b3480156100b7575f80fd5b5061006b6100c63660046101fd565b50565b5f8083601f8401126100d9575f80fd5b50813567ffffffffffffffff8111156100f0575f80fd5b6020830191508360208260051b850101111561010a575f80fd5b9250929050565b5f8060208385031215610122575f80fd5b823567ffffffffffffffff811115610138575f80fd5b610144858286016100c9565b90969095509350505050565b5f8060208385031215610161575f80fd5b823567ffffffffffffffff80821115610178575f80fd5b818501915085601f83011261018b575f80fd5b813581811115610199575f80fd5b8660208260061b85010111156101ad575f80fd5b60209290920196919550909350505050565b5f602082840312156101cf575f80fd5b813567ffffffffffffffff8111156101e5575f80fd5b8201608081850312156101f6575f80fd5b9392505050565b5f6040828403121561020d575f80fd5b5091905056fea2646970667358221220c2ca10e8c81646d615d162d4b13c00299fea7aa624315d28b589c9c682a8909164736f6c63430008140033";
+
+    public static final String FUNC_EXACTINPUT = "exactInput";
 
     public static final String FUNC_GET = "get";
 
@@ -59,6 +62,14 @@ public class TestArray extends Contract {
 
     protected TestArray(String contractAddress, Web3j web3j, TransactionManager transactionManager, ContractGasProvider contractGasProvider) {
         super(BINARY, contractAddress, web3j, transactionManager, contractGasProvider);
+    }
+
+    public RemoteFunctionCall<TransactionReceipt> exactInput(ExactInputParams params, BigInteger weiValue) {
+        final Function function = new Function(
+                FUNC_EXACTINPUT, 
+                Arrays.<Type>asList(params), 
+                Collections.<TypeReference<?>>emptyList());
+        return executeRemoteCallTransaction(function, weiValue);
     }
 
     public RemoteFunctionCall<TransactionReceipt> get(List<Array> param0) {
@@ -129,19 +140,53 @@ public class TestArray extends Contract {
         return deployRemoteCall(TestArray.class, web3j, transactionManager, gasPrice, gasLimit, BINARY, "");
     }
 
+    public static class ExactInputParams extends DynamicStruct {
+        public byte[] path;
+
+        public String recipient;
+
+        public BigInteger amountIn;
+
+        public BigInteger amountOutMinimum;
+
+        public ExactInputParams(byte[] path, String recipient, BigInteger amountIn, BigInteger amountOutMinimum) {
+            super(new org.web3j.abi.datatypes.DynamicBytes(path), 
+                    new org.web3j.abi.datatypes.Address(160, recipient), 
+                    new org.web3j.abi.datatypes.generated.Uint256(amountIn), 
+                    new org.web3j.abi.datatypes.generated.Uint256(amountOutMinimum));
+            this.path = path;
+            this.recipient = recipient;
+            this.amountIn = amountIn;
+            this.amountOutMinimum = amountOutMinimum;
+        }
+
+        public ExactInputParams(DynamicBytes path, Address recipient, Uint256 amountIn, Uint256 amountOutMinimum) {
+            super(path, recipient, amountIn, amountOutMinimum);
+            this.path = path.getValue();
+            this.recipient = recipient.getValue();
+            this.amountIn = amountIn.getValue();
+            this.amountOutMinimum = amountOutMinimum.getValue();
+        }
+    }
+
     public static class Array extends DynamicStruct {
         public List<BigInteger> addresss;
 
-        public Array(List<BigInteger> addresss) {
+        public String account;
+
+        public Array(List<BigInteger> addresss, String account) {
             super(new org.web3j.abi.datatypes.DynamicArray<org.web3j.abi.datatypes.generated.Uint256>(
                             org.web3j.abi.datatypes.generated.Uint256.class,
-                            org.web3j.abi.Utils.typeMap(addresss, org.web3j.abi.datatypes.generated.Uint256.class)));
+                            org.web3j.abi.Utils.typeMap(addresss, org.web3j.abi.datatypes.generated.Uint256.class)), 
+                    new org.web3j.abi.datatypes.Address(160, account));
             this.addresss = addresss;
+            this.account = account;
         }
 
-        public Array(DynamicArray<Uint256> addresss) {
-            super(addresss);
+        public Array(DynamicArray<Uint256> addresss, Address account) {
+            super(addresss, account);
             this.addresss = addresss.getValue().stream().map(v -> v.getValue()).collect(Collectors.toList());
+            this.account = account.getValue();
         }
     }
 

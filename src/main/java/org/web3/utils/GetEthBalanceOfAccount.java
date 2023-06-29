@@ -10,6 +10,7 @@ import org.web3j.protocol.Web3j;
 import org.web3j.protocol.core.DefaultBlockParameterName;
 import org.web3j.protocol.core.Request;
 import org.web3j.protocol.core.methods.response.EthBlockNumber;
+import org.web3j.protocol.core.methods.response.EthGasPrice;
 import org.web3j.protocol.core.methods.response.EthGetBalance;
 import org.web3j.protocol.http.HttpService;
 import org.web3j.utils.Convert;
@@ -19,11 +20,11 @@ import io.github.cdimascio.dotenv.Dotenv;
 
 public class GetEthBalanceOfAccount {
     static Dotenv dotenv = Dotenv.load();
-    static String RPC = dotenv.get("ALCHEMY_GOERLI_URL");
+    static String RPC = dotenv.get("ETH_MAIN_URL");
 
     public static void main(String[] args) throws InterruptedException, ExecutionException, IOException {
         Web3j web3j = Web3j
-                .build(new HttpService("https://polygon-rpc.com/"));
+                .build(new HttpService(RPC));
         EthBlockNumber number = web3j.ethBlockNumber().send();
 
         System.out.println(number.getBlockNumber());
@@ -33,6 +34,11 @@ public class GetEthBalanceOfAccount {
         System.out.println(ethGetBalance.getBalance());
         BigDecimal res = Convert.fromWei(ethGetBalance.getBalance().toString(), Unit.ETHER);
         System.out.println(res);
+
+        EthGasPrice gasPrice = web3j.ethGasPrice().send();
+        BigInteger gasPriceWei = gasPrice.getGasPrice();
+        BigDecimal gasPriceGwei = Convert.fromWei(gasPriceWei.toString(), Convert.Unit.GWEI);
+        System.out.println("当前 gas 价格：" + gasPriceGwei + " Gwei");
 
     }
 

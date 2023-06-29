@@ -10,6 +10,7 @@ import java.util.concurrent.Callable;
 import org.web3j.abi.EventEncoder;
 import org.web3j.abi.TypeReference;
 import org.web3j.abi.datatypes.Address;
+import org.web3j.abi.datatypes.Bool;
 import org.web3j.abi.datatypes.DynamicBytes;
 import org.web3j.abi.datatypes.DynamicStruct;
 import org.web3j.abi.datatypes.Event;
@@ -18,6 +19,7 @@ import org.web3j.abi.datatypes.StaticStruct;
 import org.web3j.abi.datatypes.Type;
 import org.web3j.abi.datatypes.Utf8String;
 import org.web3j.abi.datatypes.generated.Bytes32;
+import org.web3j.abi.datatypes.generated.Uint120;
 import org.web3j.abi.datatypes.generated.Uint256;
 import org.web3j.abi.datatypes.generated.Uint8;
 import org.web3j.crypto.Credentials;
@@ -49,11 +51,15 @@ public class YunGouInterface extends Contract {
 
     public static final String FUNC_BATCHEXCUTEWITHETH = "batchExcuteWithETH";
 
+    public static final String FUNC_CANCEL = "cancel";
+
     public static final String FUNC_EXCUTEWITHETH = "excuteWithETH";
 
     public static final String FUNC_GETBENEFICIARY = "getBeneficiary";
 
     public static final String FUNC_GETORDERHASH = "getOrderHash";
+
+    public static final String FUNC_GETORDERSTATUS = "getOrderStatus";
 
     public static final String FUNC_GETSYSTEMVERIFIER = "getSystemVerifier";
 
@@ -67,8 +73,12 @@ public class YunGouInterface extends Contract {
 
     public static final String FUNC_SETSYSTEMVERIFIER = "setSystemVerifier";
 
-    public static final Event EXCHANGE_EVENT = new Event("Exchange", 
-            Arrays.<TypeReference<?>>asList(new TypeReference<Address>(true) {}, new TypeReference<Address>(true) {}, new TypeReference<Uint256>(true) {}, new TypeReference<Address>() {}, new TypeReference<Uint256>() {}, new TypeReference<Uint256>() {}, new TypeReference<Uint256>() {}, new TypeReference<Uint256>() {}));
+    public static final Event ORDERCANCELLED_EVENT = new Event("OrderCancelled", 
+            Arrays.<TypeReference<?>>asList(new TypeReference<Bytes32>() {}, new TypeReference<Address>(true) {}));
+    ;
+
+    public static final Event ORDERFULFILLED_EVENT = new Event("OrderFulfilled", 
+            Arrays.<TypeReference<?>>asList(new TypeReference<Bytes32>() {}, new TypeReference<Address>(true) {}, new TypeReference<Address>(true) {}, new TypeReference<Uint256>() {}, new TypeReference<Address>(true) {}, new TypeReference<Uint256>() {}, new TypeReference<Uint256>() {}, new TypeReference<Uint256>() {}, new TypeReference<Uint256>() {}));
     ;
 
     @Deprecated
@@ -89,48 +99,82 @@ public class YunGouInterface extends Contract {
         super(BINARY, contractAddress, web3j, transactionManager, contractGasProvider);
     }
 
-    public static List<ExchangeEventResponse> getExchangeEvents(TransactionReceipt transactionReceipt) {
-        List<Contract.EventValuesWithLog> valueList = staticExtractEventParametersWithLog(EXCHANGE_EVENT, transactionReceipt);
-        ArrayList<ExchangeEventResponse> responses = new ArrayList<ExchangeEventResponse>(valueList.size());
+    public static List<OrderCancelledEventResponse> getOrderCancelledEvents(TransactionReceipt transactionReceipt) {
+        List<Contract.EventValuesWithLog> valueList = staticExtractEventParametersWithLog(ORDERCANCELLED_EVENT, transactionReceipt);
+        ArrayList<OrderCancelledEventResponse> responses = new ArrayList<OrderCancelledEventResponse>(valueList.size());
         for (Contract.EventValuesWithLog eventValues : valueList) {
-            ExchangeEventResponse typedResponse = new ExchangeEventResponse();
+            OrderCancelledEventResponse typedResponse = new OrderCancelledEventResponse();
             typedResponse.log = eventValues.getLog();
-            typedResponse.offerer = (String) eventValues.getIndexedValues().get(0).getValue();
-            typedResponse.offerToken = (String) eventValues.getIndexedValues().get(1).getValue();
-            typedResponse.offerTokenId = (BigInteger) eventValues.getIndexedValues().get(2).getValue();
-            typedResponse.buyer = (String) eventValues.getNonIndexedValues().get(0).getValue();
-            typedResponse.buyAmount = (BigInteger) eventValues.getNonIndexedValues().get(1).getValue();
-            typedResponse.totalPayment = (BigInteger) eventValues.getNonIndexedValues().get(2).getValue();
-            typedResponse.totalRoyaltyFee = (BigInteger) eventValues.getNonIndexedValues().get(3).getValue();
-            typedResponse.totalPlatformFee = (BigInteger) eventValues.getNonIndexedValues().get(4).getValue();
+            typedResponse.account = (String) eventValues.getIndexedValues().get(0).getValue();
+            typedResponse.orderHash = (byte[]) eventValues.getNonIndexedValues().get(0).getValue();
             responses.add(typedResponse);
         }
         return responses;
     }
 
-    public static ExchangeEventResponse getExchangeEventFromLog(Log log) {
-        Contract.EventValuesWithLog eventValues = staticExtractEventParametersWithLog(EXCHANGE_EVENT, log);
-        ExchangeEventResponse typedResponse = new ExchangeEventResponse();
+    public static OrderCancelledEventResponse getOrderCancelledEventFromLog(Log log) {
+        Contract.EventValuesWithLog eventValues = staticExtractEventParametersWithLog(ORDERCANCELLED_EVENT, log);
+        OrderCancelledEventResponse typedResponse = new OrderCancelledEventResponse();
         typedResponse.log = log;
-        typedResponse.offerer = (String) eventValues.getIndexedValues().get(0).getValue();
-        typedResponse.offerToken = (String) eventValues.getIndexedValues().get(1).getValue();
-        typedResponse.offerTokenId = (BigInteger) eventValues.getIndexedValues().get(2).getValue();
-        typedResponse.buyer = (String) eventValues.getNonIndexedValues().get(0).getValue();
-        typedResponse.buyAmount = (BigInteger) eventValues.getNonIndexedValues().get(1).getValue();
-        typedResponse.totalPayment = (BigInteger) eventValues.getNonIndexedValues().get(2).getValue();
-        typedResponse.totalRoyaltyFee = (BigInteger) eventValues.getNonIndexedValues().get(3).getValue();
-        typedResponse.totalPlatformFee = (BigInteger) eventValues.getNonIndexedValues().get(4).getValue();
+        typedResponse.account = (String) eventValues.getIndexedValues().get(0).getValue();
+        typedResponse.orderHash = (byte[]) eventValues.getNonIndexedValues().get(0).getValue();
         return typedResponse;
     }
 
-    public Flowable<ExchangeEventResponse> exchangeEventFlowable(EthFilter filter) {
-        return web3j.ethLogFlowable(filter).map(log -> getExchangeEventFromLog(log));
+    public Flowable<OrderCancelledEventResponse> orderCancelledEventFlowable(EthFilter filter) {
+        return web3j.ethLogFlowable(filter).map(log -> getOrderCancelledEventFromLog(log));
     }
 
-    public Flowable<ExchangeEventResponse> exchangeEventFlowable(DefaultBlockParameter startBlock, DefaultBlockParameter endBlock) {
+    public Flowable<OrderCancelledEventResponse> orderCancelledEventFlowable(DefaultBlockParameter startBlock, DefaultBlockParameter endBlock) {
         EthFilter filter = new EthFilter(startBlock, endBlock, getContractAddress());
-        filter.addSingleTopic(EventEncoder.encode(EXCHANGE_EVENT));
-        return exchangeEventFlowable(filter);
+        filter.addSingleTopic(EventEncoder.encode(ORDERCANCELLED_EVENT));
+        return orderCancelledEventFlowable(filter);
+    }
+
+    public static List<OrderFulfilledEventResponse> getOrderFulfilledEvents(TransactionReceipt transactionReceipt) {
+        List<Contract.EventValuesWithLog> valueList = staticExtractEventParametersWithLog(ORDERFULFILLED_EVENT, transactionReceipt);
+        ArrayList<OrderFulfilledEventResponse> responses = new ArrayList<OrderFulfilledEventResponse>(valueList.size());
+        for (Contract.EventValuesWithLog eventValues : valueList) {
+            OrderFulfilledEventResponse typedResponse = new OrderFulfilledEventResponse();
+            typedResponse.log = eventValues.getLog();
+            typedResponse.offerer = (String) eventValues.getIndexedValues().get(0).getValue();
+            typedResponse.offerToken = (String) eventValues.getIndexedValues().get(1).getValue();
+            typedResponse.buyer = (String) eventValues.getIndexedValues().get(2).getValue();
+            typedResponse.orderHash = (byte[]) eventValues.getNonIndexedValues().get(0).getValue();
+            typedResponse.offerTokenId = (BigInteger) eventValues.getNonIndexedValues().get(1).getValue();
+            typedResponse.buyAmount = (BigInteger) eventValues.getNonIndexedValues().get(2).getValue();
+            typedResponse.totalPayment = (BigInteger) eventValues.getNonIndexedValues().get(3).getValue();
+            typedResponse.totalRoyaltyFee = (BigInteger) eventValues.getNonIndexedValues().get(4).getValue();
+            typedResponse.totalPlatformFee = (BigInteger) eventValues.getNonIndexedValues().get(5).getValue();
+            responses.add(typedResponse);
+        }
+        return responses;
+    }
+
+    public static OrderFulfilledEventResponse getOrderFulfilledEventFromLog(Log log) {
+        Contract.EventValuesWithLog eventValues = staticExtractEventParametersWithLog(ORDERFULFILLED_EVENT, log);
+        OrderFulfilledEventResponse typedResponse = new OrderFulfilledEventResponse();
+        typedResponse.log = log;
+        typedResponse.offerer = (String) eventValues.getIndexedValues().get(0).getValue();
+        typedResponse.offerToken = (String) eventValues.getIndexedValues().get(1).getValue();
+        typedResponse.buyer = (String) eventValues.getIndexedValues().get(2).getValue();
+        typedResponse.orderHash = (byte[]) eventValues.getNonIndexedValues().get(0).getValue();
+        typedResponse.offerTokenId = (BigInteger) eventValues.getNonIndexedValues().get(1).getValue();
+        typedResponse.buyAmount = (BigInteger) eventValues.getNonIndexedValues().get(2).getValue();
+        typedResponse.totalPayment = (BigInteger) eventValues.getNonIndexedValues().get(3).getValue();
+        typedResponse.totalRoyaltyFee = (BigInteger) eventValues.getNonIndexedValues().get(4).getValue();
+        typedResponse.totalPlatformFee = (BigInteger) eventValues.getNonIndexedValues().get(5).getValue();
+        return typedResponse;
+    }
+
+    public Flowable<OrderFulfilledEventResponse> orderFulfilledEventFlowable(EthFilter filter) {
+        return web3j.ethLogFlowable(filter).map(log -> getOrderFulfilledEventFromLog(log));
+    }
+
+    public Flowable<OrderFulfilledEventResponse> orderFulfilledEventFlowable(DefaultBlockParameter startBlock, DefaultBlockParameter endBlock) {
+        EthFilter filter = new EthFilter(startBlock, endBlock, getContractAddress());
+        filter.addSingleTopic(EventEncoder.encode(ORDERFULFILLED_EVENT));
+        return orderFulfilledEventFlowable(filter);
     }
 
     public RemoteFunctionCall<TransactionReceipt> batchExcuteWithETH(List<BasicOrder> orders, String receiver, BigInteger weiValue) {
@@ -140,6 +184,14 @@ public class YunGouInterface extends Contract {
                 new org.web3j.abi.datatypes.Address(160, receiver)), 
                 Collections.<TypeReference<?>>emptyList());
         return executeRemoteCallTransaction(function, weiValue);
+    }
+
+    public RemoteFunctionCall<TransactionReceipt> cancel(List<BasicOrderParameters> ordersParameters) {
+        final Function function = new Function(
+                FUNC_CANCEL, 
+                Arrays.<Type>asList(new org.web3j.abi.datatypes.DynamicArray<BasicOrderParameters>(BasicOrderParameters.class, ordersParameters)), 
+                Collections.<TypeReference<?>>emptyList());
+        return executeRemoteCallTransaction(function);
     }
 
     public RemoteFunctionCall<TransactionReceipt> excuteWithETH(BasicOrder order, String receiver, BigInteger weiValue) {
@@ -163,6 +215,13 @@ public class YunGouInterface extends Contract {
                 Arrays.<Type>asList(orderParameters), 
                 Arrays.<TypeReference<?>>asList(new TypeReference<Bytes32>() {}));
         return executeRemoteCallSingleValueReturn(function, byte[].class);
+    }
+
+    public RemoteFunctionCall<OrderStatus> getOrderStatus(byte[] orderHash) {
+        final Function function = new Function(FUNC_GETORDERSTATUS, 
+                Arrays.<Type>asList(new org.web3j.abi.datatypes.generated.Bytes32(orderHash)), 
+                Arrays.<TypeReference<?>>asList(new TypeReference<OrderStatus>() {}));
+        return executeRemoteCallSingleValueReturn(function, OrderStatus.class);
     }
 
     public RemoteFunctionCall<String> getSystemVerifier() {
@@ -334,6 +393,35 @@ public class YunGouInterface extends Contract {
         }
     }
 
+    public static class OrderStatus extends StaticStruct {
+        public Boolean isValidated;
+
+        public Boolean isCancelled;
+
+        public BigInteger soldTotal;
+
+        public BigInteger shelvesTotal;
+
+        public OrderStatus(Boolean isValidated, Boolean isCancelled, BigInteger soldTotal, BigInteger shelvesTotal) {
+            super(new org.web3j.abi.datatypes.Bool(isValidated), 
+                    new org.web3j.abi.datatypes.Bool(isCancelled), 
+                    new org.web3j.abi.datatypes.generated.Uint120(soldTotal), 
+                    new org.web3j.abi.datatypes.generated.Uint120(shelvesTotal));
+            this.isValidated = isValidated;
+            this.isCancelled = isCancelled;
+            this.soldTotal = soldTotal;
+            this.shelvesTotal = shelvesTotal;
+        }
+
+        public OrderStatus(Bool isValidated, Bool isCancelled, Uint120 soldTotal, Uint120 shelvesTotal) {
+            super(isValidated, isCancelled, soldTotal, shelvesTotal);
+            this.isValidated = isValidated.getValue();
+            this.isCancelled = isCancelled.getValue();
+            this.soldTotal = soldTotal.getValue();
+            this.shelvesTotal = shelvesTotal.getValue();
+        }
+    }
+
     public static class BasicOrder extends DynamicStruct {
         public BasicOrderParameters parameters;
 
@@ -388,14 +476,22 @@ public class YunGouInterface extends Contract {
         }
     }
 
-    public static class ExchangeEventResponse extends BaseEventResponse {
+    public static class OrderCancelledEventResponse extends BaseEventResponse {
+        public String account;
+
+        public byte[] orderHash;
+    }
+
+    public static class OrderFulfilledEventResponse extends BaseEventResponse {
         public String offerer;
 
         public String offerToken;
 
-        public BigInteger offerTokenId;
-
         public String buyer;
+
+        public byte[] orderHash;
+
+        public BigInteger offerTokenId;
 
         public BigInteger buyAmount;
 

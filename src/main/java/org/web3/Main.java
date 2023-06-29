@@ -39,7 +39,7 @@ public class Main {
 		String[] tokenIds = { "16", "32" };
 
 		// 只读 任何人
-		// getTokenURI(web3j, multicallAddressEveryone, contractAddress, tokenIds);
+		getTokenURI(web3j, multicallAddressEveryone, contractAddress, tokenIds);
 
 		// 只读 only owner
 		// getTokenURI(web3j, credentials, multicallAddressOwner, contractAddress,
