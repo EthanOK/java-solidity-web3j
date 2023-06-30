@@ -94,14 +94,15 @@ public class YunGouSystemSignature {
         // totalAfterTaxIncome,
         // totalPayment,
         // expiryDate
-        String orderSignatureHex = "0x5fb2a6a71245a523fb2b1bdc339d203f9c085fb20fbb07b1507749505b4cd3934655f7ed328077c788f89caad077b1d87928b873eed7271614e6a236f0a9be4b1b";
+        String orderSignatureHex = "0x0bee797cf77e73f4ea1b7e99ca66739f9c1565895c5b29367b2292c619d87ac019cb1ed6fe6a43a91794b01390f3f3457f3166787a0b7b69a72ac3bdc725a7cf1c";
         DynamicBytes orderSignature = new DynamicBytes(Numeric.hexStringToByteArray(orderSignatureHex));
+
         Uint256 buyAmount = new Uint256(new BigInteger("1"));
-        Uint256 totalRoyaltyFee = new Uint256(new BigInteger("250000000000000"));
-        Uint256 totalPlatformFee = new Uint256(new BigInteger("250000000000000"));
-        Uint256 totalAfterTaxIncome = new Uint256(new BigInteger("9500000000000000"));
-        Uint256 totalPayment = new Uint256(new BigInteger("10000000000000000"));
-        Uint256 expiryDate = new Uint256(new BigInteger("1687996400"));
+        Uint256 totalRoyaltyFee = new Uint256(new BigInteger("1600000000000000"));
+        Uint256 totalPlatformFee = new Uint256(new BigInteger("1600000000000000"));
+        Uint256 totalAfterTaxIncome = new Uint256(new BigInteger("60800000000000000"));
+        Uint256 totalPayment = new Uint256(new BigInteger("64000000000000000"));
+        Uint256 expiryDate = new Uint256(new BigInteger("1688047530"));
 
         List<Type> lists = Arrays.asList(
                 orderSignature,
@@ -113,7 +114,7 @@ public class YunGouSystemSignature {
                 expiryDate);
         String encodeData = FunctionEncoder.encodeConstructor(lists);
         String encodeDataHex = "0x" + encodeData;
-
+        System.out.println(encodeDataHex);
         String encodeDataHash = Hash.sha3(encodeDataHex);
         // System.out.println(encodeDataHash);
         return encodeDataHash;
