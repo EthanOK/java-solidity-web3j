@@ -183,6 +183,19 @@ interface OpenseaInterface {
         address payable recipient;
     }
 
+    /**
+     * @dev Orders require a signature in addition to the other order parameters.
+     */
+    struct Order {
+        OrderParameters parameters;
+        bytes signature;
+    }
+
+    function fulfillOrder(
+        Order calldata order,
+        bytes32 fulfillerConduitKey
+    ) external payable returns (bool fulfilled);
+
     function fulfillBasicOrder(
         BasicOrderParameters calldata parameters
     ) external payable returns (bool fulfilled);
