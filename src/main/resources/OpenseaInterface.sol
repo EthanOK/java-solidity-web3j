@@ -129,21 +129,6 @@ interface OpenseaInterface {
         bytes extraData;
     }
 
-    struct OrderParameters {
-        address offerer; // 0x00
-        address zone; // 0x20
-        OfferItem[] offer; // 0x40
-        ConsiderationItem[] consideration; // 0x60
-        OrderType orderType; // 0x80
-        uint256 startTime; // 0xa0
-        uint256 endTime; // 0xc0
-        bytes32 zoneHash; // 0xe0
-        uint256 salt; // 0x100
-        bytes32 conduitKey; // 0x120
-        uint256 totalOriginalConsiderationItems; // 0x140
-        // offer.length                          // 0x160
-    }
-
     struct OfferItem {
         ItemType itemType;
         address token;
@@ -186,6 +171,20 @@ interface OpenseaInterface {
     /**
      * @dev Orders require a signature in addition to the other order parameters.
      */
+    struct OrderParameters {
+        address offerer; // 0x00
+        address zone; // 0x20
+        OfferItem[] offer; // 0x40
+        ConsiderationItem[] consideration; // 0x60
+        OrderType orderType; // 0x80
+        uint256 startTime; // 0xa0
+        uint256 endTime; // 0xc0
+        bytes32 zoneHash; // 0xe0
+        uint256 salt; // 0x100
+        bytes32 conduitKey; // 0x120
+        uint256 totalOriginalConsiderationItems; // 0x140
+        // offer.length                          // 0x160
+    }
     struct Order {
         OrderParameters parameters;
         bytes signature;
