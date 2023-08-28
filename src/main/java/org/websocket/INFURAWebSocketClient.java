@@ -6,7 +6,6 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.Map;
 import java.math.BigInteger;
 import org.java_websocket.client.WebSocketClient;
@@ -50,6 +49,7 @@ public class INFURAWebSocketClient extends WebSocketClient {
 
     @Override
     public void onMessage(String message) {
+        // handleMessage
         handleMessage(message);
 
     }
