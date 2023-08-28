@@ -20,24 +20,23 @@ import org.web3j.utils.EnsUtils;
 import org.web3j.utils.Numeric;
 import io.github.cdimascio.dotenv.Dotenv;
 
-public class INFURAWebSocketClient extends WebSocketClient {
+public class AlchemyWebSocketClient extends WebSocketClient {
     static Dotenv dotenv = Dotenv.load();
-    static String INFURA_WSS_MAIN = dotenv.get("INFURA_WSS_MAIN");
+    static String ALCHEMY_WSS_MAIN = dotenv.get("ALCHEMY_WSS_MAIN");
     static Connection connection = ConncetDB.getConnect();
-    static boolean isConnected = false;
     static final int RECONNECT_INTERVAL = 1000; // 初始重连间隔
     static String subscribeRequest = "{\"jsonrpc\":\"2.0\",\"id\":1,\"method\":\"eth_subscribe\",\"params\":[\"logs\", {\"topics\":[\"0xddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef\"]}]}";
     private static WebSocketClient client;
 
-    public INFURAWebSocketClient(URI serverUri, Draft draft) {
+    public AlchemyWebSocketClient(URI serverUri, Draft draft) {
         super(serverUri, draft);
     }
 
-    public INFURAWebSocketClient(URI serverURI) {
+    public AlchemyWebSocketClient(URI serverURI) {
         super(serverURI);
     }
 
-    public INFURAWebSocketClient(URI serverUri, Map<String, String> httpHeaders) {
+    public AlchemyWebSocketClient(URI serverUri, Map<String, String> httpHeaders) {
         super(serverUri, httpHeaders);
     }
 
@@ -46,11 +45,61 @@ public class INFURAWebSocketClient extends WebSocketClient {
 
         System.out.println("opened connection");
         send(subscribeRequest);
-        isConnected = true;
+
     }
 
     @Override
     public void onMessage(String message) {
+        // System.out.println(message);
+        handleMessage(message);
+    }
+
+    @Override
+    public void onClose(int code, String reason, boolean remote) {
+        // The close codes are documented in class org.java_websocket.framing.CloseFrame
+        System.out.println(
+                "Connection closed by " + (remote ? "remote peer" : "us") + " Code: " + code + " Reason: "
+                        + reason);
+
+    }
+
+    @Override
+    public void onError(Exception ex) {
+        ex.printStackTrace();
+        // if the error is fatal then onClose will be called additionally
+    }
+
+    public static void main(String[] args) throws URISyntaxException {
+        try {
+            client = new AlchemyWebSocketClient(new URI(ALCHEMY_WSS_MAIN));
+            client.connect();
+            Thread.sleep(1000);
+        } catch (Exception e) {
+            // TODO: handle exception
+            e.printStackTrace();
+        }
+        while (true) {
+            if (client.isClosed()) {
+                System.out.println("Reconnecting to INFURA...");
+                reconnectToINFURA();
+            }
+            try {
+                Thread.sleep(1000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+
+    }
+
+    private static void reconnectToINFURA() throws URISyntaxException {
+        System.out.println("isClosed: " + client.isClosed());
+        client.close();
+        client = new AlchemyWebSocketClient(new URI(ALCHEMY_WSS_MAIN));
+        client.connect();
+    }
+
+    private void handleMessage(String message) {
         // String 转 Json
         JSONObject json = new JSONObject(message);
 
@@ -118,51 +167,6 @@ public class INFURAWebSocketClient extends WebSocketClient {
 
         }
 
-    }
-
-    @Override
-    public void onClose(int code, String reason, boolean remote) {
-        // The close codes are documented in class org.java_websocket.framing.CloseFrame
-        System.out.println(
-                "Connection closed by " + (remote ? "remote peer" : "us") + " Code: " + code + " Reason: "
-                        + reason);
-        isConnected = false;
-    }
-
-    @Override
-    public void onError(Exception ex) {
-        ex.printStackTrace();
-        // if the error is fatal then onClose will be called additionally
-    }
-
-    public static void main(String[] args) throws URISyntaxException {
-        try {
-            client = new INFURAWebSocketClient(new URI(INFURA_WSS_MAIN));
-            client.connect();
-            Thread.sleep(1000);
-        } catch (Exception e) {
-            // TODO: handle exception
-            e.printStackTrace();
-        }
-        while (true) {
-            if (client.isClosed()) {
-                System.out.println("Reconnecting to INFURA...");
-                reconnectToINFURA();
-            }
-            try {
-                Thread.sleep(1000);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-        }
-
-    }
-
-    private static void reconnectToINFURA() throws URISyntaxException {
-        System.out.println("isClosed: " + client.isClosed());
-        client.close();
-        client = new INFURAWebSocketClient(new URI(INFURA_WSS_MAIN));
-        client.connect();
     }
 
 }
