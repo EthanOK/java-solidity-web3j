@@ -109,10 +109,10 @@ public class INFURAWebSocketClient extends WebSocketClient {
         client.close();
         client = new INFURAWebSocketClient(new URI(INFURA_WSS_MAIN));
         client.connect();
-        Thread.sleep(5000);
+        Thread.sleep(6000);
         // 处理中断的区块数据
         PostTransferEventsInRange.postTransferEventsInRange(lastBlockNumber.toString(),
-                lastBlockNumber.add(new BigInteger("1")).toString());
+                lastBlockNumber.add(new BigInteger("2")).toString());
 
     }
 

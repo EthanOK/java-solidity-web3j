@@ -32,7 +32,7 @@ public class PostTransferEventsInRange {
     static Connection connection = ConncetDB.getConnect();
 
     public static void main(String[] args) {
-        postTransferEventsInRange("18017203", "18017204");
+        postTransferEventsInRange("18017459", "18017461");
     }
 
     public static void postTransferEventsInRange(String fromBlock, String toBlock) {
