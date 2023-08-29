@@ -147,6 +147,7 @@ public class INFURAWebSocketClient extends WebSocketClient {
 
                     lastBlockNumber = blockNumberBig;
 
+                    // TODO: check data of on sale
                     try {
 
                         String encodeData = FunctionEncoder

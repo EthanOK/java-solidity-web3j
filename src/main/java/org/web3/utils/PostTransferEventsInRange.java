@@ -110,6 +110,7 @@ public class PostTransferEventsInRange {
 
                     BigInteger tokenIdBig = Numeric.toBigInt(tokenId);
 
+                    // TODO: check data of on sale
                     try {
                         String encodeData = FunctionEncoder
                                 .encodeConstructor(Arrays.<Type>asList(new Address(token), new Address(fromAddress),
