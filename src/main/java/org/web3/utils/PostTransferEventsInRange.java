@@ -1,18 +1,13 @@
-package org.websocket;
+package org.web3.utils;
 
-import java.net.URI;
-import java.net.URISyntaxException;
+import java.io.IOException;
+import java.math.BigInteger;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.Arrays;
-import java.util.Map;
-import java.math.BigInteger;
-import org.java_websocket.client.WebSocketClient;
-import org.java_websocket.drafts.Draft;
-import org.java_websocket.handshake.ServerHandshake;
+
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.mysql.ConncetDB;
@@ -25,100 +20,81 @@ import org.web3j.crypto.Hash;
 import org.web3j.utils.EnsUtils;
 import org.web3j.utils.Numeric;
 import io.github.cdimascio.dotenv.Dotenv;
+import okhttp3.MediaType;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.RequestBody;
+import okhttp3.Response;
 
-public class AlchemyWebSocketClient extends WebSocketClient {
+public class PostTransferEventsInRange {
     static Dotenv dotenv = Dotenv.load();
-    static String ALCHEMY_WSS_MAIN = dotenv.get("ALCHEMY_WSS_MAIN");
+    static String INFURA_HTTP_MAIN = dotenv.get("INFURA_HTTP_MAIN");
     static Connection connection = ConncetDB.getConnect();
-    static final int RECONNECT_INTERVAL = 1000; // 初始重连间隔
-    static String subscribeRequest = "{\"jsonrpc\":\"2.0\",\"id\":1,\"method\":\"eth_subscribe\",\"params\":[\"logs\", {\"topics\":[\"0xddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef\"]}]}";
-    private static WebSocketClient client;
 
-    public AlchemyWebSocketClient(URI serverUri, Draft draft) {
-        super(serverUri, draft);
+    public static void main(String[] args) {
+        postTransferEventsInRange("18017203", "18017204");
     }
 
-    public AlchemyWebSocketClient(URI serverURI) {
-        super(serverURI);
-    }
+    public static void postTransferEventsInRange(String fromBlock, String toBlock) {
+        OkHttpClient client = new OkHttpClient();
+        String fromBlockHex = Numeric.toHexStringWithPrefix(new BigInteger(fromBlock));
+        String toBlockHex = Numeric.toHexStringWithPrefix(new BigInteger(toBlock));
+        MediaType mediaType = MediaType.parse("application/json");
+        String requestBody_ = "{\"jsonrpc\":\"2.0\",\"method\":\"eth_getLogs\",\"params\":[{\"fromBlock\":\"%s\",\"toBlock\":\"%s\",\"topics\":[\"0xddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef\"]}],\"id\":1}";
+        String requestBody = String.format(requestBody_, fromBlockHex, toBlockHex);
+        Request request = new Request.Builder()
+                .url(INFURA_HTTP_MAIN)
+                .post(RequestBody.create(mediaType, requestBody))
+                .addHeader("Content-Type", "application/json")
+                .build();
 
-    public AlchemyWebSocketClient(URI serverUri, Map<String, String> httpHeaders) {
-        super(serverUri, httpHeaders);
-    }
+        try (Response response = client.newCall(request).execute()) {
+            if (response.isSuccessful()) {
+                String responseBody = response.body().string();
 
-    @Override
-    public void onOpen(ServerHandshake handshakedata) {
+                JSONObject json = new JSONObject(responseBody);
 
-        System.out.println("opened connection");
-        send(subscribeRequest);
+                JSONArray results = json.getJSONArray("result");
 
-    }
-
-    @Override
-    public void onMessage(String message) {
-        // System.out.println(message);
-        handleMessage(message);
-    }
-
-    @Override
-    public void onClose(int code, String reason, boolean remote) {
-        // The close codes are documented in class org.java_websocket.framing.CloseFrame
-        System.out.println(
-                "Connection closed by " + (remote ? "remote peer" : "us") + " Code: " + code + " Reason: "
-                        + reason);
-
-    }
-
-    @Override
-    public void onError(Exception ex) {
-        ex.printStackTrace();
-        // if the error is fatal then onClose will be called additionally
-    }
-
-    public static void main(String[] args) throws URISyntaxException {
-        try {
-            client = new AlchemyWebSocketClient(new URI(ALCHEMY_WSS_MAIN));
-            client.connect();
-            Thread.sleep(1000);
-        } catch (Exception e) {
-            // TODO: handle exception
+                if (results.length() > 0) {
+                    // handle Response Result
+                    handleResponseResult(results);
+                }
+            } else {
+                System.out.println("POST request failed with response code: " + response.code());
+            }
+        } catch (IOException e) {
             e.printStackTrace();
         }
-        while (true) {
-            if (client.isClosed()) {
-                System.out.println("Reconnecting to INFURA...");
-                reconnectToINFURA();
-            }
-            try {
-                Thread.sleep(1000);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-        }
 
     }
 
-    private static void reconnectToINFURA() throws URISyntaxException {
-        System.out.println("isClosed: " + client.isClosed());
-        client.close();
-        client = new AlchemyWebSocketClient(new URI(ALCHEMY_WSS_MAIN));
-        client.connect();
-    }
-
-    private void handleMessage(String message) {
-        // String 转 Json
-        JSONObject json = new JSONObject(message);
-
-        if (json.has("method")) {
-            JSONObject params = json.getJSONObject("params");
-            JSONObject result = params.getJSONObject("result");
+    private static void handleResponseResult(JSONArray results) {
+        /*
+         * {
+         * "address": "0xf6afc05fccea5a53f22a3e39ffee861e016bd9a0",
+         * "blockHash":
+         * "0xcb2a112831cc2a7ab0d6e93b0dda0aba046de1391c294da381f8e34e049198fc",
+         * "blockNumber": "0x11297f1",
+         * "data": "0x00000000000000000000000000000000000000000003ae67cbce6ebf24144000",
+         * "logIndex": "0x2",
+         * "removed": false,
+         * "topics": [
+         * "0xddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef",
+         * "0x000000000000000000000000120051a72966950b8ce12eb5496b5d1eeec1541b",
+         * "0x000000000000000000000000e977791b2cd891e5dcd54d3a530ae413e8d2f242"
+         * ],
+         * "transactionHash":
+         * "0x24106b7d2950fa908d441381ab10fe8848305e81b901ac2e40f83771e1f64a62",
+         * "transactionIndex": "0x2"
+         * }
+         */
+        for (int i = 0; i < results.length(); i++) {
+            JSONObject result = results.getJSONObject(i);
             String transactionHash = result.getString("transactionHash");
             String blockNumber = result.getString("blockNumber");
             String token = result.getString("address");
-
             JSONArray topics = result.getJSONArray("topics");
-            // ERC20: topics.length() == 3
-            // ERC721: topics.length() == 4
 
             if (topics.length() == 4) {
                 String from = topics.getString(1);
@@ -131,10 +107,10 @@ public class AlchemyWebSocketClient extends WebSocketClient {
                     String tokenId = topics.getString(3);
 
                     BigInteger blockNumberBig = Numeric.toBigInt(blockNumber);
+
                     BigInteger tokenIdBig = Numeric.toBigInt(tokenId);
 
                     try {
-
                         String encodeData = FunctionEncoder
                                 .encodeConstructor(Arrays.<Type>asList(new Address(token), new Address(fromAddress),
                                         new Address(toAddress),

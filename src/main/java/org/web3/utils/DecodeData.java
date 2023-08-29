@@ -22,7 +22,10 @@ public class DecodeData {
     }
 
     public static void main(String[] args) {
+        decodeHexData(data);
+    }
 
+    public static void decodeHexData(String dataHex) {
         List<TypeReference<Type>> outputParameters = new ArrayList<>(6);
 
         outputParameters.add((TypeReference) new TypeReference<Bytes32>() {
@@ -39,7 +42,7 @@ public class DecodeData {
         });
 
         List<Type> decodedString = FunctionReturnDecoder.decode(
-                data, outputParameters);
+                dataHex, outputParameters);
         byte[] orderHash_ = (byte[]) decodedString.get(0).getValue();
         // byte[] to hexstring
         String orderHash = Numeric.toHexString(orderHash_);
@@ -54,6 +57,6 @@ public class DecodeData {
         System.out.println("totalPayment:" + weiToEth(totalPayment) + "eth");
         System.out.println("totalRoyaltyFee:" + weiToEth(totalRoyaltyFee) + "eth");
         System.out.println("totalPlatformFee:" + weiToEth(totalPlatformFee) + "eth");
-
     }
+
 }

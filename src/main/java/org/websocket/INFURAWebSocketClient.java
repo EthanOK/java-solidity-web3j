@@ -6,6 +6,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Arrays;
 import java.util.Map;
 import java.math.BigInteger;
 import org.java_websocket.client.WebSocketClient;
@@ -14,7 +15,13 @@ import org.java_websocket.handshake.ServerHandshake;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.mysql.ConncetDB;
+import org.web3.utils.PostTransferEventsInRange;
+import org.web3j.abi.FunctionEncoder;
 import org.web3j.abi.FunctionReturnDecoder;
+import org.web3j.abi.datatypes.Address;
+import org.web3j.abi.datatypes.Type;
+import org.web3j.abi.datatypes.generated.Uint256;
+import org.web3j.crypto.Hash;
 import org.web3j.utils.EnsUtils;
 import org.web3j.utils.Numeric;
 import io.github.cdimascio.dotenv.Dotenv;
@@ -26,6 +33,7 @@ public class INFURAWebSocketClient extends WebSocketClient {
     static final int RECONNECT_INTERVAL = 1000; // 初始重连间隔
     static String subscribeRequest = "{\"jsonrpc\":\"2.0\",\"id\":1,\"method\":\"eth_subscribe\",\"params\":[\"logs\", {\"topics\":[\"0xddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef\"]}]}";
     private static WebSocketClient client;
+    static BigInteger lastBlockNumber;
 
     public INFURAWebSocketClient(URI serverUri, Draft draft) {
         super(serverUri, draft);
@@ -69,7 +77,7 @@ public class INFURAWebSocketClient extends WebSocketClient {
         // if the error is fatal then onClose will be called additionally
     }
 
-    public static void main(String[] args) throws URISyntaxException {
+    public static void main(String[] args) throws URISyntaxException, InterruptedException {
         try {
             client = new INFURAWebSocketClient(new URI(INFURA_WSS_MAIN));
             client.connect();
@@ -80,6 +88,10 @@ public class INFURAWebSocketClient extends WebSocketClient {
         }
         while (true) {
             if (client.isClosed()) {
+                // 如果已经关闭，推送记录的最后一次 blockNumber 进队列
+                // push lastBlockNumber
+                // System.out.println(lastBlockNumber);
+                // 处理队列 （lastBlockNumber, lastBlockNumber + 1）
                 System.out.println("Reconnecting to INFURA...");
                 reconnectToINFURA();
             }
@@ -92,11 +104,16 @@ public class INFURAWebSocketClient extends WebSocketClient {
 
     }
 
-    private static void reconnectToINFURA() throws URISyntaxException {
-        System.out.println("isClosed: " + client.isClosed());
+    private static void reconnectToINFURA() throws URISyntaxException, InterruptedException {
+        // System.out.println("isClosed: " + client.isClosed());
         client.close();
         client = new INFURAWebSocketClient(new URI(INFURA_WSS_MAIN));
         client.connect();
+        Thread.sleep(5000);
+        // 处理中断的区块数据
+        PostTransferEventsInRange.postTransferEventsInRange(lastBlockNumber.toString(),
+                lastBlockNumber.add(new BigInteger("1")).toString());
+
     }
 
     private void handleMessage(String message) {
@@ -125,13 +142,23 @@ public class INFURAWebSocketClient extends WebSocketClient {
                     String tokenId = topics.getString(3);
 
                     BigInteger blockNumberBig = Numeric.toBigInt(blockNumber);
+
                     BigInteger tokenIdBig = Numeric.toBigInt(tokenId);
+
+                    lastBlockNumber = blockNumberBig;
 
                     try {
 
+                        String encodeData = FunctionEncoder
+                                .encodeConstructor(Arrays.<Type>asList(new Address(token), new Address(fromAddress),
+                                        new Address(toAddress),
+                                        new Uint256(tokenIdBig),
+                                        new Uint256(blockNumberBig)));
+                        String encodeDataHash = Hash.sha3("0x" + encodeData);
+
                         String insertQuery = "INSERT IGNORE INTO aggregator_ethan.event_transfer_erc721 "
-                                + "(token, tokenId, fromAddress, toAddress, blockNumber, transactionHash) "
-                                + "VALUES(?,?,?,?,?,?)";
+                                + "(token, tokenId, fromAddress, toAddress, blockNumber, transactionHash, encodeDataHash) "
+                                + "VALUES(?,?,?,?,?,?,?)";
                         PreparedStatement preparedStatement = connection.prepareStatement(insertQuery,
                                 PreparedStatement.RETURN_GENERATED_KEYS);
 
@@ -142,6 +169,7 @@ public class INFURAWebSocketClient extends WebSocketClient {
                         preparedStatement.setString(4, toAddress);
                         preparedStatement.setInt(5, blockNumberBig.intValue());
                         preparedStatement.setString(6, transactionHash);
+                        preparedStatement.setString(7, encodeDataHash);
 
                         int rowsAffected = preparedStatement.executeUpdate();
                         if (rowsAffected > 0) {
