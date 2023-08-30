@@ -50,7 +50,7 @@ public class PostTransferEventsETH {
     }
 
     public static void executeTransferEventERC721() throws IOException, InterruptedException {
-        // 什么时候开始呢？最新的区块时间戳(未被打包) - 当前时间戳
+        // 什么时候开始呢？当前时间戳 - 最新的区块时间戳
         long interval = getSystemTimestamp() - getLatestBlockTimestamp();
         System.out.println(interval);
         if (interval >= 0) {
@@ -227,7 +227,7 @@ public class PostTransferEventsETH {
 
         }
 
-        System.out.println("Inset Data Time:" + getSystemTimestamp());
+        // System.out.println("Inset Data Time:" + getSystemTimestamp());
     }
 
     private static long getLatestBlockTimestamp() throws IOException {
