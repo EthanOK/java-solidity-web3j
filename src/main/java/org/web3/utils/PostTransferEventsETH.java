@@ -40,6 +40,8 @@ public class PostTransferEventsETH {
     static String INFURA_HTTP_MAIN = dotenv.get("INFURA_HTTP_MAIN");
     static Connection connection = ConncetDB.getConnect();
     static String lastBlockNumberHex = null;
+    static final String DEAD_ADDRESS = "0x000000000000000000000000000000000000dead";
+    public static final String EMPTY_ADDRESS = "0x0000000000000000000000000000000000000000";
 
     public static void main(String[] args) throws IOException, InterruptedException {
         // postTransferEventsInRange("18024106", "18017461");
@@ -165,8 +167,10 @@ public class PostTransferEventsETH {
                 String to = topics.getString(2);
                 String fromAddress = FunctionReturnDecoder.decodeAddress(from);
                 String toAddress = FunctionReturnDecoder.decodeAddress(to);
-                if (!fromAddress.equals(EnsUtils.EMPTY_ADDRESS)
-                        && !toAddress.equals(EnsUtils.EMPTY_ADDRESS)) {
+
+                if (!fromAddress.equals(EMPTY_ADDRESS)
+                        && !toAddress.equals(EMPTY_ADDRESS)
+                        && !toAddress.equals(DEAD_ADDRESS)) {
 
                     String tokenId = topics.getString(3);
 
@@ -223,7 +227,7 @@ public class PostTransferEventsETH {
 
         }
 
-        System.out.println("SystemTime:" + getSystemTimestamp());
+        System.out.println("Inset Data Time:" + getSystemTimestamp());
     }
 
     private static long getLatestBlockTimestamp() throws IOException {
