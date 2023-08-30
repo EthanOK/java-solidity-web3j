@@ -51,10 +51,11 @@ public class PostTransferEventsETH {
 
     public static void executeTransferEventERC721() throws IOException, InterruptedException {
         // 什么时候开始呢？最新的区块时间戳(未被打包) - 当前时间戳
-        // long interval = getLatestBlockTimestamp() - getSystemTimestamp();
-        // if (interval >= 0) {
-        // Thread.sleep((interval) * 1000 + 50);
-        // }
+        long interval = getSystemTimestamp() - getLatestBlockTimestamp();
+        System.out.println(interval);
+        if (interval >= 0) {
+            Thread.sleep((12 - interval + 1) * 1000);
+        }
         ScheduledExecutorService executorService = Executors.newScheduledThreadPool(1);
 
         Runnable printTask = () -> {
@@ -71,7 +72,7 @@ public class PostTransferEventsETH {
 
         };
         // 初始延迟0秒，然后每隔12秒执行一次任务
-        executorService.scheduleAtFixedRate(printTask, 0, 12, TimeUnit.SECONDS);
+        executorService.scheduleAtFixedRate(printTask, 0, 02, TimeUnit.SECONDS);
     }
 
     public static void postTransferEventsInRange(String fromBlock, String toBlock) {
@@ -122,7 +123,6 @@ public class PostTransferEventsETH {
             // fromBlockHex + 1
             fromBlockHex = Numeric.toHexStringWithPrefix(Numeric.toBigInt(fromBlockHex).add(BigInteger.ONE));
             System.out.println("Current Block:" + Numeric.toBigInt(fromBlockHex));
-            System.out.println("Current Block Timestamp:" + getBlockTimestamp(Numeric.toBigInt(fromBlockHex)));
             requestBody = String.format(requestBody_, fromBlockHex);
         }
 
@@ -192,8 +192,6 @@ public class PostTransferEventsETH {
 
                     BigInteger blockNumberBig = Numeric.toBigInt(blockNumber);
 
-                    System.out.println(getSystemTimestamp());
-
                     BigInteger tokenIdBig = Numeric.toBigInt(tokenId);
 
                     // TODO: check data of on sale
@@ -245,6 +243,7 @@ public class PostTransferEventsETH {
 
         }
 
+        System.out.println("SystemTime:" + getSystemTimestamp());
     }
 
     private static long getLatestBlockTimestamp() throws IOException {
@@ -268,10 +267,6 @@ public class PostTransferEventsETH {
                 .send().getBlock();
 
         BigInteger timestamp = latestBlock.getTimestamp();
-        // System.out.println("Timestamp of the Latest Block: " + timestamp);
-        // long currentSeconds = Instant.now().getEpochSecond();
-        // System.out.println(currentSeconds);
-        // System.out.println(System.currentTimeMillis() / 1000);
         return timestamp.longValue();
     }
 
