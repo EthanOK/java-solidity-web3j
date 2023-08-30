@@ -54,7 +54,7 @@ public class PostTransferEventsETH {
         // 什么时候开始呢？当前时间戳 - 最新的区块时间戳
         long interval = getSystemTimestamp() - getLatestBlockTimestamp();
         System.out.println(interval);
-        if (interval >= 0) {
+        if (interval > 0) {
             Thread.sleep((INTERVAL_BLOCK - interval + 1) * 1000);
         }
         ScheduledExecutorService executorService = Executors.newScheduledThreadPool(1);
