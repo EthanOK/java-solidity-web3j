@@ -72,7 +72,7 @@ public class PostTransferEventsETH {
 
         };
         // 初始延迟0秒，然后每隔12秒执行一次任务
-        executorService.scheduleAtFixedRate(printTask, 0, 02, TimeUnit.SECONDS);
+        executorService.scheduleAtFixedRate(printTask, 0, 12, TimeUnit.SECONDS);
     }
 
     public static void postTransferEventsInRange(String fromBlock, String toBlock) {
