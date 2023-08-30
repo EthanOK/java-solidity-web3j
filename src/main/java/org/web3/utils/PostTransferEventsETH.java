@@ -41,7 +41,8 @@ public class PostTransferEventsETH {
     static Connection connection = ConncetDB.getConnect();
     static String lastBlockNumberHex = null;
     static final String DEAD_ADDRESS = "0x000000000000000000000000000000000000dead";
-    public static final String EMPTY_ADDRESS = "0x0000000000000000000000000000000000000000";
+    static final String EMPTY_ADDRESS = "0x0000000000000000000000000000000000000000";
+    static final long INTERVAL_BLOCK = 12;
 
     public static void main(String[] args) throws IOException, InterruptedException {
         // postTransferEventsInRange("18024106", "18017461");
@@ -54,7 +55,7 @@ public class PostTransferEventsETH {
         long interval = getSystemTimestamp() - getLatestBlockTimestamp();
         System.out.println(interval);
         if (interval >= 0) {
-            Thread.sleep((12 - interval + 1) * 1000);
+            Thread.sleep((INTERVAL_BLOCK - interval + 1) * 1000);
         }
         ScheduledExecutorService executorService = Executors.newScheduledThreadPool(1);
 
@@ -72,7 +73,7 @@ public class PostTransferEventsETH {
 
         };
         // 初始延迟0秒，然后每隔12秒执行一次任务
-        executorService.scheduleAtFixedRate(printTask, 0, 12, TimeUnit.SECONDS);
+        executorService.scheduleAtFixedRate(printTask, 0, INTERVAL_BLOCK, TimeUnit.SECONDS);
     }
 
     public static void postTransferEventsInRange(String fromBlock, String toBlock) {
