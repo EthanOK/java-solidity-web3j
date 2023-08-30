@@ -31,7 +31,7 @@ import okhttp3.Response;
 
 public class PostTransferEventsBSC {
     static Dotenv dotenv = Dotenv.load();
-    // ANKR_HTTP_BSC QUIKNODE_HTTP_BSC
+    // ANKR_HTTP_BSC QUIKNODE_HTTP_BSC INFURA_HTTP_BNB
     static String QUIKNODE_HTTP_BSC = dotenv.get("ANKR_HTTP_BSC");
     static Connection connection = ConncetDB.getConnect();
 

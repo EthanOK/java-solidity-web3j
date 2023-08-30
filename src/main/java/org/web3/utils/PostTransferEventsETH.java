@@ -6,7 +6,9 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.Instant;
 import java.util.Arrays;
+import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
@@ -20,6 +22,11 @@ import org.web3j.abi.datatypes.Address;
 import org.web3j.abi.datatypes.Type;
 import org.web3j.abi.datatypes.generated.Uint256;
 import org.web3j.crypto.Hash;
+import org.web3j.protocol.Web3j;
+import org.web3j.protocol.core.DefaultBlockParameter;
+import org.web3j.protocol.core.DefaultBlockParameterName;
+import org.web3j.protocol.core.methods.response.EthBlock;
+import org.web3j.protocol.http.HttpService;
 import org.web3j.utils.EnsUtils;
 import org.web3j.utils.Numeric;
 import io.github.cdimascio.dotenv.Dotenv;
@@ -34,16 +41,36 @@ public class PostTransferEventsETH {
     // INFURA_HTTP_MAIN QUIKNODE_HTTP_BSC
     static String INFURA_HTTP_MAIN = dotenv.get("INFURA_HTTP_MAIN");
     static Connection connection = ConncetDB.getConnect();
+    static String lastBlockNumberHex = null;
 
-    public static void main(String[] args) {
-        // postTransferEventsInRange("18017459", "18017461");
+    public static void main(String[] args) throws IOException, InterruptedException {
+        // postTransferEventsInRange("18024106", "18017461");
 
-        // TODO: 每12秒请求一次，获得最新区块数据
+        executeTransferEventERC721();
+    }
+
+    public static void executeTransferEventERC721() throws IOException, InterruptedException {
+        // 什么时候开始呢？最新的区块时间戳(未被打包) - 当前时间戳
+        // long interval = getLatestBlockTimestamp() - getSystemTimestamp();
+        // if (interval >= 0) {
+        // Thread.sleep((interval) * 1000 + 50);
+        // }
         ScheduledExecutorService executorService = Executors.newScheduledThreadPool(1);
+
         Runnable printTask = () -> {
-            postTransferEvents();
+            if (lastBlockNumberHex != null) {
+                System.out.println("lastBlockNumber:" + Numeric.toBigInt(lastBlockNumberHex));
+            }
+
+            try {
+                postTransferEvents(lastBlockNumberHex);
+            } catch (IOException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
+
         };
-        // 初始延迟0秒，然后每隔10秒执行一次任务
+        // 初始延迟0秒，然后每隔12秒执行一次任务
         executorService.scheduleAtFixedRate(printTask, 0, 12, TimeUnit.SECONDS);
     }
 
@@ -81,10 +108,24 @@ public class PostTransferEventsETH {
 
     }
 
-    public static void postTransferEvents() {
+    public static void postTransferEvents(String fromBlockHex) throws IOException {
         OkHttpClient client = new OkHttpClient();
         MediaType mediaType = MediaType.parse("application/json");
-        String requestBody = "{\"jsonrpc\":\"2.0\",\"method\":\"eth_getLogs\",\"params\":[{\"topics\":[\"0xddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef\"]}],\"id\":1}";
+        String requestBody_ = null;
+        String requestBody = null;
+        if (fromBlockHex == null) {
+
+            requestBody = "{\"jsonrpc\":\"2.0\",\"method\":\"eth_getLogs\",\"params\":[{\"topics\":[\"0xddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef\"]}],\"id\":1}";
+
+        } else {
+            requestBody_ = "{\"jsonrpc\":\"2.0\",\"method\":\"eth_getLogs\",\"params\":[{\"fromBlock\":\"%s\",\"topics\":[\"0xddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef\"]}],\"id\":1}";
+            // fromBlockHex + 1
+            fromBlockHex = Numeric.toHexStringWithPrefix(Numeric.toBigInt(fromBlockHex).add(BigInteger.ONE));
+            System.out.println("Current Block:" + Numeric.toBigInt(fromBlockHex));
+            System.out.println("Current Block Timestamp:" + getBlockTimestamp(Numeric.toBigInt(fromBlockHex)));
+            requestBody = String.format(requestBody_, fromBlockHex);
+        }
+
         Request request = new Request.Builder()
                 .url(INFURA_HTTP_MAIN)
                 .post(RequestBody.create(mediaType, requestBody))
@@ -112,7 +153,7 @@ public class PostTransferEventsETH {
 
     }
 
-    private static void handleResponseResult(JSONArray results) {
+    private static void handleResponseResult(JSONArray results) throws IOException {
         /*
          * {
          * "address": "0xf6afc05fccea5a53f22a3e39ffee861e016bd9a0",
@@ -138,7 +179,7 @@ public class PostTransferEventsETH {
             String blockNumber = result.getString("blockNumber");
             String token = result.getString("address");
             JSONArray topics = result.getJSONArray("topics");
-
+            lastBlockNumberHex = blockNumber;
             if (topics.length() == 4) {
                 String from = topics.getString(1);
                 String to = topics.getString(2);
@@ -150,6 +191,8 @@ public class PostTransferEventsETH {
                     String tokenId = topics.getString(3);
 
                     BigInteger blockNumberBig = Numeric.toBigInt(blockNumber);
+
+                    System.out.println(getSystemTimestamp());
 
                     BigInteger tokenIdBig = Numeric.toBigInt(tokenId);
 
@@ -184,6 +227,7 @@ public class PostTransferEventsETH {
                             if (generatedKeys.next()) {
                                 long generatedId = generatedKeys.getLong(1);
                                 System.out.println("event_transfer_erc721 insert Id: " + generatedId);
+
                             }
 
                             generatedKeys.close();
@@ -203,4 +247,38 @@ public class PostTransferEventsETH {
 
     }
 
+    private static long getLatestBlockTimestamp() throws IOException {
+        Web3j web3j = Web3j.build(new HttpService(INFURA_HTTP_MAIN));
+
+        EthBlock.Block latestBlock = web3j.ethGetBlockByNumber(DefaultBlockParameterName.LATEST, false)
+                .send().getBlock();
+
+        BigInteger timestamp = latestBlock.getTimestamp();
+        // System.out.println("Timestamp of the Latest Block: " + timestamp);
+        // long currentSeconds = Instant.now().getEpochSecond();
+        // System.out.println(currentSeconds);
+        // System.out.println(System.currentTimeMillis() / 1000);
+        return timestamp.longValue();
+    }
+
+    private static long getBlockTimestamp(BigInteger blockNumber) throws IOException {
+        Web3j web3j = Web3j.build(new HttpService(INFURA_HTTP_MAIN));
+
+        EthBlock.Block latestBlock = web3j.ethGetBlockByNumber(DefaultBlockParameter.valueOf(blockNumber), false)
+                .send().getBlock();
+
+        BigInteger timestamp = latestBlock.getTimestamp();
+        // System.out.println("Timestamp of the Latest Block: " + timestamp);
+        // long currentSeconds = Instant.now().getEpochSecond();
+        // System.out.println(currentSeconds);
+        // System.out.println(System.currentTimeMillis() / 1000);
+        return timestamp.longValue();
+    }
+
+    private static long getSystemTimestamp() throws IOException {
+
+        long currentSeconds = Instant.now().getEpochSecond();
+
+        return currentSeconds;
+    }
 }
