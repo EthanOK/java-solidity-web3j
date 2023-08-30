@@ -8,11 +8,9 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.Instant;
 import java.util.Arrays;
-import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
-
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.mysql.ConncetDB;
@@ -154,25 +152,7 @@ public class PostTransferEventsETH {
     }
 
     private static void handleResponseResult(JSONArray results) throws IOException {
-        /*
-         * {
-         * "address": "0xf6afc05fccea5a53f22a3e39ffee861e016bd9a0",
-         * "blockHash":
-         * "0xcb2a112831cc2a7ab0d6e93b0dda0aba046de1391c294da381f8e34e049198fc",
-         * "blockNumber": "0x11297f1",
-         * "data": "0x00000000000000000000000000000000000000000003ae67cbce6ebf24144000",
-         * "logIndex": "0x2",
-         * "removed": false,
-         * "topics": [
-         * "0xddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef",
-         * "0x000000000000000000000000120051a72966950b8ce12eb5496b5d1eeec1541b",
-         * "0x000000000000000000000000e977791b2cd891e5dcd54d3a530ae413e8d2f242"
-         * ],
-         * "transactionHash":
-         * "0x24106b7d2950fa908d441381ab10fe8848305e81b901ac2e40f83771e1f64a62",
-         * "transactionIndex": "0x2"
-         * }
-         */
+
         for (int i = 0; i < results.length(); i++) {
             JSONObject result = results.getJSONObject(i);
             String transactionHash = result.getString("transactionHash");
