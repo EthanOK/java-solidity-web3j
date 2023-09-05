@@ -43,12 +43,13 @@ public class PostTransferEventsBSC {
     static String startBlockNumberHex = null;
     static final String DEAD_ADDRESS = "0x000000000000000000000000000000000000dead";
     static final String EMPTY_ADDRESS = "0x0000000000000000000000000000000000000000";
-    static final long INTERVAL_BLOCK = 6;
+    static final long INTERVAL_BLOCK = 6 * 1000;
 
     public static void main(String[] args) throws IOException, InterruptedException {
         // postTransferEventsInRange("18024106", "18017461");
         startBlockNumberHex = Numeric.toHexStringWithPrefix(getLastBlockNumber());
         executeTransferEventERC721();
+
     }
 
     public static void executeTransferEventERC721() throws IOException, InterruptedException {
@@ -60,28 +61,31 @@ public class PostTransferEventsBSC {
          * Thread.sleep((INTERVAL_BLOCK - interval + 1) * 1000);
          * }
          */
-        ScheduledExecutorService executorService = Executors.newScheduledThreadPool(1);
-
-        Runnable printTask = () -> {
-            System.out.println("startBlockNumber:" + Numeric.toBigInt(startBlockNumberHex));
+        while (true) {
             try {
-                postTransferEvents(startBlockNumberHex);
+                System.out.println("startBlockNumber:" + Numeric.toBigInt(startBlockNumberHex));
+                try {
+                    postTransferEvents(startBlockNumberHex);
 
-                System.out.println("lastBlockNumber:" + Numeric.toBigInt(lastBlockNumberHex));
-                System.out.println("````````````````````````");
-                // lastBlockNumberHex + 1
-                startBlockNumberHex = Numeric
-                        .toHexStringWithPrefix(Numeric.toBigInt(lastBlockNumberHex).add(BigInteger.ONE));
+                    System.out.println("lastBlockNumber:" + Numeric.toBigInt(lastBlockNumberHex));
+                    System.out.println("````````````````````````");
+                    // lastBlockNumberHex + 1
+                    startBlockNumberHex = Numeric
+                            .toHexStringWithPrefix(Numeric.toBigInt(lastBlockNumberHex).add(BigInteger.ONE));
 
-            } catch (IOException e) {
-                // TODO Auto-generated catch block
+                } catch (IOException e) {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
+                    System.out.println("has error");
+                }
+
+                // 等待 INTERVAL_BLOCK
+                Thread.sleep(INTERVAL_BLOCK);
+            } catch (InterruptedException e) {
                 e.printStackTrace();
-                System.out.println("has error");
             }
+        }
 
-        };
-        // 初始延迟0秒，然后每隔12秒执行一次任务
-        executorService.scheduleAtFixedRate(printTask, 0, INTERVAL_BLOCK, TimeUnit.SECONDS);
     }
 
     /*
@@ -230,7 +234,8 @@ public class PostTransferEventsBSC {
                             if (generatedKeys.next()) {
                                 long generatedId = generatedKeys.getLong(1);
                                 System.out.println(
-                                        "event_transfer_erc721 insert Id: " + generatedId + " in " + blockNumberBig);
+                                        "event_transfer_erc721 insert Id: " + generatedId + " in " + blockNumberBig
+                                                + " " + transactionHash);
 
                             }
 
