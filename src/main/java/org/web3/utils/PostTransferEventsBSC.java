@@ -24,6 +24,7 @@ import org.web3j.protocol.Web3j;
 import org.web3j.protocol.core.DefaultBlockParameter;
 import org.web3j.protocol.core.DefaultBlockParameterName;
 import org.web3j.protocol.core.methods.response.EthBlock;
+import org.web3j.protocol.core.methods.response.EthBlockNumber;
 import org.web3j.protocol.http.HttpService;
 import org.web3j.utils.Numeric;
 import io.github.cdimascio.dotenv.Dotenv;
@@ -39,13 +40,14 @@ public class PostTransferEventsBSC {
     static String ANKR_HTTP_BSC = dotenv.get("ANKR_HTTP_BSC");
     static Connection connection = ConncetDB.getConnect();
     static String lastBlockNumberHex = null;
+    static String startBlockNumberHex = null;
     static final String DEAD_ADDRESS = "0x000000000000000000000000000000000000dead";
     static final String EMPTY_ADDRESS = "0x0000000000000000000000000000000000000000";
-    static final long INTERVAL_BLOCK = 3;
+    static final long INTERVAL_BLOCK = 6;
 
     public static void main(String[] args) throws IOException, InterruptedException {
         // postTransferEventsInRange("18024106", "18017461");
-
+        startBlockNumberHex = Numeric.toHexStringWithPrefix(getLastBlockNumber());
         executeTransferEventERC721();
     }
 
@@ -61,15 +63,20 @@ public class PostTransferEventsBSC {
         ScheduledExecutorService executorService = Executors.newScheduledThreadPool(1);
 
         Runnable printTask = () -> {
-            if (lastBlockNumberHex != null) {
-                System.out.println("lastBlockNumber:" + Numeric.toBigInt(lastBlockNumberHex));
-            }
-
+            System.out.println("startBlockNumberHex:" + Numeric.toBigInt(startBlockNumberHex));
             try {
-                postTransferEvents(lastBlockNumberHex);
+                postTransferEvents(startBlockNumberHex);
+
+                System.out.println("lastBlockNumber:" + Numeric.toBigInt(lastBlockNumberHex));
+                System.out.println("````````````````````````");
+                // lastBlockNumberHex + 1
+                startBlockNumberHex = Numeric
+                        .toHexStringWithPrefix(Numeric.toBigInt(lastBlockNumberHex).add(BigInteger.ONE));
+
             } catch (IOException e) {
                 // TODO Auto-generated catch block
                 e.printStackTrace();
+                System.out.println("has error");
             }
 
         };
@@ -77,39 +84,45 @@ public class PostTransferEventsBSC {
         executorService.scheduleAtFixedRate(printTask, 0, INTERVAL_BLOCK, TimeUnit.SECONDS);
     }
 
-    public static void postTransferEventsInRange(String fromBlock, String toBlock) {
-        OkHttpClient client = new OkHttpClient();
-        String fromBlockHex = Numeric.toHexStringWithPrefix(new BigInteger(fromBlock));
-        String toBlockHex = Numeric.toHexStringWithPrefix(new BigInteger(toBlock));
-        MediaType mediaType = MediaType.parse("application/json");
-        String requestBody_ = "{\"jsonrpc\":\"2.0\",\"method\":\"eth_getLogs\",\"params\":[{\"fromBlock\":\"%s\",\"toBlock\":\"%s\",\"topics\":[\"0xddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef\"]}],\"id\":1}";
-        String requestBody = String.format(requestBody_, fromBlockHex, toBlockHex);
-        Request request = new Request.Builder()
-                .url(ANKR_HTTP_BSC)
-                .post(RequestBody.create(mediaType, requestBody))
-                .addHeader("Content-Type", "application/json")
-                .build();
-
-        try (Response response = client.newCall(request).execute()) {
-            if (response.isSuccessful()) {
-                String responseBody = response.body().string();
-
-                JSONObject json = new JSONObject(responseBody);
-
-                JSONArray results = json.getJSONArray("result");
-                // System.out.println(results.toString());
-                if (results.length() > 0) {
-                    // handle Response Result
-                    handleResponseResult(results);
-                }
-            } else {
-                System.out.println("POST request failed with response code: " + response.code());
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-    }
+    /*
+     * public static void postTransferEventsInRange(String fromBlock, String
+     * toBlock) {
+     * OkHttpClient client = new OkHttpClient();
+     * String fromBlockHex = Numeric.toHexStringWithPrefix(new
+     * BigInteger(fromBlock));
+     * String toBlockHex = Numeric.toHexStringWithPrefix(new BigInteger(toBlock));
+     * MediaType mediaType = MediaType.parse("application/json");
+     * String requestBody_ =
+     * "{\"jsonrpc\":\"2.0\",\"method\":\"eth_getLogs\",\"params\":[{\"fromBlock\":\"%s\",\"toBlock\":\"%s\",\"topics\":[\"0xddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef\"]}],\"id\":1}";
+     * String requestBody = String.format(requestBody_, fromBlockHex, toBlockHex);
+     * Request request = new Request.Builder()
+     * .url(ANKR_HTTP_BSC)
+     * .post(RequestBody.create(mediaType, requestBody))
+     * .addHeader("Content-Type", "application/json")
+     * .build();
+     * 
+     * try (Response response = client.newCall(request).execute()) {
+     * if (response.isSuccessful()) {
+     * String responseBody = response.body().string();
+     * 
+     * JSONObject json = new JSONObject(responseBody);
+     * 
+     * JSONArray results = json.getJSONArray("result");
+     * // System.out.println(results.toString());
+     * if (results.length() > 0) {
+     * // handle Response Result
+     * handleResponseResult(results);
+     * }
+     * } else {
+     * System.out.println("POST request failed with response code: " +
+     * response.code());
+     * }
+     * } catch (IOException e) {
+     * e.printStackTrace();
+     * }
+     * 
+     * }
+     */
 
     public static void postTransferEvents(String fromBlockHex) throws IOException {
         OkHttpClient client = new OkHttpClient();
@@ -122,9 +135,7 @@ public class PostTransferEventsBSC {
 
         } else {
             requestBody_ = "{\"jsonrpc\":\"2.0\",\"method\":\"eth_getLogs\",\"params\":[{\"fromBlock\":\"%s\",\"topics\":[\"0xddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef\"]}],\"id\":1}";
-            // fromBlockHex + 1
-            fromBlockHex = Numeric.toHexStringWithPrefix(Numeric.toBigInt(fromBlockHex).add(BigInteger.ONE));
-            System.out.println("Current Block:" + Numeric.toBigInt(fromBlockHex));
+
             requestBody = String.format(requestBody_, fromBlockHex);
         }
 
@@ -145,12 +156,20 @@ public class PostTransferEventsBSC {
                 if (results.length() > 0) {
                     // handle Response Result
                     handleResponseResult(results);
+                } else {
+                    lastBlockNumberHex = fromBlockHex;
                 }
             } else {
                 System.out.println("POST request failed with response code: " + response.code());
+                // 如果访问失败 本区块访问失败
+                lastBlockNumberHex = Numeric
+                        .toHexStringWithPrefix(Numeric.toBigInt(fromBlockHex).subtract((BigInteger.ONE)));
+
             }
         } catch (IOException e) {
             e.printStackTrace();
+            // 如果访问失败
+            lastBlockNumberHex = fromBlockHex;
         }
 
     }
@@ -210,7 +229,8 @@ public class PostTransferEventsBSC {
                             ResultSet generatedKeys = preparedStatement.getGeneratedKeys();
                             if (generatedKeys.next()) {
                                 long generatedId = generatedKeys.getLong(1);
-                                System.out.println("event_transfer_erc721 insert Id: " + generatedId);
+                                System.out.println(
+                                        "event_transfer_erc721 insert Id: " + generatedId + " in " + blockNumberBig);
 
                             }
 
@@ -254,6 +274,16 @@ public class PostTransferEventsBSC {
 
         BigInteger timestamp = latestBlock.getTimestamp();
         return timestamp.longValue();
+    }
+
+    private static BigInteger getLastBlockNumber() throws IOException {
+        Web3j web3j = Web3j.build(new HttpService(ANKR_HTTP_BSC));
+
+        EthBlockNumber blockNumber = web3j.ethBlockNumber().send();
+
+        BigInteger number = blockNumber.getBlockNumber();
+
+        return number;
     }
 
     private static long getSystemTimestamp() throws IOException {
