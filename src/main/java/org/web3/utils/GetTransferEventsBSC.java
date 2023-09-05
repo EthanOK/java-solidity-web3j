@@ -69,12 +69,14 @@ public class GetTransferEventsBSC {
                     // TODO Auto-generated catch block
                     e.printStackTrace();
                     System.out.println("has error");
+                    startBlockNumber = lastBlockNumber;
                 }
 
                 // 等待 INTERVAL_BLOCK
                 Thread.sleep(INTERVAL_BLOCK);
             } catch (InterruptedException e) {
                 e.printStackTrace();
+                startBlockNumber = lastBlockNumber;
             }
         }
 
@@ -87,7 +89,8 @@ public class GetTransferEventsBSC {
 
         OkHttpClient client = new OkHttpClient();
         Request request = new Request.Builder().url(getURL).build();
-        try (Response response = client.newCall(request).execute()) {
+        try {
+            Response response = client.newCall(request).execute();
             if (response.isSuccessful()) {
                 String responseBody = response.body().string();
 
@@ -110,7 +113,7 @@ public class GetTransferEventsBSC {
         } catch (IOException e) {
             e.printStackTrace();
             // 如果访问失败
-            lastBlockNumber = fromBlock;
+            lastBlockNumber = fromBlock - 1;
         }
 
     }
