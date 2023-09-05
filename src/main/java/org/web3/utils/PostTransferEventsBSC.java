@@ -8,9 +8,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.Instant;
 import java.util.Arrays;
-import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.TimeUnit;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.mysql.ConncetDB;
@@ -149,7 +146,8 @@ public class PostTransferEventsBSC {
                 .addHeader("Content-Type", "application/json")
                 .build();
 
-        try (Response response = client.newCall(request).execute()) {
+        try {
+            Response response = client.newCall(request).execute();
             if (response.isSuccessful()) {
                 String responseBody = response.body().string();
 
@@ -171,9 +169,11 @@ public class PostTransferEventsBSC {
 
             }
         } catch (IOException e) {
-            e.printStackTrace();
-            // 如果访问失败
-            lastBlockNumberHex = fromBlockHex;
+            // e.printStackTrace();
+            System.out.println("Get request Failed: Time Out");
+
+            lastBlockNumberHex = Numeric
+                    .toHexStringWithPrefix(Numeric.toBigInt(fromBlockHex).subtract((BigInteger.ONE)));
         }
 
     }
@@ -255,6 +255,7 @@ public class PostTransferEventsBSC {
         }
 
         // System.out.println("Inset Data Time:" + getSystemTimestamp());
+
     }
 
     private static long getLatestBlockTimestamp() throws IOException {

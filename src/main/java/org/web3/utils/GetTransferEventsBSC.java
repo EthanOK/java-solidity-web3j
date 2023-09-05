@@ -105,13 +105,14 @@ public class GetTransferEventsBSC {
                     lastBlockNumber = fromBlock;
                 }
             } else {
-                System.out.println("POST request failed with response code: " + response.code());
+                System.out.println("get request failed with response code: " + response.code());
                 // 如果访问失败 本区块访问失败
                 lastBlockNumber = fromBlock - 1;
 
             }
         } catch (IOException e) {
             e.printStackTrace();
+            System.out.println("Get request Failed: Time Out");
             // 如果访问失败
             lastBlockNumber = fromBlock - 1;
         }
