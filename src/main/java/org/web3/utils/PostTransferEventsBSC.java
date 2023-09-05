@@ -63,7 +63,7 @@ public class PostTransferEventsBSC {
         ScheduledExecutorService executorService = Executors.newScheduledThreadPool(1);
 
         Runnable printTask = () -> {
-            System.out.println("startBlockNumberHex:" + Numeric.toBigInt(startBlockNumberHex));
+            System.out.println("startBlockNumber:" + Numeric.toBigInt(startBlockNumberHex));
             try {
                 postTransferEvents(startBlockNumberHex);
 
