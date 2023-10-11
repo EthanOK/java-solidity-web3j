@@ -9,7 +9,7 @@ import org.web3j.protocol.http.HttpService;
 
 import io.github.cdimascio.dotenv.Dotenv;
 
-public class GetCurrentBlock {
+public class GetCurrentBlockNumber {
     static Dotenv dotenv = Dotenv.load();
 
     // static String ANKR_HTTP_BSC = dotenv.get("ANKR_HTTP_BSC");
