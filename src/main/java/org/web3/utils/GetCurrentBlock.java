@@ -20,7 +20,7 @@ public class GetCurrentBlock {
     public static void main(String[] args) throws IOException, InterruptedException {
         while (true) {
             System.out.println(getLastBlockNumber());
-            Thread.sleep(3000);
+            Thread.sleep(6000);
 
         }
 
@@ -28,6 +28,11 @@ public class GetCurrentBlock {
 
     private static BigInteger getLastBlockNumber() throws IOException {
         Web3j web3j = Web3j.build(new HttpService(ANKR_HTTP_BSC));
+
+        // EthBlock.Block latestBlock =
+        // web3j.ethGetBlockByNumber(DefaultBlockParameterName.LATEST, false)
+        // .send().getBlock();
+        // System.out.println("Block: " + latestBlock.getNumber());
 
         EthBlockNumber blockNumber = web3j.ethBlockNumber().send();
 
