@@ -28,5 +28,7 @@ public class GetTxStatusByHash {
 
         }
 
+        System.out.println(receipt.isStatusOK());
+
     }
 }
