@@ -13,13 +13,18 @@ public class GetTxStatusByHash {
     static String ANKR_HTTP_BSC_T = "https://rpc.ankr.com/bsc_testnet_chapel";
 
     public static void main(String[] args) throws IOException {
-        String txhash = "0xfbce55d806a96a65be3c989e8af9bc9cc1e72e7476250fe11badda499b5e9f85";
+        String txhash = "0xb8c6ecdd8da70e8bbbc8a7731e38601667c3b4a66862d7b9200161225f508a34";
 
         Web3j web3j = Web3j.build(new HttpService(ANKR_HTTP_BSC_T));
 
         EthGetTransactionReceipt transactionReceipt = web3j.ethGetTransactionReceipt(txhash).send();
 
         TransactionReceipt receipt = transactionReceipt.getResult();
+
+        if (receipt == null) {
+            System.out.println("null");
+            return;
+        }
 
         if (receipt.getStatus().equals("0x1")) {
             System.out.println("success");
