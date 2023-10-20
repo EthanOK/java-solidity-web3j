@@ -53,6 +53,8 @@ public class OpenseaInterface extends Contract {
 
     public static final String FUNC_FULFILLBASICORDER_EFFICIENT_6GL6YC = "fulfillBasicOrder_efficient_6GL6yc";
 
+    public static final String FUNC_FULFILLORDER = "fulfillOrder";
+
     public static final String FUNC_GETORDERSTATUS = "getOrderStatus";
 
     public static final String FUNC_INFORMATION = "information";
@@ -111,6 +113,15 @@ public class OpenseaInterface extends Contract {
         final Function function = new Function(
                 FUNC_FULFILLBASICORDER_EFFICIENT_6GL6YC, 
                 Arrays.<Type>asList(parameters), 
+                Collections.<TypeReference<?>>emptyList());
+        return executeRemoteCallTransaction(function, weiValue);
+    }
+
+    public RemoteFunctionCall<TransactionReceipt> fulfillOrder(Order order, byte[] fulfillerConduitKey, BigInteger weiValue) {
+        final Function function = new Function(
+                FUNC_FULFILLORDER, 
+                Arrays.<Type>asList(order, 
+                new org.web3j.abi.datatypes.generated.Bytes32(fulfillerConduitKey)), 
                 Collections.<TypeReference<?>>emptyList());
         return executeRemoteCallTransaction(function, weiValue);
     }
@@ -592,6 +603,25 @@ public class OpenseaInterface extends Contract {
             this.denominator = denominator.getValue();
             this.signature = signature.getValue();
             this.extraData = extraData.getValue();
+        }
+    }
+
+    public static class Order extends DynamicStruct {
+        public OrderParameters parameters;
+
+        public byte[] signature;
+
+        public Order(OrderParameters parameters, byte[] signature) {
+            super(parameters, 
+                    new org.web3j.abi.datatypes.DynamicBytes(signature));
+            this.parameters = parameters;
+            this.signature = signature;
+        }
+
+        public Order(OrderParameters parameters, DynamicBytes signature) {
+            super(parameters, signature);
+            this.parameters = parameters;
+            this.signature = signature.getValue();
         }
     }
 }

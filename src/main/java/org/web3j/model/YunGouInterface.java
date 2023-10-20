@@ -67,6 +67,8 @@ public class YunGouInterface extends Contract {
 
     public static final String FUNC_NAME = "name";
 
+    public static final String FUNC_REMOVEORDERHASHS = "removeOrderHashs";
+
     public static final String FUNC_SETBENEFICIARY = "setBeneficiary";
 
     public static final String FUNC_SETPAUSE = "setPause";
@@ -252,6 +254,16 @@ public class YunGouInterface extends Contract {
                 Arrays.<Type>asList(), 
                 Arrays.<TypeReference<?>>asList(new TypeReference<Utf8String>() {}));
         return executeRemoteCallSingleValueReturn(function, String.class);
+    }
+
+    public RemoteFunctionCall<TransactionReceipt> removeOrderHashs(List<byte[]> orderHashs) {
+        final Function function = new Function(
+                FUNC_REMOVEORDERHASHS, 
+                Arrays.<Type>asList(new org.web3j.abi.datatypes.DynamicArray<org.web3j.abi.datatypes.generated.Bytes32>(
+                        org.web3j.abi.datatypes.generated.Bytes32.class,
+                        org.web3j.abi.Utils.typeMap(orderHashs, org.web3j.abi.datatypes.generated.Bytes32.class))), 
+                Collections.<TypeReference<?>>emptyList());
+        return executeRemoteCallTransaction(function);
     }
 
     public RemoteFunctionCall<TransactionReceipt> setBeneficiary(String newBeneficiary) {
