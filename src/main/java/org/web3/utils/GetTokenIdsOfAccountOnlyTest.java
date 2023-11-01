@@ -27,9 +27,12 @@ public class GetTokenIdsOfAccountOnlyTest {
 
         String result_G = getTokenIdsOfContractAndAccount("5", nftaddress, account);
         System.out.println(result_G);
+
+        System.out.println("`````````````````````");
         String result_TB = getTokenIdsOfContractAndAccount("97", "0xDb6c494BE6Aae80cc042f9CDA24Ce573aD163A46",
                 account);
         System.out.println(result_TB);
+
         System.out.println("`````````````````````");
         String result_E = getTokenIdsOfContractAndAccount("1", "0x1b489201D974D37DDd2FaF6756106a7651914A63",
                 "0xf77c3ea35684ed12617D4b27A0aB11605EA7de31");
