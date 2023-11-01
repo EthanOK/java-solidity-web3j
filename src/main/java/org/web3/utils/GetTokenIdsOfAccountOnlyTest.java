@@ -8,33 +8,59 @@ import java.util.Set;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import io.github.cdimascio.dotenv.Dotenv;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
 
 public class GetTokenIdsOfAccountOnlyTest {
+
+    static Dotenv dotenv = Dotenv.load();
+
+    static String apiKey_E = dotenv.get("apiKey_goerli");
+    static String apiKey_B = dotenv.get("apiKey_tbsc");
+
     public static void main(String[] args) {
         //
         String nftaddress = "0x0d3e02768ab63516ab5d386fad462214ca3e6a86";
         String account = "0x6278A1E803A76796a3A1f7F6344fE874ebfe94B2";
 
-        String result = getTokenIdsOfContractAndAccount("5", nftaddress, account);
-        System.out.println(result);
-        String result_B = getTokenIdsOfContractAndAccount("97", "0xDb6c494BE6Aae80cc042f9CDA24Ce573aD163A46",
+        String result_G = getTokenIdsOfContractAndAccount("5", nftaddress, account);
+        System.out.println(result_G);
+        String result_TB = getTokenIdsOfContractAndAccount("97", "0xDb6c494BE6Aae80cc042f9CDA24Ce573aD163A46",
                 account);
+        System.out.println(result_TB);
+        System.out.println("`````````````````````");
+        String result_E = getTokenIdsOfContractAndAccount("1", "0x1b489201D974D37DDd2FaF6756106a7651914A63",
+                "0xf77c3ea35684ed12617D4b27A0aB11605EA7de31");
+        System.out.println(result_E);
+
+        System.out.println("`````````````````````");
+        String result_B = getTokenIdsOfContractAndAccount("56", "0xe88e04e739EB73978E76B6A20A86643f2A0E364a",
+                "0x7Ae1Fda8e64e7e99D58D0f3EC7995455302eb5B9");
         System.out.println(result_B);
     }
 
     public static String getTokenIdsOfContractAndAccount(String chainId, String nftaddress, String account) {
         String urlLink = "";
-        if (chainId == "5") {
+        if (chainId == "1") {
+            String url = "https://api.etherscan.io";
+            String apiKey = apiKey_E;
+            urlLink = url + "/api?module=account&action=tokennfttx&contractaddress=" + nftaddress +
+                    "&address=" + account + "&startblock=0&endblock=latest&sort=asc&apikey=" + apiKey;
+        } else if (chainId == "5") {
             String url = "https://api-goerli.etherscan.io";
-            String apiKey = "Y5SUFPEUDZSSMMETT2ER9QYVMHB62E7QPE";
+            String apiKey = apiKey_E;
             urlLink = url + "/api?module=account&action=tokennfttx&contractaddress=" + nftaddress +
                     "&address=" + account + "&startblock=0&endblock=latest&sort=asc&apikey=" + apiKey;
         } else if (chainId == "97") {
             String url = "https://api-testnet.bscscan.com";
-            String apiKey = "B77TXRQ15Y94BTQEFPYBB2E9IU7HC3PFJ8";
+            String apiKey = apiKey_B;
+            urlLink = url + "/api?module=account&action=tokennfttx&contractaddress=" + nftaddress +
+                    "&address=" + account + "&startblock=0&endblock=latest&sort=asc&apikey=" + apiKey;
+        } else if (chainId == "56") {
+            String url = "https://api.bscscan.com";
+            String apiKey = apiKey_B;
             urlLink = url + "/api?module=account&action=tokennfttx&contractaddress=" + nftaddress +
                     "&address=" + account + "&startblock=0&endblock=latest&sort=asc&apikey=" + apiKey;
         }
