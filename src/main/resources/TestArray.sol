@@ -28,4 +28,6 @@ contract TestArray {
     function setOrderss(Order[][] calldata) external {}
 
     function get(Array[] calldata) external {}
+
+    function name() external view{}
 }
