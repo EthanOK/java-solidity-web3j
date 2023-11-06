@@ -53,6 +53,7 @@ public class GetStorageAtSlot {
     public static int[] getYGMETotalSupply() throws IOException {
 
         String contract_E = "0x1b489201D974D37DDd2FaF6756106a7651914A63";
+
         String contract_B = "0xe88e04e739eb73978e76b6a20a86643f2a0e364a";
 
         String total_E = getData_ETH(contract_E, "7");
