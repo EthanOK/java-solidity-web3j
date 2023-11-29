@@ -1,4 +1,4 @@
-java version 19
+java version 18
 
 # myweb3_java
 
