@@ -16,7 +16,7 @@
         <dependency>
             <groupId>org.web3j</groupId>
             <artifactId>core</artifactId>
-            <version>4.10.0</version>
+            <version>4.10.3</version>
 
         </dependency>
         <dependency>
@@ -53,7 +53,7 @@
                 <plugin>
                     <groupId>org.web3j</groupId>
                     <artifactId>web3j-maven-plugin</artifactId>
-                    <version>4.10.0</version>
+                    <version>4.10.3</version>
                     <configuration>
                         <soliditySourceFiles/>
                     </configuration>
