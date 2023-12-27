@@ -1,7 +1,9 @@
 package org.web3.utils;
+
 import org.sol4k.Base58;
 import org.sol4k.PublicKey;
-public class VerifySolanaSigenature {
+
+public class VerifySolanaSignature {
 
     public static boolean verifySolanaSignature(String message, String signature, String walletAddress) {
 
@@ -12,8 +14,6 @@ public class VerifySolanaSigenature {
 
     }
 
-
-
     public static void main(String[] args) {
         // 示例消息、签名和公钥
         String message = "Welcome to ethan-yungou.vercel.app!";
@@ -23,7 +23,7 @@ public class VerifySolanaSigenature {
         // 执行数字签名验证
         boolean isValid = verifySolanaSignature(message, signature, walletAddress);
 
-        System.out.println("签名验证结果："+isValid);
+        System.out.println("签名验证结果：" + isValid);
 
         // 输出验证结果
         if (isValid) {
@@ -34,8 +34,8 @@ public class VerifySolanaSigenature {
     }
 }
 
-//<dependency>
-//<groupId>org.sol4k</groupId>
-//<artifactId>sol4k</artifactId>
-//<version>0.4.1</version>
-//</dependency>
+// <dependency>
+// <groupId>org.sol4k</groupId>
+// <artifactId>sol4k</artifactId>
+// <version>0.4.1</version>
+// </dependency>
