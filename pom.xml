@@ -44,6 +44,11 @@
             <version>8.1.0</version>
         </dependency>
 
+        <dependency>
+            <groupId>org.sol4k</groupId>
+            <artifactId>sol4k</artifactId>
+            <version>0.4.1</version>
+        </dependency>
 
     </dependencies>
 
