@@ -81,6 +81,7 @@ public class GetAllTransferEvent {
             String data = result.getString("data");
             String topics0 = topics.getString(0);
 
+            // TODO: NFT Transfer Event
             if (topics.length() == 4 && TransferTopic.equalsIgnoreCase(topics0)) {
 
                 String from = topics.getString(1);
@@ -101,7 +102,9 @@ public class GetAllTransferEvent {
 
                 System.out.println(trasferObject.toString());
 
-            } else if (topics.length() == 3 && TransferTopic.equalsIgnoreCase(topics0)) {
+            }
+            // TODO: Token(ERC20) Transfer Event
+            else if (topics.length() == 3 && TransferTopic.equalsIgnoreCase(topics0)) {
                 String from = topics.getString(1);
                 String to = topics.getString(2);
                 String fromAddress = FunctionReturnDecoder.decodeAddress(from);
