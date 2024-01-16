@@ -23,7 +23,7 @@ public class GetYGIOConvertEvent {
 
     // 获取指定区块号的 区块哈希
     // TODO:从数据库读取待查寻区块号
-    static BigInteger startBlockNumber = new BigInteger("10382979");
+    static BigInteger startBlockNumber = new BigInteger("10383080");
 
     public static void main(String[] args) throws IOException {
         Web3j web3j = Web3j
@@ -76,6 +76,8 @@ public class GetYGIOConvertEvent {
             JSONArray topics = result.getJSONArray("topics");
             String data = result.getString("data");
             String topics0 = topics.getString(0);
+
+            // System.out.println(result.toString());
 
             // TODO: YGIO Convert Event
             if (topics.length() == 4 && ConvertTopic.equalsIgnoreCase(topics0)) {
