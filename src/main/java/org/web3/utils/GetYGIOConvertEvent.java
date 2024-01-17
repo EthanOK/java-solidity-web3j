@@ -23,7 +23,7 @@ public class GetYGIOConvertEvent {
 
     // 获取指定区块号的 区块哈希
     // TODO:从数据库读取待查寻区块号
-    static BigInteger startBlockNumber = new BigInteger("10383080");
+    static BigInteger startBlockNumber = new BigInteger("10382872");
 
     public static void main(String[] args) throws IOException {
         Web3j web3j = Web3j
@@ -93,6 +93,7 @@ public class GetYGIOConvertEvent {
                 JSONObject trasferObject = new JSONObject();
 
                 // 向 JSON 对象添加元素
+                trasferObject.put("transactionHash", transactionHash);
                 trasferObject.put("contract", tokenAddress);
                 trasferObject.put("convertType", convertType);
                 trasferObject.put("account", account);
