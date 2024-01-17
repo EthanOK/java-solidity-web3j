@@ -22,8 +22,7 @@ public class GetYGIOConvertEvent {
     static String ConvertTopic = "0xf223d34fa7bf5b0d07f699392b827f6573db287faff53a0ff1d6baff29796029";
 
     // 获取指定区块号的 区块哈希
-    // TODO:从数据库读取待查寻区块号
-    static BigInteger startBlockNumber = new BigInteger("10382872");
+    static BigInteger startBlockNumber = new BigInteger("10386936");
 
     public static void main(String[] args) throws IOException {
         Web3j web3j = Web3j
@@ -32,7 +31,15 @@ public class GetYGIOConvertEvent {
         // 死循环 6s执行一次
         while (true) {
             try {
-                GetYGIOConvertEventByBlockNumber(web3j, startBlockNumber.toString());
+
+                // TODO:1 从数据库读取待查寻区块号
+                BigInteger startBlockNumber_ = startBlockNumber;
+
+                BigInteger nextBlockNumber = GetYGIOConvertEventByBlockNumber(web3j, startBlockNumber_.toString());
+
+                // TODO:2 将待查寻区块号写入数据库
+                startBlockNumber = nextBlockNumber;
+
                 Thread.sleep(6000);
             } catch (Exception e) {
                 e.printStackTrace();
@@ -41,13 +48,13 @@ public class GetYGIOConvertEvent {
 
     }
 
-    public static void GetYGIOConvertEventByBlockNumber(Web3j web3j, String blockNumber) throws IOException {
+    public static BigInteger GetYGIOConvertEventByBlockNumber(Web3j web3j, String blockNumber) throws IOException {
         BigInteger blockNumber_ = new BigInteger(blockNumber);
         EthBlock.Block latestBlock = web3j.ethGetBlockByNumber(DefaultBlockParameter.valueOf(blockNumber_), false)
                 .send().getBlock();
         if (latestBlock == null) {
-            System.out.println(blockNumber_.toString() + " 区块还没产生");
-            return;
+            System.out.println("BlockNumber: " + blockNumber_.toString() + " 区块还没产生");
+            return blockNumber_;
         }
         System.out.println("BlockNumber: " + latestBlock.getNumber());
 
@@ -63,8 +70,8 @@ public class GetYGIOConvertEvent {
             handleLogsResult(logs);
         }
 
-        // TODO:将待查寻区块号写入数据库
-        startBlockNumber = blockNumber_.add(BigInteger.ONE);
+        return blockNumber_.add(BigInteger.ONE);
+
     }
 
     private static void handleLogsResult(List<LogResult> logs) throws IOException {
