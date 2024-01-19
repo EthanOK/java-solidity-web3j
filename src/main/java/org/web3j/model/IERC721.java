@@ -51,6 +51,8 @@ public class IERC721 extends Contract {
 
     public static final String FUNC_NAME = "name";
 
+    public static final String FUNC_OWNER = "owner";
+
     public static final String FUNC_OWNEROF = "ownerOf";
 
     public static final String FUNC_safeTransferFrom = "safeTransferFrom";
@@ -232,6 +234,13 @@ public class IERC721 extends Contract {
         final Function function = new Function(FUNC_NAME, 
                 Arrays.<Type>asList(), 
                 Arrays.<TypeReference<?>>asList(new TypeReference<Utf8String>() {}));
+        return executeRemoteCallSingleValueReturn(function, String.class);
+    }
+
+    public RemoteFunctionCall<String> owner() {
+        final Function function = new Function(FUNC_OWNER, 
+                Arrays.<Type>asList(), 
+                Arrays.<TypeReference<?>>asList(new TypeReference<Address>() {}));
         return executeRemoteCallSingleValueReturn(function, String.class);
     }
 
