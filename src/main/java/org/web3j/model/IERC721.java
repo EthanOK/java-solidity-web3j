@@ -65,6 +65,8 @@ public class IERC721 extends Contract {
 
     public static final String FUNC_TOKENURI = "tokenURI";
 
+    public static final String FUNC_TOTALSUPPLY = "totalSupply";
+
     public static final String FUNC_TRANSFERFROM = "transferFrom";
 
     public static final Event APPROVAL_EVENT = new Event("Approval", 
@@ -300,6 +302,13 @@ public class IERC721 extends Contract {
                 Arrays.<Type>asList(new org.web3j.abi.datatypes.generated.Uint256(tokenId)), 
                 Arrays.<TypeReference<?>>asList(new TypeReference<Utf8String>() {}));
         return executeRemoteCallSingleValueReturn(function, String.class);
+    }
+
+    public RemoteFunctionCall<BigInteger> totalSupply() {
+        final Function function = new Function(FUNC_TOTALSUPPLY, 
+                Arrays.<Type>asList(), 
+                Arrays.<TypeReference<?>>asList(new TypeReference<Uint256>() {}));
+        return executeRemoteCallSingleValueReturn(function, BigInteger.class);
     }
 
     public RemoteFunctionCall<TransactionReceipt> transferFrom(String from, String to, BigInteger tokenId) {
