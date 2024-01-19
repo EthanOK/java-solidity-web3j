@@ -22,7 +22,7 @@ public class GetYGIOConvertEvent {
     static String ConvertTopic = "0xf223d34fa7bf5b0d07f699392b827f6573db287faff53a0ff1d6baff29796029";
 
     // 获取指定区块号的 区块哈希
-    static BigInteger startBlockNumber = new BigInteger("10386936");
+    static BigInteger startBlockNumber = new BigInteger("10392353");
 
     public static void main(String[] args) throws IOException {
         Web3j web3j = Web3j
@@ -50,6 +50,7 @@ public class GetYGIOConvertEvent {
 
     public static BigInteger GetYGIOConvertEventByBlockNumber(Web3j web3j, String blockNumber) throws IOException {
         BigInteger blockNumber_ = new BigInteger(blockNumber);
+        // 1:ethGetBlockByNumber
         EthBlock.Block latestBlock = web3j.ethGetBlockByNumber(DefaultBlockParameter.valueOf(blockNumber_), false)
                 .send().getBlock();
         if (latestBlock == null) {
@@ -60,10 +61,12 @@ public class GetYGIOConvertEvent {
 
         System.out.println("BlockHash: " + latestBlock.getHash());
         String blockHash = latestBlock.getHash();
+
         EthFilter filter = new EthFilter(blockHash)
                 .addOptionalTopics(ConvertTopic);
 
         // Only get data no listen
+        // 2:ethGetLogs
         EthLog ethLog = web3j.ethGetLogs(filter).send();
         List<LogResult> logs = ethLog.getLogs();
         if (logs.size() > 0) {
