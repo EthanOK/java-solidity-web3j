@@ -50,6 +50,13 @@
             <version>0.4.1</version>
         </dependency>
 
+
+        <dependency>
+            <groupId>net.osslabz</groupId>
+            <artifactId>evm-abi-decoder</artifactId>
+            <version>0.0.8</version>
+        </dependency>
+
     </dependencies>
 
     <build>
