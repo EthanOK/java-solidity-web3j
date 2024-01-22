@@ -4,6 +4,12 @@
 pragma solidity ^0.8.0;
 
 interface IERC721 {
+    // Contract Owner
+    function owner() external view returns (address);
+
+    // totalSupply
+    function totalSupply() external view returns (uint256);
+
     function supportsInterface(bytes4 interfaceId) external view returns (bool);
 
     /**

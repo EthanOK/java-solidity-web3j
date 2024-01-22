@@ -51,6 +51,8 @@ public class IERC721 extends Contract {
 
     public static final String FUNC_NAME = "name";
 
+    public static final String FUNC_OWNER = "owner";
+
     public static final String FUNC_OWNEROF = "ownerOf";
 
     public static final String FUNC_safeTransferFrom = "safeTransferFrom";
@@ -62,6 +64,8 @@ public class IERC721 extends Contract {
     public static final String FUNC_SYMBOL = "symbol";
 
     public static final String FUNC_TOKENURI = "tokenURI";
+
+    public static final String FUNC_TOTALSUPPLY = "totalSupply";
 
     public static final String FUNC_TRANSFERFROM = "transferFrom";
 
@@ -235,6 +239,13 @@ public class IERC721 extends Contract {
         return executeRemoteCallSingleValueReturn(function, String.class);
     }
 
+    public RemoteFunctionCall<String> owner() {
+        final Function function = new Function(FUNC_OWNER, 
+                Arrays.<Type>asList(), 
+                Arrays.<TypeReference<?>>asList(new TypeReference<Address>() {}));
+        return executeRemoteCallSingleValueReturn(function, String.class);
+    }
+
     public RemoteFunctionCall<String> ownerOf(BigInteger tokenId) {
         final Function function = new Function(FUNC_OWNEROF, 
                 Arrays.<Type>asList(new org.web3j.abi.datatypes.generated.Uint256(tokenId)), 
@@ -291,6 +302,13 @@ public class IERC721 extends Contract {
                 Arrays.<Type>asList(new org.web3j.abi.datatypes.generated.Uint256(tokenId)), 
                 Arrays.<TypeReference<?>>asList(new TypeReference<Utf8String>() {}));
         return executeRemoteCallSingleValueReturn(function, String.class);
+    }
+
+    public RemoteFunctionCall<BigInteger> totalSupply() {
+        final Function function = new Function(FUNC_TOTALSUPPLY, 
+                Arrays.<Type>asList(), 
+                Arrays.<TypeReference<?>>asList(new TypeReference<Uint256>() {}));
+        return executeRemoteCallSingleValueReturn(function, BigInteger.class);
     }
 
     public RemoteFunctionCall<TransactionReceipt> transferFrom(String from, String to, BigInteger tokenId) {
