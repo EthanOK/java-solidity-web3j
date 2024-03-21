@@ -42,6 +42,15 @@ public class GetStorageAtSlot {
 
     }
 
+    public static String GetDataStorageAt(String RPC_URL, String contract, String hex_sloat) throws IOException {
+        BigInteger slot_ = Numeric.toBigInt(hex_sloat);
+        Web3j web3j = Web3j.build(new HttpService(RPC_URL));
+        EthGetStorageAt ethGetStorageAt = web3j.ethGetStorageAt(contract, slot_, DefaultBlockParameterName.LATEST)
+                .send();
+        return ethGetStorageAt.getData();
+
+    }
+
     public static String getData_BSC(String contract, String slot) throws IOException {
         BigInteger slot_ = new BigInteger(slot);
         EthGetStorageAt ethGetStorageAt = web3j_BSC.ethGetStorageAt(contract, slot_, DefaultBlockParameterName.LATEST)
