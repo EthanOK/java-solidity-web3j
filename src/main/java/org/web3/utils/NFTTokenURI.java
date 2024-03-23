@@ -22,13 +22,6 @@ public class NFTTokenURI {
 
                 int len = uniqueTokenIds.length;
 
-                // struct Call {
-                // address target;
-                // bytes callData;
-                // }
-                // function aggregateStaticCall(
-                // Call[] memory calls
-                // ) public view returns (uint256 blockNumber, bytes[] memory returnData)
                 DynamicStruct[] callDatas = new DynamicStruct[len];
 
                 for (int i = 0; i < len; i++) {

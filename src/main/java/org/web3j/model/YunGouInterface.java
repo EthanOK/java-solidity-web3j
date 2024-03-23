@@ -43,7 +43,7 @@ import org.web3j.tx.gas.ContractGasProvider;
  * or the org.web3j.codegen.SolidityFunctionWrapperGenerator in the 
  * <a href="https://github.com/web3j/web3j/tree/master/codegen">codegen module</a> to update.
  *
- * <p>Generated with web3j version 4.10.3.
+ * <p>Generated with web3j version 4.11.0.
  */
 @SuppressWarnings("rawtypes")
 public class YunGouInterface extends Contract {

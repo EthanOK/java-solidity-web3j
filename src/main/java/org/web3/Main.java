@@ -21,7 +21,7 @@ public class Main {
 	// mvn web3j:generate-sources
 
 	static Dotenv dotenv = Dotenv.load();
-	static String RPC = dotenv.get("ALCHEMY_GOERLI_URL");
+	static String RPC = dotenv.get("ALCHEMY_SEPOLIA_URL");
 	static String privatekey = dotenv.get("private_key");
 	static String privatekeyOperator = dotenv.get("private_key_operator");
 
@@ -33,17 +33,17 @@ public class Main {
 				.build(new HttpService(RPC));
 
 		// 获取合约地址和ABI
-		String multicallAddressEveryone = "0xA9CfFab86C5c39AB4d345d7Bf527Ffbd0B5c5941";
-		String multicallAddressOwner = "0x342e003e42c4576d50fe1222a2e68bbe51728fa0";
-		String contractAddress = "0x0d3e02768ab63516ab5d386fad462214ca3e6a86";
+		String multicallAddressEveryone = "0xcA11bde05977b3631167028862bE2a173976CA11";
+		String multicallAddressOwner = "0x642195ca3a8928BF8A9D063fF38B6fa8F75696e8";
+		String contractAddress = "0x709B78B36b7208f668A3823c1d1992C0805E4f4d";
 		String[] tokenIds = { "16", "32" };
 
 		// 只读 任何人
 		getTokenURI(web3j, multicallAddressEveryone, contractAddress, tokenIds);
 
 		// 只读 only owner
-		// getTokenURI(web3j, credentials, multicallAddressOwner, contractAddress,
-		// tokenIds);
+		getTokenURI(web3j, credentials, multicallAddressOwner, contractAddress,
+				tokenIds);
 
 		// 区块链写操作
 
@@ -69,11 +69,6 @@ public class Main {
 
 		BigInteger blockNumber1 = contract1.getBlockNumber().sendAsync().get();
 		System.out.println("blockNumber:" + blockNumber1);
-
-		//
-		Credentials operator = Credentials.create(privatekeyOperator);
-		String nftexchange = "0x5D0C8b801d2Fd1dEEBB5aDfA89a8609becD01D83";
-		GETTokenURIs.getTokenURI(web3j, operator, multicallAddressEveryone, contractAddress, tokenIds);
 
 	}
 

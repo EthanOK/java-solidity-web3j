@@ -39,7 +39,7 @@ import org.web3j.tx.gas.ContractGasProvider;
  * or the org.web3j.codegen.SolidityFunctionWrapperGenerator in the 
  * <a href="https://github.com/web3j/web3j/tree/master/codegen">codegen module</a> to update.
  *
- * <p>Generated with web3j version 4.10.3.
+ * <p>Generated with web3j version 4.11.0.
  */
 @SuppressWarnings("rawtypes")
 public class OpenseaInterface extends Contract {
@@ -303,7 +303,7 @@ public class OpenseaInterface extends Contract {
             this.criteriaProof = criteriaProof;
         }
 
-        public CriteriaResolver(Uint256 orderIndex, Uint8 side, Uint256 index, Uint256 identifier, DynamicArray<Bytes32> criteriaProof) {
+        public CriteriaResolver(Uint256 orderIndex, Uint8 side, Uint256 index, Uint256 identifier, @Parameterized(type = Bytes32.class) DynamicArray<Bytes32> criteriaProof) {
             super(orderIndex, side, index, identifier, criteriaProof);
             this.orderIndex = orderIndex.getValue();
             this.side = side.getValue();
