@@ -5,6 +5,7 @@ import org.web3.utils.GETTokenURIs;
 import org.web3.utils.NFTTokenURI;
 import org.web3.utils.NFTTokenURIOP;
 import org.web3j.crypto.Credentials;
+import org.web3j.model.IERC165;
 import org.web3j.model.Multicall2Test;
 import org.web3j.protocol.Web3j;
 import org.web3j.protocol.core.methods.response.TransactionReceipt;
@@ -12,6 +13,7 @@ import org.web3j.tx.RawTransactionManager;
 import org.web3j.tx.ReadonlyTransactionManager;
 import org.web3j.tx.gas.ContractGasProvider;
 import org.web3j.tx.gas.DefaultGasProvider;
+import org.web3j.utils.Numeric;
 import org.web3j.protocol.http.HttpService;
 import java.math.BigInteger;
 import java.util.Map;
@@ -70,6 +72,11 @@ public class Main {
 		BigInteger blockNumber1 = contract1.getBlockNumber().sendAsync().get();
 		System.out.println("blockNumber:" + blockNumber1);
 
+		IERC165 erc165 = IERC165.load("0x7bAFa845D7d6Ffbd40697Ead682508486e32970b", web3j,
+				new ReadonlyTransactionManager(web3j, null), contractGasProvider);
+		String IERC6551Account_V3 = "0x6faff5f1";
+		Boolean bool = erc165.supportsInterface(Numeric.hexStringToByteArray(IERC6551Account_V3)).sendAsync().get();
+		System.out.println(bool);
 	}
 
 	public static void getTokenURI(Web3j web3j, String multicalladdress, String tokenAddress,
