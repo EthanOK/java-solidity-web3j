@@ -72,11 +72,26 @@ public class Main {
 		BigInteger blockNumber1 = contract1.getBlockNumber().sendAsync().get();
 		System.out.println("blockNumber:" + blockNumber1);
 
-		IERC165 erc165 = IERC165.load("0x7bAFa845D7d6Ffbd40697Ead682508486e32970b", web3j,
-				new ReadonlyTransactionManager(web3j, null), contractGasProvider);
-		String IERC6551Account_V3 = "0x6faff5f1";
-		Boolean bool = erc165.supportsInterface(Numeric.hexStringToByteArray(IERC6551Account_V3)).sendAsync().get();
-		System.out.println(bool);
+		try {
+			String ERC6551Account = "0x7bAFa845D7d6Ffbd40697Ead682508486e32970b";
+			IERC165 erc165 = IERC165.load(ERC6551Account, web3j,
+					new ReadonlyTransactionManager(web3j, null), contractGasProvider);
+			String IERC6551Account_V3 = "0x6faff5f1";
+			Boolean is_V3 = erc165.supportsInterface(Numeric.hexStringToByteArray(IERC6551Account_V3)).sendAsync()
+					.get();
+			if (is_V3) {
+				// This v3
+				// TODO: handle
+			} else {
+				// This v2
+				// TODO: handle
+			}
+
+		} catch (Exception e) {
+			// TODO: handle exception
+			System.out.println(e);
+		}
+
 	}
 
 	public static void getTokenURI(Web3j web3j, String multicalladdress, String tokenAddress,
