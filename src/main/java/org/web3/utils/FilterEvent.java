@@ -127,10 +127,17 @@ public class FilterEvent {
 
                     String account = (String) decodeDatas.get(0).getValue();
 
+                    String salt = Numeric.toHexString((byte[]) decodeDatas.get(1).getValue());
+
+                    String chainId = ((BigInteger) decodeDatas.get(2).getValue()).toString();
+
                     System.out.println("ERC-6551 Registry: " + address);
                     System.out.println("ERC-6551 Account: " + account);
                     System.out.println("Token Contract: " + tokenContract);
                     System.out.println("TokenId: " + tokenId);
+                    System.out.println("Salt: " + salt);
+
+                    System.out.println("ChainId: " + chainId);
 
                     System.out.println("###############");
                 } else if (topics_0.equalsIgnoreCase(Transfer_Topics_0)) {

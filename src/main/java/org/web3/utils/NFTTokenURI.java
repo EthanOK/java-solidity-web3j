@@ -31,6 +31,7 @@ public class NFTTokenURI {
                                         }));
                         String encodedtokenURI = FunctionEncoder.encode(tokenURI);
                         byte[] bytesData = Numeric.hexStringToByteArray(encodedtokenURI);
+
                         callDatas[i] = new DynamicStruct(
                                         new Address(tokenAddress),
                                         new DynamicBytes(bytesData));
@@ -45,8 +46,10 @@ public class NFTTokenURI {
                                 }));
 
                 String encodedFunction = FunctionEncoder.encode(function);
+                // https://docs.web3j.io/4.11.0/transactions/transactions_and_smart_contracts/#querying-the-state-of-a-smart-contract
                 EthCall ethCall = web3j.ethCall(
-                                Transaction.createEthCallTransaction("0x0d3e02768ab63516ab5d386fad462214ca3e6a86",
+                                Transaction.createEthCallTransaction(
+                                                null,
                                                 multicalladdress,
                                                 encodedFunction),
                                 DefaultBlockParameterName.LATEST)
