@@ -71,6 +71,21 @@
     </dependencies>
 
     <repositories>
+        <!-- Maven Central mirrors (useful when repo.maven.apache.org is unreachable/timeouts) -->
+        <repository>
+            <id>central-repo1</id>
+            <name>Maven Central (repo1)</name>
+            <url>https://repo1.maven.org/maven2/</url>
+            <releases><enabled>true</enabled></releases>
+            <snapshots><enabled>false</enabled></snapshots>
+        </repository>
+        <repository>
+            <id>central-aliyun</id>
+            <name>Maven Central (Aliyun mirror)</name>
+            <url>https://maven.aliyun.com/repository/central</url>
+            <releases><enabled>true</enabled></releases>
+            <snapshots><enabled>false</enabled></snapshots>
+        </repository>
         <repository>
             <id>consensys</id>
             <url>https://dl.cloudsmith.io/public/consensys/maven/maven/</url>
