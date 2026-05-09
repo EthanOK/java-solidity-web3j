@@ -4,6 +4,7 @@ import com.okx.x402.client.OKXHttpClient;
 import com.okx.x402.crypto.OKXEvmSigner;
 import com.okx.x402.crypto.OKXSignerFactory;
 import com.okx.x402.crypto.OKXSignerFactory.OKXSignerConfig;
+import com.okx.x402.util.Json;
 import com.okx.x402.util.OKXAuth;
 
 import io.github.cdimascio.dotenv.Dotenv;
@@ -11,7 +12,6 @@ import io.github.cdimascio.dotenv.Dotenv;
 import java.net.URI;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
-import java.util.Base64;
 import java.util.Map;
 import java.util.stream.Stream;
 
@@ -56,6 +56,8 @@ public class X402DemoClient {
             // const url = `${OKX_BASE_URL}${requestPath}`;
             String OKX_BASE_URL = "https://web3.okx.com";
             String OKX_CANDLES_PATH = "/api/v6/dex/market/candles";
+
+            // GET Request Example:
             String queryParams = "chainIndex=1&tokenContractAddress=0x45804880de22913dafe09f4980848ece6ecbaf78&bar=1H&limit=300";
             String requestPath = OKX_CANDLES_PATH + "?" + queryParams;
             String uri = OKX_BASE_URL + requestPath;
@@ -73,13 +75,45 @@ public class X402DemoClient {
             System.out.println("Status: " + resp.statusCode());
             System.out.println("Body: " + resp.body());
 
-            // Step 4: Print settlement proof
-            String paymentResponse = resp.headers()
-                    .firstValue("PAYMENT-RESPONSE").orElse(null);
-            if (paymentResponse != null) {
-                String json = new String(Base64.getDecoder().decode(paymentResponse));
-                System.out.println("Settlement: " + json);
-            }
+            // // Step 4: Print settlement proof
+            // String paymentResponse = resp.headers()
+            // .firstValue("PAYMENT-RESPONSE").orElse(null);
+            // if (paymentResponse != null) {
+            // String json = new String(Base64.getDecoder().decode(paymentResponse));
+            // System.out.println("Settlement: " + json);
+            // }
+
+            // POST Request Example:
+            String OKX_PRICE_INFO_PATH = "/api/v6/dex/market/price-info";
+            String priceInfoRequestPath = OKX_PRICE_INFO_PATH;
+            String priceInfoUri = OKX_BASE_URL + priceInfoRequestPath;
+            String rawPriceInfoBody = """
+                    [
+                        {
+                            "chainIndex": "1",
+                            "tokenContractAddress": "0x68749665FF8D2d112Fa859AA293F07A622782F38"
+                        },
+                        {
+                            "chainIndex": "1",
+                            "tokenContractAddress": "0x45804880de22913dafe09f4980848ece6ecbaf78"
+                        }
+                    ]
+                    """;
+            String priceInfoBody = Json.MAPPER.readTree(rawPriceInfoBody).toString();
+
+            Map<String, String> priceInfoHeaders = auth.createHeaders("POST", priceInfoRequestPath, priceInfoBody);
+
+            HttpRequest priceInfoRequest = HttpRequest.newBuilder()
+                    .uri(URI.create(priceInfoUri))
+                    .headers(priceInfoHeaders.entrySet().stream()
+                            .flatMap(e -> Stream.of(e.getKey(), e.getValue()))
+                            .toArray(String[]::new))
+                    .POST(HttpRequest.BodyPublishers.ofString(priceInfoBody))
+                    .build();
+            HttpResponse<String> priceInfoResp = client.request(priceInfoRequest);
+            System.out.println("Status: " + priceInfoResp.statusCode());
+            System.out.println("Body: " + priceInfoResp.body());
+
         } catch (Exception e) {
             System.err.println("Payment failed: " + e.getMessage());
             e.printStackTrace();
