@@ -1,9 +1,11 @@
 package org.web3.okx;
 
 import com.okx.x402.client.OKXHttpClient;
+import com.okx.x402.client.OKXHttpClientConfig;
 import com.okx.x402.crypto.OKXEvmSigner;
 import com.okx.x402.crypto.OKXSignerFactory;
 import com.okx.x402.crypto.OKXSignerFactory.OKXSignerConfig;
+import com.okx.x402.model.v2.PaymentRequirements;
 import com.okx.x402.util.Json;
 import com.okx.x402.util.OKXAuth;
 
@@ -50,7 +52,24 @@ public class X402DemoClient {
             System.out.println("Signer address: " + signer.getAddress());
 
             // Step 2: Create auto-402 handling client
-            OKXHttpClient client = new OKXHttpClient(signer, "eip155:196");
+            // OKXHttpClient client = new OKXHttpClient(signer, "eip155:196");
+            String USDT_ADDRESS_XLAYER = "0x779ded0c9e1022225f8e0630b35a9b54be713736";
+
+            OKXHttpClientConfig cfg = new OKXHttpClientConfig(signer);
+            cfg.network = "eip155:196";
+            String preferredNetwork = cfg.network;
+            cfg.paymentRequirementsSelector = (version, accepts) -> {
+                // 1) 与 defaultSelector 一致：限定 preferredNetwork，且优先 USDT
+                for (PaymentRequirements r : accepts) {
+                    if (preferredNetwork != null && preferredNetwork.equals(r.network)
+                            && USDT_ADDRESS_XLAYER.equalsIgnoreCase(r.asset)) {
+                        return r;
+                    }
+                }
+                // 2) 无匹配链时：第一条
+                return accepts.get(0);
+            };
+            OKXHttpClient client = new OKXHttpClient(cfg);
 
             OKXAuth auth = new OKXAuth(apiKey, secretKey, passphrase);
             // const url = `${OKX_BASE_URL}${requestPath}`;
