@@ -8,7 +8,7 @@ import java.security.SecureRandom;
 import java.util.Base64;
 import java.util.*;
 
-public class X402_OKX_Instance {
+public class X402_OKX_Custom {
 
     private static final ObjectMapper mapper = new ObjectMapper();
 

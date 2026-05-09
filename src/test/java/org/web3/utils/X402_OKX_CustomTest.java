@@ -7,11 +7,11 @@ import java.util.regex.*;
 
 import org.junit.jupiter.api.*;
 
-public class X402_OKXTest {
+public class X402_OKX_CustomTest {
 
   // 固定类型（强类型）版本：不用 JSON 解析也能直接取字段
-  record X402Data(int x402Version, X402_OKX_Instance.X402Resource resource,
-      List<X402_OKX_Instance.X402Accepted> accepts) {
+  record X402Data(int x402Version, X402_OKX_Custom.X402Resource resource,
+      List<X402_OKX_Custom.X402Accepted> accepts) {
   }
 
   // 当任意行情 API 付费接口触发 x402 付款信息时，你将收到如下返回内容：
@@ -79,7 +79,7 @@ public class X402_OKXTest {
 
     X402Data X402_DATA = parseX402Data(X402_DATA_JSON);
     String payToken = "0x779ded0c9e1022225f8e0630b35a9b54be713736";
-    X402_OKX_Instance.X402Accepted accepted = X402_DATA.accepts().stream().filter(a -> a.asset().equals(payToken))
+    X402_OKX_Custom.X402Accepted accepted = X402_DATA.accepts().stream().filter(a -> a.asset().equals(payToken))
         .findFirst().orElseThrow(() -> new RuntimeException("Accepted not found"));
 
     // EIP712 Domain
@@ -108,9 +108,9 @@ public class X402_OKXTest {
     BigInteger validBefore = BigInteger.valueOf(System.currentTimeMillis() / 1000L)
         .add(BigInteger.valueOf(accepted.maxTimeoutSeconds()));
     message.put("validBefore", validBefore.toString());
-    message.put("nonce", X402_OKX_Instance.generateNonce());
+    message.put("nonce", X402_OKX_Custom.generateNonce());
 
-    String sig = X402_OKX_Instance.signTypedData(
+    String sig = X402_OKX_Custom.signTypedData(
         privateKey,
         domain,
         types,
@@ -123,9 +123,9 @@ public class X402_OKXTest {
 
     Object authorization = message; // message body
 
-    X402_OKX_Instance.SignResult signResult = new X402_OKX_Instance.SignResult(sig, authorization);
-    X402_OKX_Instance.X402Resource resource = X402_DATA.resource();
-    String paymentSignature = X402_OKX_Instance.buildX402Header(x402Version, signResult, resource,
+    X402_OKX_Custom.SignResult signResult = new X402_OKX_Custom.SignResult(sig, authorization);
+    X402_OKX_Custom.X402Resource resource = X402_DATA.resource();
+    String paymentSignature = X402_OKX_Custom.buildX402Header(x402Version, signResult, resource,
         accepted);
     System.out.println("paymentSignature: " + paymentSignature);
   }

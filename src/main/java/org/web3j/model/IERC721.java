@@ -33,13 +33,15 @@ import org.web3j.tx.gas.ContractGasProvider;
  * <p><strong>Do not modify!</strong>
  * <p>Please use the <a href="https://docs.web3j.io/command_line.html">web3j command line tools</a>,
  * or the org.web3j.codegen.SolidityFunctionWrapperGenerator in the 
- * <a href="https://github.com/web3j/web3j/tree/master/codegen">codegen module</a> to update.
+ * <a href="https://github.com/hyperledger-web3j/web3j/tree/main/codegen">codegen module</a> to update.
  *
- * <p>Generated with web3j version 4.11.0.
+ * <p>Generated with web3j version 4.12.3.
  */
 @SuppressWarnings("rawtypes")
 public class IERC721 extends Contract {
     public static final String BINARY = "";
+
+    private static String librariesLinkedBinary;
 
     public static final String FUNC_APPROVE = "approve";
 
@@ -82,24 +84,29 @@ public class IERC721 extends Contract {
     ;
 
     @Deprecated
-    protected IERC721(String contractAddress, Web3j web3j, Credentials credentials, BigInteger gasPrice, BigInteger gasLimit) {
+    protected IERC721(String contractAddress, Web3j web3j, Credentials credentials,
+            BigInteger gasPrice, BigInteger gasLimit) {
         super(BINARY, contractAddress, web3j, credentials, gasPrice, gasLimit);
     }
 
-    protected IERC721(String contractAddress, Web3j web3j, Credentials credentials, ContractGasProvider contractGasProvider) {
+    protected IERC721(String contractAddress, Web3j web3j, Credentials credentials,
+            ContractGasProvider contractGasProvider) {
         super(BINARY, contractAddress, web3j, credentials, contractGasProvider);
     }
 
     @Deprecated
-    protected IERC721(String contractAddress, Web3j web3j, TransactionManager transactionManager, BigInteger gasPrice, BigInteger gasLimit) {
+    protected IERC721(String contractAddress, Web3j web3j, TransactionManager transactionManager,
+            BigInteger gasPrice, BigInteger gasLimit) {
         super(BINARY, contractAddress, web3j, transactionManager, gasPrice, gasLimit);
     }
 
-    protected IERC721(String contractAddress, Web3j web3j, TransactionManager transactionManager, ContractGasProvider contractGasProvider) {
+    protected IERC721(String contractAddress, Web3j web3j, TransactionManager transactionManager,
+            ContractGasProvider contractGasProvider) {
         super(BINARY, contractAddress, web3j, transactionManager, contractGasProvider);
     }
 
-    public static List<ApprovalEventResponse> getApprovalEvents(TransactionReceipt transactionReceipt) {
+    public static List<ApprovalEventResponse> getApprovalEvents(
+            TransactionReceipt transactionReceipt) {
         List<Contract.EventValuesWithLog> valueList = staticExtractEventParametersWithLog(APPROVAL_EVENT, transactionReceipt);
         ArrayList<ApprovalEventResponse> responses = new ArrayList<ApprovalEventResponse>(valueList.size());
         for (Contract.EventValuesWithLog eventValues : valueList) {
@@ -127,13 +134,15 @@ public class IERC721 extends Contract {
         return web3j.ethLogFlowable(filter).map(log -> getApprovalEventFromLog(log));
     }
 
-    public Flowable<ApprovalEventResponse> approvalEventFlowable(DefaultBlockParameter startBlock, DefaultBlockParameter endBlock) {
+    public Flowable<ApprovalEventResponse> approvalEventFlowable(DefaultBlockParameter startBlock,
+            DefaultBlockParameter endBlock) {
         EthFilter filter = new EthFilter(startBlock, endBlock, getContractAddress());
         filter.addSingleTopic(EventEncoder.encode(APPROVAL_EVENT));
         return approvalEventFlowable(filter);
     }
 
-    public static List<ApprovalForAllEventResponse> getApprovalForAllEvents(TransactionReceipt transactionReceipt) {
+    public static List<ApprovalForAllEventResponse> getApprovalForAllEvents(
+            TransactionReceipt transactionReceipt) {
         List<Contract.EventValuesWithLog> valueList = staticExtractEventParametersWithLog(APPROVALFORALL_EVENT, transactionReceipt);
         ArrayList<ApprovalForAllEventResponse> responses = new ArrayList<ApprovalForAllEventResponse>(valueList.size());
         for (Contract.EventValuesWithLog eventValues : valueList) {
@@ -161,13 +170,15 @@ public class IERC721 extends Contract {
         return web3j.ethLogFlowable(filter).map(log -> getApprovalForAllEventFromLog(log));
     }
 
-    public Flowable<ApprovalForAllEventResponse> approvalForAllEventFlowable(DefaultBlockParameter startBlock, DefaultBlockParameter endBlock) {
+    public Flowable<ApprovalForAllEventResponse> approvalForAllEventFlowable(
+            DefaultBlockParameter startBlock, DefaultBlockParameter endBlock) {
         EthFilter filter = new EthFilter(startBlock, endBlock, getContractAddress());
         filter.addSingleTopic(EventEncoder.encode(APPROVALFORALL_EVENT));
         return approvalForAllEventFlowable(filter);
     }
 
-    public static List<TransferEventResponse> getTransferEvents(TransactionReceipt transactionReceipt) {
+    public static List<TransferEventResponse> getTransferEvents(
+            TransactionReceipt transactionReceipt) {
         List<Contract.EventValuesWithLog> valueList = staticExtractEventParametersWithLog(TRANSFER_EVENT, transactionReceipt);
         ArrayList<TransferEventResponse> responses = new ArrayList<TransferEventResponse>(valueList.size());
         for (Contract.EventValuesWithLog eventValues : valueList) {
@@ -195,7 +206,8 @@ public class IERC721 extends Contract {
         return web3j.ethLogFlowable(filter).map(log -> getTransferEventFromLog(log));
     }
 
-    public Flowable<TransferEventResponse> transferEventFlowable(DefaultBlockParameter startBlock, DefaultBlockParameter endBlock) {
+    public Flowable<TransferEventResponse> transferEventFlowable(DefaultBlockParameter startBlock,
+            DefaultBlockParameter endBlock) {
         EthFilter filter = new EthFilter(startBlock, endBlock, getContractAddress());
         filter.addSingleTopic(EventEncoder.encode(TRANSFER_EVENT));
         return transferEventFlowable(filter);
@@ -253,7 +265,8 @@ public class IERC721 extends Contract {
         return executeRemoteCallSingleValueReturn(function, String.class);
     }
 
-    public RemoteFunctionCall<TransactionReceipt> safeTransferFrom(String from, String to, BigInteger tokenId) {
+    public RemoteFunctionCall<TransactionReceipt> safeTransferFrom(String from, String to,
+            BigInteger tokenId) {
         final Function function = new Function(
                 FUNC_safeTransferFrom, 
                 Arrays.<Type>asList(new org.web3j.abi.datatypes.Address(160, from), 
@@ -263,7 +276,8 @@ public class IERC721 extends Contract {
         return executeRemoteCallTransaction(function);
     }
 
-    public RemoteFunctionCall<TransactionReceipt> safeTransferFrom(String from, String to, BigInteger tokenId, byte[] data) {
+    public RemoteFunctionCall<TransactionReceipt> safeTransferFrom(String from, String to,
+            BigInteger tokenId, byte[] data) {
         final Function function = new Function(
                 FUNC_safeTransferFrom, 
                 Arrays.<Type>asList(new org.web3j.abi.datatypes.Address(160, from), 
@@ -274,7 +288,8 @@ public class IERC721 extends Contract {
         return executeRemoteCallTransaction(function);
     }
 
-    public RemoteFunctionCall<TransactionReceipt> setApprovalForAll(String operator, Boolean _approved) {
+    public RemoteFunctionCall<TransactionReceipt> setApprovalForAll(String operator,
+            Boolean _approved) {
         final Function function = new Function(
                 FUNC_SETAPPROVALFORALL, 
                 Arrays.<Type>asList(new org.web3j.abi.datatypes.Address(160, operator), 
@@ -311,7 +326,8 @@ public class IERC721 extends Contract {
         return executeRemoteCallSingleValueReturn(function, BigInteger.class);
     }
 
-    public RemoteFunctionCall<TransactionReceipt> transferFrom(String from, String to, BigInteger tokenId) {
+    public RemoteFunctionCall<TransactionReceipt> transferFrom(String from, String to,
+            BigInteger tokenId) {
         final Function function = new Function(
                 FUNC_TRANSFERFROM, 
                 Arrays.<Type>asList(new org.web3j.abi.datatypes.Address(160, from), 
@@ -322,39 +338,59 @@ public class IERC721 extends Contract {
     }
 
     @Deprecated
-    public static IERC721 load(String contractAddress, Web3j web3j, Credentials credentials, BigInteger gasPrice, BigInteger gasLimit) {
+    public static IERC721 load(String contractAddress, Web3j web3j, Credentials credentials,
+            BigInteger gasPrice, BigInteger gasLimit) {
         return new IERC721(contractAddress, web3j, credentials, gasPrice, gasLimit);
     }
 
     @Deprecated
-    public static IERC721 load(String contractAddress, Web3j web3j, TransactionManager transactionManager, BigInteger gasPrice, BigInteger gasLimit) {
+    public static IERC721 load(String contractAddress, Web3j web3j,
+            TransactionManager transactionManager, BigInteger gasPrice, BigInteger gasLimit) {
         return new IERC721(contractAddress, web3j, transactionManager, gasPrice, gasLimit);
     }
 
-    public static IERC721 load(String contractAddress, Web3j web3j, Credentials credentials, ContractGasProvider contractGasProvider) {
+    public static IERC721 load(String contractAddress, Web3j web3j, Credentials credentials,
+            ContractGasProvider contractGasProvider) {
         return new IERC721(contractAddress, web3j, credentials, contractGasProvider);
     }
 
-    public static IERC721 load(String contractAddress, Web3j web3j, TransactionManager transactionManager, ContractGasProvider contractGasProvider) {
+    public static IERC721 load(String contractAddress, Web3j web3j,
+            TransactionManager transactionManager, ContractGasProvider contractGasProvider) {
         return new IERC721(contractAddress, web3j, transactionManager, contractGasProvider);
     }
 
-    public static RemoteCall<IERC721> deploy(Web3j web3j, Credentials credentials, ContractGasProvider contractGasProvider) {
-        return deployRemoteCall(IERC721.class, web3j, credentials, contractGasProvider, BINARY, "");
+    public static RemoteCall<IERC721> deploy(Web3j web3j, Credentials credentials,
+            ContractGasProvider contractGasProvider) {
+        return deployRemoteCall(IERC721.class, web3j, credentials, contractGasProvider, getDeploymentBinary(), "");
     }
 
     @Deprecated
-    public static RemoteCall<IERC721> deploy(Web3j web3j, Credentials credentials, BigInteger gasPrice, BigInteger gasLimit) {
-        return deployRemoteCall(IERC721.class, web3j, credentials, gasPrice, gasLimit, BINARY, "");
+    public static RemoteCall<IERC721> deploy(Web3j web3j, Credentials credentials,
+            BigInteger gasPrice, BigInteger gasLimit) {
+        return deployRemoteCall(IERC721.class, web3j, credentials, gasPrice, gasLimit, getDeploymentBinary(), "");
     }
 
-    public static RemoteCall<IERC721> deploy(Web3j web3j, TransactionManager transactionManager, ContractGasProvider contractGasProvider) {
-        return deployRemoteCall(IERC721.class, web3j, transactionManager, contractGasProvider, BINARY, "");
+    public static RemoteCall<IERC721> deploy(Web3j web3j, TransactionManager transactionManager,
+            ContractGasProvider contractGasProvider) {
+        return deployRemoteCall(IERC721.class, web3j, transactionManager, contractGasProvider, getDeploymentBinary(), "");
     }
 
     @Deprecated
-    public static RemoteCall<IERC721> deploy(Web3j web3j, TransactionManager transactionManager, BigInteger gasPrice, BigInteger gasLimit) {
-        return deployRemoteCall(IERC721.class, web3j, transactionManager, gasPrice, gasLimit, BINARY, "");
+    public static RemoteCall<IERC721> deploy(Web3j web3j, TransactionManager transactionManager,
+            BigInteger gasPrice, BigInteger gasLimit) {
+        return deployRemoteCall(IERC721.class, web3j, transactionManager, gasPrice, gasLimit, getDeploymentBinary(), "");
+    }
+
+    public static void linkLibraries(List<Contract.LinkReference> references) {
+        librariesLinkedBinary = linkBinaryWithReferences(BINARY, references);
+    }
+
+    private static String getDeploymentBinary() {
+        if (librariesLinkedBinary != null) {
+            return librariesLinkedBinary;
+        } else {
+            return BINARY;
+        }
     }
 
     public static class ApprovalEventResponse extends BaseEventResponse {

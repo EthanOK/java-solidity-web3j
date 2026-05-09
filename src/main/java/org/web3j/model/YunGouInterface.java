@@ -41,13 +41,15 @@ import org.web3j.tx.gas.ContractGasProvider;
  * <p><strong>Do not modify!</strong>
  * <p>Please use the <a href="https://docs.web3j.io/command_line.html">web3j command line tools</a>,
  * or the org.web3j.codegen.SolidityFunctionWrapperGenerator in the 
- * <a href="https://github.com/web3j/web3j/tree/master/codegen">codegen module</a> to update.
+ * <a href="https://github.com/hyperledger-web3j/web3j/tree/main/codegen">codegen module</a> to update.
  *
- * <p>Generated with web3j version 4.11.0.
+ * <p>Generated with web3j version 4.12.3.
  */
 @SuppressWarnings("rawtypes")
 public class YunGouInterface extends Contract {
     public static final String BINARY = "";
+
+    private static String librariesLinkedBinary;
 
     public static final String FUNC_BATCHEXCUTEWITHETH = "batchExcuteWithETH";
 
@@ -84,24 +86,29 @@ public class YunGouInterface extends Contract {
     ;
 
     @Deprecated
-    protected YunGouInterface(String contractAddress, Web3j web3j, Credentials credentials, BigInteger gasPrice, BigInteger gasLimit) {
+    protected YunGouInterface(String contractAddress, Web3j web3j, Credentials credentials,
+            BigInteger gasPrice, BigInteger gasLimit) {
         super(BINARY, contractAddress, web3j, credentials, gasPrice, gasLimit);
     }
 
-    protected YunGouInterface(String contractAddress, Web3j web3j, Credentials credentials, ContractGasProvider contractGasProvider) {
+    protected YunGouInterface(String contractAddress, Web3j web3j, Credentials credentials,
+            ContractGasProvider contractGasProvider) {
         super(BINARY, contractAddress, web3j, credentials, contractGasProvider);
     }
 
     @Deprecated
-    protected YunGouInterface(String contractAddress, Web3j web3j, TransactionManager transactionManager, BigInteger gasPrice, BigInteger gasLimit) {
+    protected YunGouInterface(String contractAddress, Web3j web3j,
+            TransactionManager transactionManager, BigInteger gasPrice, BigInteger gasLimit) {
         super(BINARY, contractAddress, web3j, transactionManager, gasPrice, gasLimit);
     }
 
-    protected YunGouInterface(String contractAddress, Web3j web3j, TransactionManager transactionManager, ContractGasProvider contractGasProvider) {
+    protected YunGouInterface(String contractAddress, Web3j web3j,
+            TransactionManager transactionManager, ContractGasProvider contractGasProvider) {
         super(BINARY, contractAddress, web3j, transactionManager, contractGasProvider);
     }
 
-    public static List<OrderCancelledEventResponse> getOrderCancelledEvents(TransactionReceipt transactionReceipt) {
+    public static List<OrderCancelledEventResponse> getOrderCancelledEvents(
+            TransactionReceipt transactionReceipt) {
         List<Contract.EventValuesWithLog> valueList = staticExtractEventParametersWithLog(ORDERCANCELLED_EVENT, transactionReceipt);
         ArrayList<OrderCancelledEventResponse> responses = new ArrayList<OrderCancelledEventResponse>(valueList.size());
         for (Contract.EventValuesWithLog eventValues : valueList) {
@@ -127,13 +134,15 @@ public class YunGouInterface extends Contract {
         return web3j.ethLogFlowable(filter).map(log -> getOrderCancelledEventFromLog(log));
     }
 
-    public Flowable<OrderCancelledEventResponse> orderCancelledEventFlowable(DefaultBlockParameter startBlock, DefaultBlockParameter endBlock) {
+    public Flowable<OrderCancelledEventResponse> orderCancelledEventFlowable(
+            DefaultBlockParameter startBlock, DefaultBlockParameter endBlock) {
         EthFilter filter = new EthFilter(startBlock, endBlock, getContractAddress());
         filter.addSingleTopic(EventEncoder.encode(ORDERCANCELLED_EVENT));
         return orderCancelledEventFlowable(filter);
     }
 
-    public static List<OrderFulfilledEventResponse> getOrderFulfilledEvents(TransactionReceipt transactionReceipt) {
+    public static List<OrderFulfilledEventResponse> getOrderFulfilledEvents(
+            TransactionReceipt transactionReceipt) {
         List<Contract.EventValuesWithLog> valueList = staticExtractEventParametersWithLog(ORDERFULFILLED_EVENT, transactionReceipt);
         ArrayList<OrderFulfilledEventResponse> responses = new ArrayList<OrderFulfilledEventResponse>(valueList.size());
         for (Contract.EventValuesWithLog eventValues : valueList) {
@@ -173,13 +182,15 @@ public class YunGouInterface extends Contract {
         return web3j.ethLogFlowable(filter).map(log -> getOrderFulfilledEventFromLog(log));
     }
 
-    public Flowable<OrderFulfilledEventResponse> orderFulfilledEventFlowable(DefaultBlockParameter startBlock, DefaultBlockParameter endBlock) {
+    public Flowable<OrderFulfilledEventResponse> orderFulfilledEventFlowable(
+            DefaultBlockParameter startBlock, DefaultBlockParameter endBlock) {
         EthFilter filter = new EthFilter(startBlock, endBlock, getContractAddress());
         filter.addSingleTopic(EventEncoder.encode(ORDERFULFILLED_EVENT));
         return orderFulfilledEventFlowable(filter);
     }
 
-    public RemoteFunctionCall<TransactionReceipt> batchExcuteWithETH(List<BasicOrder> orders, String receiver, BigInteger weiValue) {
+    public RemoteFunctionCall<TransactionReceipt> batchExcuteWithETH(List<BasicOrder> orders,
+            String receiver, BigInteger weiValue) {
         final Function function = new Function(
                 FUNC_BATCHEXCUTEWITHETH, 
                 Arrays.<Type>asList(new org.web3j.abi.datatypes.DynamicArray<BasicOrder>(BasicOrder.class, orders), 
@@ -188,7 +199,8 @@ public class YunGouInterface extends Contract {
         return executeRemoteCallTransaction(function, weiValue);
     }
 
-    public RemoteFunctionCall<TransactionReceipt> cancel(List<BasicOrderParameters> ordersParameters) {
+    public RemoteFunctionCall<TransactionReceipt> cancel(
+            List<BasicOrderParameters> ordersParameters) {
         final Function function = new Function(
                 FUNC_CANCEL, 
                 Arrays.<Type>asList(new org.web3j.abi.datatypes.DynamicArray<BasicOrderParameters>(BasicOrderParameters.class, ordersParameters)), 
@@ -196,7 +208,8 @@ public class YunGouInterface extends Contract {
         return executeRemoteCallTransaction(function);
     }
 
-    public RemoteFunctionCall<TransactionReceipt> excuteWithETH(BasicOrder order, String receiver, BigInteger weiValue) {
+    public RemoteFunctionCall<TransactionReceipt> excuteWithETH(BasicOrder order, String receiver,
+            BigInteger weiValue) {
         final Function function = new Function(
                 FUNC_EXCUTEWITHETH, 
                 Arrays.<Type>asList(order, 
@@ -291,39 +304,59 @@ public class YunGouInterface extends Contract {
     }
 
     @Deprecated
-    public static YunGouInterface load(String contractAddress, Web3j web3j, Credentials credentials, BigInteger gasPrice, BigInteger gasLimit) {
+    public static YunGouInterface load(String contractAddress, Web3j web3j, Credentials credentials,
+            BigInteger gasPrice, BigInteger gasLimit) {
         return new YunGouInterface(contractAddress, web3j, credentials, gasPrice, gasLimit);
     }
 
     @Deprecated
-    public static YunGouInterface load(String contractAddress, Web3j web3j, TransactionManager transactionManager, BigInteger gasPrice, BigInteger gasLimit) {
+    public static YunGouInterface load(String contractAddress, Web3j web3j,
+            TransactionManager transactionManager, BigInteger gasPrice, BigInteger gasLimit) {
         return new YunGouInterface(contractAddress, web3j, transactionManager, gasPrice, gasLimit);
     }
 
-    public static YunGouInterface load(String contractAddress, Web3j web3j, Credentials credentials, ContractGasProvider contractGasProvider) {
+    public static YunGouInterface load(String contractAddress, Web3j web3j, Credentials credentials,
+            ContractGasProvider contractGasProvider) {
         return new YunGouInterface(contractAddress, web3j, credentials, contractGasProvider);
     }
 
-    public static YunGouInterface load(String contractAddress, Web3j web3j, TransactionManager transactionManager, ContractGasProvider contractGasProvider) {
+    public static YunGouInterface load(String contractAddress, Web3j web3j,
+            TransactionManager transactionManager, ContractGasProvider contractGasProvider) {
         return new YunGouInterface(contractAddress, web3j, transactionManager, contractGasProvider);
     }
 
-    public static RemoteCall<YunGouInterface> deploy(Web3j web3j, Credentials credentials, ContractGasProvider contractGasProvider) {
-        return deployRemoteCall(YunGouInterface.class, web3j, credentials, contractGasProvider, BINARY, "");
+    public static RemoteCall<YunGouInterface> deploy(Web3j web3j, Credentials credentials,
+            ContractGasProvider contractGasProvider) {
+        return deployRemoteCall(YunGouInterface.class, web3j, credentials, contractGasProvider, getDeploymentBinary(), "");
     }
 
     @Deprecated
-    public static RemoteCall<YunGouInterface> deploy(Web3j web3j, Credentials credentials, BigInteger gasPrice, BigInteger gasLimit) {
-        return deployRemoteCall(YunGouInterface.class, web3j, credentials, gasPrice, gasLimit, BINARY, "");
+    public static RemoteCall<YunGouInterface> deploy(Web3j web3j, Credentials credentials,
+            BigInteger gasPrice, BigInteger gasLimit) {
+        return deployRemoteCall(YunGouInterface.class, web3j, credentials, gasPrice, gasLimit, getDeploymentBinary(), "");
     }
 
-    public static RemoteCall<YunGouInterface> deploy(Web3j web3j, TransactionManager transactionManager, ContractGasProvider contractGasProvider) {
-        return deployRemoteCall(YunGouInterface.class, web3j, transactionManager, contractGasProvider, BINARY, "");
+    public static RemoteCall<YunGouInterface> deploy(Web3j web3j,
+            TransactionManager transactionManager, ContractGasProvider contractGasProvider) {
+        return deployRemoteCall(YunGouInterface.class, web3j, transactionManager, contractGasProvider, getDeploymentBinary(), "");
     }
 
     @Deprecated
-    public static RemoteCall<YunGouInterface> deploy(Web3j web3j, TransactionManager transactionManager, BigInteger gasPrice, BigInteger gasLimit) {
-        return deployRemoteCall(YunGouInterface.class, web3j, transactionManager, gasPrice, gasLimit, BINARY, "");
+    public static RemoteCall<YunGouInterface> deploy(Web3j web3j,
+            TransactionManager transactionManager, BigInteger gasPrice, BigInteger gasLimit) {
+        return deployRemoteCall(YunGouInterface.class, web3j, transactionManager, gasPrice, gasLimit, getDeploymentBinary(), "");
+    }
+
+    public static void linkLibraries(List<Contract.LinkReference> references) {
+        librariesLinkedBinary = linkBinaryWithReferences(BINARY, references);
+    }
+
+    private static String getDeploymentBinary() {
+        if (librariesLinkedBinary != null) {
+            return librariesLinkedBinary;
+        } else {
+            return BINARY;
+        }
     }
 
     public static class BasicOrderParameters extends StaticStruct {
@@ -355,7 +388,11 @@ public class YunGouInterface extends Contract {
 
         public BigInteger afterTaxPrice;
 
-        public BasicOrderParameters(BigInteger orderType, String offerer, String offerToken, BigInteger offerTokenId, BigInteger unitPrice, BigInteger sellAmount, BigInteger startTime, BigInteger endTime, String paymentToken, BigInteger paymentTokenId, BigInteger salt, BigInteger royaltyFee, BigInteger platformFee, BigInteger afterTaxPrice) {
+        public BasicOrderParameters(BigInteger orderType, String offerer, String offerToken,
+                BigInteger offerTokenId, BigInteger unitPrice, BigInteger sellAmount,
+                BigInteger startTime, BigInteger endTime, String paymentToken,
+                BigInteger paymentTokenId, BigInteger salt, BigInteger royaltyFee,
+                BigInteger platformFee, BigInteger afterTaxPrice) {
             super(new org.web3j.abi.datatypes.generated.Uint8(orderType), 
                     new org.web3j.abi.datatypes.Address(160, offerer), 
                     new org.web3j.abi.datatypes.Address(160, offerToken), 
@@ -386,7 +423,10 @@ public class YunGouInterface extends Contract {
             this.afterTaxPrice = afterTaxPrice;
         }
 
-        public BasicOrderParameters(Uint8 orderType, Address offerer, Address offerToken, Uint256 offerTokenId, Uint256 unitPrice, Uint256 sellAmount, Uint256 startTime, Uint256 endTime, Address paymentToken, Uint256 paymentTokenId, Uint256 salt, Uint256 royaltyFee, Uint256 platformFee, Uint256 afterTaxPrice) {
+        public BasicOrderParameters(Uint8 orderType, Address offerer, Address offerToken,
+                Uint256 offerTokenId, Uint256 unitPrice, Uint256 sellAmount, Uint256 startTime,
+                Uint256 endTime, Address paymentToken, Uint256 paymentTokenId, Uint256 salt,
+                Uint256 royaltyFee, Uint256 platformFee, Uint256 afterTaxPrice) {
             super(orderType, offerer, offerToken, offerTokenId, unitPrice, sellAmount, startTime, endTime, paymentToken, paymentTokenId, salt, royaltyFee, platformFee, afterTaxPrice);
             this.orderType = orderType.getValue();
             this.offerer = offerer.getValue();
@@ -414,7 +454,8 @@ public class YunGouInterface extends Contract {
 
         public BigInteger shelvesTotal;
 
-        public OrderStatus(Boolean isValidated, Boolean isCancelled, BigInteger soldTotal, BigInteger shelvesTotal) {
+        public OrderStatus(Boolean isValidated, Boolean isCancelled, BigInteger soldTotal,
+                BigInteger shelvesTotal) {
             super(new org.web3j.abi.datatypes.Bool(isValidated), 
                     new org.web3j.abi.datatypes.Bool(isCancelled), 
                     new org.web3j.abi.datatypes.generated.Uint120(soldTotal), 
@@ -425,7 +466,8 @@ public class YunGouInterface extends Contract {
             this.shelvesTotal = shelvesTotal;
         }
 
-        public OrderStatus(Bool isValidated, Bool isCancelled, Uint120 soldTotal, Uint120 shelvesTotal) {
+        public OrderStatus(Bool isValidated, Bool isCancelled, Uint120 soldTotal,
+                Uint120 shelvesTotal) {
             super(isValidated, isCancelled, soldTotal, shelvesTotal);
             this.isValidated = isValidated.getValue();
             this.isCancelled = isCancelled.getValue();
@@ -453,7 +495,10 @@ public class YunGouInterface extends Contract {
 
         public byte[] systemSignature;
 
-        public BasicOrder(BasicOrderParameters parameters, byte[] orderSignature, BigInteger buyAmount, BigInteger totalRoyaltyFee, BigInteger totalPlatformFee, BigInteger totalAfterTaxIncome, BigInteger totalPayment, BigInteger expiryDate, byte[] systemSignature) {
+        public BasicOrder(BasicOrderParameters parameters, byte[] orderSignature,
+                BigInteger buyAmount, BigInteger totalRoyaltyFee, BigInteger totalPlatformFee,
+                BigInteger totalAfterTaxIncome, BigInteger totalPayment, BigInteger expiryDate,
+                byte[] systemSignature) {
             super(parameters, 
                     new org.web3j.abi.datatypes.DynamicBytes(orderSignature), 
                     new org.web3j.abi.datatypes.generated.Uint256(buyAmount), 
@@ -474,7 +519,10 @@ public class YunGouInterface extends Contract {
             this.systemSignature = systemSignature;
         }
 
-        public BasicOrder(BasicOrderParameters parameters, DynamicBytes orderSignature, Uint256 buyAmount, Uint256 totalRoyaltyFee, Uint256 totalPlatformFee, Uint256 totalAfterTaxIncome, Uint256 totalPayment, Uint256 expiryDate, DynamicBytes systemSignature) {
+        public BasicOrder(BasicOrderParameters parameters, DynamicBytes orderSignature,
+                Uint256 buyAmount, Uint256 totalRoyaltyFee, Uint256 totalPlatformFee,
+                Uint256 totalAfterTaxIncome, Uint256 totalPayment, Uint256 expiryDate,
+                DynamicBytes systemSignature) {
             super(parameters, orderSignature, buyAmount, totalRoyaltyFee, totalPlatformFee, totalAfterTaxIncome, totalPayment, expiryDate, systemSignature);
             this.parameters = parameters;
             this.orderSignature = orderSignature.getValue();

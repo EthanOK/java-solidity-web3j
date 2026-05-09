@@ -37,13 +37,15 @@ import org.web3j.tx.gas.ContractGasProvider;
  * <p><strong>Do not modify!</strong>
  * <p>Please use the <a href="https://docs.web3j.io/command_line.html">web3j command line tools</a>,
  * or the org.web3j.codegen.SolidityFunctionWrapperGenerator in the 
- * <a href="https://github.com/web3j/web3j/tree/master/codegen">codegen module</a> to update.
+ * <a href="https://github.com/hyperledger-web3j/web3j/tree/main/codegen">codegen module</a> to update.
  *
- * <p>Generated with web3j version 4.11.0.
+ * <p>Generated with web3j version 4.12.3.
  */
 @SuppressWarnings("rawtypes")
 public class OpenseaInterface extends Contract {
     public static final String BINARY = "";
+
+    private static String librariesLinkedBinary;
 
     public static final String FUNC_FULFILLAVAILABLEADVANCEDORDERS = "fulfillAvailableAdvancedOrders";
 
@@ -62,24 +64,32 @@ public class OpenseaInterface extends Contract {
     public static final String FUNC_NAME = "name";
 
     @Deprecated
-    protected OpenseaInterface(String contractAddress, Web3j web3j, Credentials credentials, BigInteger gasPrice, BigInteger gasLimit) {
+    protected OpenseaInterface(String contractAddress, Web3j web3j, Credentials credentials,
+            BigInteger gasPrice, BigInteger gasLimit) {
         super(BINARY, contractAddress, web3j, credentials, gasPrice, gasLimit);
     }
 
-    protected OpenseaInterface(String contractAddress, Web3j web3j, Credentials credentials, ContractGasProvider contractGasProvider) {
+    protected OpenseaInterface(String contractAddress, Web3j web3j, Credentials credentials,
+            ContractGasProvider contractGasProvider) {
         super(BINARY, contractAddress, web3j, credentials, contractGasProvider);
     }
 
     @Deprecated
-    protected OpenseaInterface(String contractAddress, Web3j web3j, TransactionManager transactionManager, BigInteger gasPrice, BigInteger gasLimit) {
+    protected OpenseaInterface(String contractAddress, Web3j web3j,
+            TransactionManager transactionManager, BigInteger gasPrice, BigInteger gasLimit) {
         super(BINARY, contractAddress, web3j, transactionManager, gasPrice, gasLimit);
     }
 
-    protected OpenseaInterface(String contractAddress, Web3j web3j, TransactionManager transactionManager, ContractGasProvider contractGasProvider) {
+    protected OpenseaInterface(String contractAddress, Web3j web3j,
+            TransactionManager transactionManager, ContractGasProvider contractGasProvider) {
         super(BINARY, contractAddress, web3j, transactionManager, contractGasProvider);
     }
 
-    public RemoteFunctionCall<TransactionReceipt> fulfillAvailableAdvancedOrders(List<AdvancedOrder> advancedOrders, List<CriteriaResolver> criteriaResolvers, List<FulfillmentComponent> offerFulfillments, List<FulfillmentComponent> considerationFulfillments, byte[] fulfillerConduitKey, String recipient, BigInteger maximumFulfilled, BigInteger weiValue) {
+    public RemoteFunctionCall<TransactionReceipt> fulfillAvailableAdvancedOrders(
+            List<AdvancedOrder> advancedOrders, List<CriteriaResolver> criteriaResolvers,
+            List<FulfillmentComponent> offerFulfillments,
+            List<FulfillmentComponent> considerationFulfillments, byte[] fulfillerConduitKey,
+            String recipient, BigInteger maximumFulfilled, BigInteger weiValue) {
         final Function function = new Function(
                 FUNC_FULFILLAVAILABLEADVANCEDORDERS, 
                 Arrays.<Type>asList(new org.web3j.abi.datatypes.DynamicArray<AdvancedOrder>(AdvancedOrder.class, advancedOrders), 
@@ -93,7 +103,8 @@ public class OpenseaInterface extends Contract {
         return executeRemoteCallTransaction(function, weiValue);
     }
 
-    public RemoteFunctionCall<TransactionReceipt> fulfillBasicOrder(BasicOrderParameters parameters, BigInteger weiValue) {
+    public RemoteFunctionCall<TransactionReceipt> fulfillBasicOrder(BasicOrderParameters parameters,
+            BigInteger weiValue) {
         final Function function = new Function(
                 FUNC_FULFILLBASICORDER, 
                 Arrays.<Type>asList(parameters), 
@@ -101,7 +112,8 @@ public class OpenseaInterface extends Contract {
         return executeRemoteCallTransaction(function, weiValue);
     }
 
-    public RemoteFunctionCall<TransactionReceipt> fulfillBasicOrder_FulfillmentComponent(FulfillmentComponent fulfillmentComponent0, BigInteger weiValue) {
+    public RemoteFunctionCall<TransactionReceipt> fulfillBasicOrder_FulfillmentComponent(
+            FulfillmentComponent fulfillmentComponent0, BigInteger weiValue) {
         final Function function = new Function(
                 FUNC_FULFILLBASICORDER_FULFILLMENTCOMPONENT, 
                 Arrays.<Type>asList(fulfillmentComponent0), 
@@ -109,7 +121,8 @@ public class OpenseaInterface extends Contract {
         return executeRemoteCallTransaction(function, weiValue);
     }
 
-    public RemoteFunctionCall<TransactionReceipt> fulfillBasicOrder_efficient_6GL6yc(BasicOrderParameters parameters, BigInteger weiValue) {
+    public RemoteFunctionCall<TransactionReceipt> fulfillBasicOrder_efficient_6GL6yc(
+            BasicOrderParameters parameters, BigInteger weiValue) {
         final Function function = new Function(
                 FUNC_FULFILLBASICORDER_EFFICIENT_6GL6YC, 
                 Arrays.<Type>asList(parameters), 
@@ -117,7 +130,8 @@ public class OpenseaInterface extends Contract {
         return executeRemoteCallTransaction(function, weiValue);
     }
 
-    public RemoteFunctionCall<TransactionReceipt> fulfillOrder(Order order, byte[] fulfillerConduitKey, BigInteger weiValue) {
+    public RemoteFunctionCall<TransactionReceipt> fulfillOrder(Order order,
+            byte[] fulfillerConduitKey, BigInteger weiValue) {
         final Function function = new Function(
                 FUNC_FULFILLORDER, 
                 Arrays.<Type>asList(order, 
@@ -126,14 +140,16 @@ public class OpenseaInterface extends Contract {
         return executeRemoteCallTransaction(function, weiValue);
     }
 
-    public RemoteFunctionCall<Tuple4<Boolean, Boolean, BigInteger, BigInteger>> getOrderStatus(byte[] orderHash) {
+    public RemoteFunctionCall<Tuple4<Boolean, Boolean, BigInteger, BigInteger>> getOrderStatus(
+            byte[] orderHash) {
         final Function function = new Function(FUNC_GETORDERSTATUS, 
                 Arrays.<Type>asList(new org.web3j.abi.datatypes.generated.Bytes32(orderHash)), 
                 Arrays.<TypeReference<?>>asList(new TypeReference<Bool>() {}, new TypeReference<Bool>() {}, new TypeReference<Uint256>() {}, new TypeReference<Uint256>() {}));
         return new RemoteFunctionCall<Tuple4<Boolean, Boolean, BigInteger, BigInteger>>(function,
                 new Callable<Tuple4<Boolean, Boolean, BigInteger, BigInteger>>() {
                     @Override
-                    public Tuple4<Boolean, Boolean, BigInteger, BigInteger> call() throws Exception {
+                    public Tuple4<Boolean, Boolean, BigInteger, BigInteger> call() throws
+                            Exception {
                         List<Type> results = executeCallMultipleValueReturn(function);
                         return new Tuple4<Boolean, Boolean, BigInteger, BigInteger>(
                                 (Boolean) results.get(0).getValue(), 
@@ -169,39 +185,59 @@ public class OpenseaInterface extends Contract {
     }
 
     @Deprecated
-    public static OpenseaInterface load(String contractAddress, Web3j web3j, Credentials credentials, BigInteger gasPrice, BigInteger gasLimit) {
+    public static OpenseaInterface load(String contractAddress, Web3j web3j,
+            Credentials credentials, BigInteger gasPrice, BigInteger gasLimit) {
         return new OpenseaInterface(contractAddress, web3j, credentials, gasPrice, gasLimit);
     }
 
     @Deprecated
-    public static OpenseaInterface load(String contractAddress, Web3j web3j, TransactionManager transactionManager, BigInteger gasPrice, BigInteger gasLimit) {
+    public static OpenseaInterface load(String contractAddress, Web3j web3j,
+            TransactionManager transactionManager, BigInteger gasPrice, BigInteger gasLimit) {
         return new OpenseaInterface(contractAddress, web3j, transactionManager, gasPrice, gasLimit);
     }
 
-    public static OpenseaInterface load(String contractAddress, Web3j web3j, Credentials credentials, ContractGasProvider contractGasProvider) {
+    public static OpenseaInterface load(String contractAddress, Web3j web3j,
+            Credentials credentials, ContractGasProvider contractGasProvider) {
         return new OpenseaInterface(contractAddress, web3j, credentials, contractGasProvider);
     }
 
-    public static OpenseaInterface load(String contractAddress, Web3j web3j, TransactionManager transactionManager, ContractGasProvider contractGasProvider) {
+    public static OpenseaInterface load(String contractAddress, Web3j web3j,
+            TransactionManager transactionManager, ContractGasProvider contractGasProvider) {
         return new OpenseaInterface(contractAddress, web3j, transactionManager, contractGasProvider);
     }
 
-    public static RemoteCall<OpenseaInterface> deploy(Web3j web3j, Credentials credentials, ContractGasProvider contractGasProvider) {
-        return deployRemoteCall(OpenseaInterface.class, web3j, credentials, contractGasProvider, BINARY, "");
+    public static RemoteCall<OpenseaInterface> deploy(Web3j web3j, Credentials credentials,
+            ContractGasProvider contractGasProvider) {
+        return deployRemoteCall(OpenseaInterface.class, web3j, credentials, contractGasProvider, getDeploymentBinary(), "");
     }
 
     @Deprecated
-    public static RemoteCall<OpenseaInterface> deploy(Web3j web3j, Credentials credentials, BigInteger gasPrice, BigInteger gasLimit) {
-        return deployRemoteCall(OpenseaInterface.class, web3j, credentials, gasPrice, gasLimit, BINARY, "");
+    public static RemoteCall<OpenseaInterface> deploy(Web3j web3j, Credentials credentials,
+            BigInteger gasPrice, BigInteger gasLimit) {
+        return deployRemoteCall(OpenseaInterface.class, web3j, credentials, gasPrice, gasLimit, getDeploymentBinary(), "");
     }
 
-    public static RemoteCall<OpenseaInterface> deploy(Web3j web3j, TransactionManager transactionManager, ContractGasProvider contractGasProvider) {
-        return deployRemoteCall(OpenseaInterface.class, web3j, transactionManager, contractGasProvider, BINARY, "");
+    public static RemoteCall<OpenseaInterface> deploy(Web3j web3j,
+            TransactionManager transactionManager, ContractGasProvider contractGasProvider) {
+        return deployRemoteCall(OpenseaInterface.class, web3j, transactionManager, contractGasProvider, getDeploymentBinary(), "");
     }
 
     @Deprecated
-    public static RemoteCall<OpenseaInterface> deploy(Web3j web3j, TransactionManager transactionManager, BigInteger gasPrice, BigInteger gasLimit) {
-        return deployRemoteCall(OpenseaInterface.class, web3j, transactionManager, gasPrice, gasLimit, BINARY, "");
+    public static RemoteCall<OpenseaInterface> deploy(Web3j web3j,
+            TransactionManager transactionManager, BigInteger gasPrice, BigInteger gasLimit) {
+        return deployRemoteCall(OpenseaInterface.class, web3j, transactionManager, gasPrice, gasLimit, getDeploymentBinary(), "");
+    }
+
+    public static void linkLibraries(List<Contract.LinkReference> references) {
+        librariesLinkedBinary = linkBinaryWithReferences(BINARY, references);
+    }
+
+    private static String getDeploymentBinary() {
+        if (librariesLinkedBinary != null) {
+            return librariesLinkedBinary;
+        } else {
+            return BINARY;
+        }
     }
 
     public static class OfferItem extends StaticStruct {
@@ -215,7 +251,8 @@ public class OpenseaInterface extends Contract {
 
         public BigInteger endAmount;
 
-        public OfferItem(BigInteger itemType, String token, BigInteger identifierOrCriteria, BigInteger startAmount, BigInteger endAmount) {
+        public OfferItem(BigInteger itemType, String token, BigInteger identifierOrCriteria,
+                BigInteger startAmount, BigInteger endAmount) {
             super(new org.web3j.abi.datatypes.generated.Uint8(itemType), 
                     new org.web3j.abi.datatypes.Address(160, token), 
                     new org.web3j.abi.datatypes.generated.Uint256(identifierOrCriteria), 
@@ -228,7 +265,8 @@ public class OpenseaInterface extends Contract {
             this.endAmount = endAmount;
         }
 
-        public OfferItem(Uint8 itemType, Address token, Uint256 identifierOrCriteria, Uint256 startAmount, Uint256 endAmount) {
+        public OfferItem(Uint8 itemType, Address token, Uint256 identifierOrCriteria,
+                Uint256 startAmount, Uint256 endAmount) {
             super(itemType, token, identifierOrCriteria, startAmount, endAmount);
             this.itemType = itemType.getValue();
             this.token = token.getValue();
@@ -251,7 +289,8 @@ public class OpenseaInterface extends Contract {
 
         public String recipient;
 
-        public ConsiderationItem(BigInteger itemType, String token, BigInteger identifierOrCriteria, BigInteger startAmount, BigInteger endAmount, String recipient) {
+        public ConsiderationItem(BigInteger itemType, String token, BigInteger identifierOrCriteria,
+                BigInteger startAmount, BigInteger endAmount, String recipient) {
             super(new org.web3j.abi.datatypes.generated.Uint8(itemType), 
                     new org.web3j.abi.datatypes.Address(160, token), 
                     new org.web3j.abi.datatypes.generated.Uint256(identifierOrCriteria), 
@@ -266,7 +305,8 @@ public class OpenseaInterface extends Contract {
             this.recipient = recipient;
         }
 
-        public ConsiderationItem(Uint8 itemType, Address token, Uint256 identifierOrCriteria, Uint256 startAmount, Uint256 endAmount, Address recipient) {
+        public ConsiderationItem(Uint8 itemType, Address token, Uint256 identifierOrCriteria,
+                Uint256 startAmount, Uint256 endAmount, Address recipient) {
             super(itemType, token, identifierOrCriteria, startAmount, endAmount, recipient);
             this.itemType = itemType.getValue();
             this.token = token.getValue();
@@ -288,7 +328,8 @@ public class OpenseaInterface extends Contract {
 
         public List<byte[]> criteriaProof;
 
-        public CriteriaResolver(BigInteger orderIndex, BigInteger side, BigInteger index, BigInteger identifier, List<byte[]> criteriaProof) {
+        public CriteriaResolver(BigInteger orderIndex, BigInteger side, BigInteger index,
+                BigInteger identifier, List<byte[]> criteriaProof) {
             super(new org.web3j.abi.datatypes.generated.Uint256(orderIndex), 
                     new org.web3j.abi.datatypes.generated.Uint8(side), 
                     new org.web3j.abi.datatypes.generated.Uint256(index), 
@@ -303,7 +344,8 @@ public class OpenseaInterface extends Contract {
             this.criteriaProof = criteriaProof;
         }
 
-        public CriteriaResolver(Uint256 orderIndex, Uint8 side, Uint256 index, Uint256 identifier, @Parameterized(type = Bytes32.class) DynamicArray<Bytes32> criteriaProof) {
+        public CriteriaResolver(Uint256 orderIndex, Uint8 side, Uint256 index, Uint256 identifier,
+                @Parameterized(type = Bytes32.class) DynamicArray<Bytes32> criteriaProof) {
             super(orderIndex, side, index, identifier, criteriaProof);
             this.orderIndex = orderIndex.getValue();
             this.side = side.getValue();
@@ -324,7 +366,8 @@ public class OpenseaInterface extends Contract {
 
         public String recipient;
 
-        public ReceivedItem(BigInteger itemType, String token, BigInteger identifier, BigInteger amount, String recipient) {
+        public ReceivedItem(BigInteger itemType, String token, BigInteger identifier,
+                BigInteger amount, String recipient) {
             super(new org.web3j.abi.datatypes.generated.Uint8(itemType), 
                     new org.web3j.abi.datatypes.Address(160, token), 
                     new org.web3j.abi.datatypes.generated.Uint256(identifier), 
@@ -337,7 +380,8 @@ public class OpenseaInterface extends Contract {
             this.recipient = recipient;
         }
 
-        public ReceivedItem(Uint8 itemType, Address token, Uint256 identifier, Uint256 amount, Address recipient) {
+        public ReceivedItem(Uint8 itemType, Address token, Uint256 identifier, Uint256 amount,
+                Address recipient) {
             super(itemType, token, identifier, amount, recipient);
             this.itemType = itemType.getValue();
             this.token = token.getValue();
@@ -408,7 +452,10 @@ public class OpenseaInterface extends Contract {
 
         public BigInteger totalOriginalConsiderationItems;
 
-        public OrderParameters(String offerer, String zone, List<OfferItem> offer, List<ConsiderationItem> consideration, BigInteger orderType, BigInteger startTime, BigInteger endTime, byte[] zoneHash, BigInteger salt, byte[] conduitKey, BigInteger totalOriginalConsiderationItems) {
+        public OrderParameters(String offerer, String zone, List<OfferItem> offer,
+                List<ConsiderationItem> consideration, BigInteger orderType, BigInteger startTime,
+                BigInteger endTime, byte[] zoneHash, BigInteger salt, byte[] conduitKey,
+                BigInteger totalOriginalConsiderationItems) {
             super(new org.web3j.abi.datatypes.Address(160, offerer), 
                     new org.web3j.abi.datatypes.Address(160, zone), 
                     new org.web3j.abi.datatypes.DynamicArray<OfferItem>(OfferItem.class, offer), 
@@ -433,7 +480,11 @@ public class OpenseaInterface extends Contract {
             this.totalOriginalConsiderationItems = totalOriginalConsiderationItems;
         }
 
-        public OrderParameters(Address offerer, Address zone, @Parameterized(type = OfferItem.class) DynamicArray<OfferItem> offer, @Parameterized(type = ConsiderationItem.class) DynamicArray<ConsiderationItem> consideration, Uint8 orderType, Uint256 startTime, Uint256 endTime, Bytes32 zoneHash, Uint256 salt, Bytes32 conduitKey, Uint256 totalOriginalConsiderationItems) {
+        public OrderParameters(Address offerer, Address zone,
+                @Parameterized(type = OfferItem.class) DynamicArray<OfferItem> offer,
+                @Parameterized(type = ConsiderationItem.class) DynamicArray<ConsiderationItem> consideration,
+                Uint8 orderType, Uint256 startTime, Uint256 endTime, Bytes32 zoneHash, Uint256 salt,
+                Bytes32 conduitKey, Uint256 totalOriginalConsiderationItems) {
             super(offerer, zone, offer, consideration, orderType, startTime, endTime, zoneHash, salt, conduitKey, totalOriginalConsiderationItems);
             this.offerer = offerer.getValue();
             this.zone = zone.getValue();
@@ -510,7 +561,13 @@ public class OpenseaInterface extends Contract {
 
         public byte[] signature;
 
-        public BasicOrderParameters(String considerationToken, BigInteger considerationIdentifier, BigInteger considerationAmount, String offerer, String zone, String offerToken, BigInteger offerIdentifier, BigInteger offerAmount, BigInteger basicOrderType, BigInteger startTime, BigInteger endTime, byte[] zoneHash, BigInteger salt, byte[] offererConduitKey, byte[] fulfillerConduitKey, BigInteger totalOriginalAdditionalRecipients, List<AdditionalRecipient> additionalRecipients, byte[] signature) {
+        public BasicOrderParameters(String considerationToken, BigInteger considerationIdentifier,
+                BigInteger considerationAmount, String offerer, String zone, String offerToken,
+                BigInteger offerIdentifier, BigInteger offerAmount, BigInteger basicOrderType,
+                BigInteger startTime, BigInteger endTime, byte[] zoneHash, BigInteger salt,
+                byte[] offererConduitKey, byte[] fulfillerConduitKey,
+                BigInteger totalOriginalAdditionalRecipients,
+                List<AdditionalRecipient> additionalRecipients, byte[] signature) {
             super(new org.web3j.abi.datatypes.Address(160, considerationToken), 
                     new org.web3j.abi.datatypes.generated.Uint256(considerationIdentifier), 
                     new org.web3j.abi.datatypes.generated.Uint256(considerationAmount), 
@@ -549,7 +606,14 @@ public class OpenseaInterface extends Contract {
             this.signature = signature;
         }
 
-        public BasicOrderParameters(Address considerationToken, Uint256 considerationIdentifier, Uint256 considerationAmount, Address offerer, Address zone, Address offerToken, Uint256 offerIdentifier, Uint256 offerAmount, Uint8 basicOrderType, Uint256 startTime, Uint256 endTime, Bytes32 zoneHash, Uint256 salt, Bytes32 offererConduitKey, Bytes32 fulfillerConduitKey, Uint256 totalOriginalAdditionalRecipients, @Parameterized(type = AdditionalRecipient.class) DynamicArray<AdditionalRecipient> additionalRecipients, DynamicBytes signature) {
+        public BasicOrderParameters(Address considerationToken, Uint256 considerationIdentifier,
+                Uint256 considerationAmount, Address offerer, Address zone, Address offerToken,
+                Uint256 offerIdentifier, Uint256 offerAmount, Uint8 basicOrderType,
+                Uint256 startTime, Uint256 endTime, Bytes32 zoneHash, Uint256 salt,
+                Bytes32 offererConduitKey, Bytes32 fulfillerConduitKey,
+                Uint256 totalOriginalAdditionalRecipients,
+                @Parameterized(type = AdditionalRecipient.class) DynamicArray<AdditionalRecipient> additionalRecipients,
+                DynamicBytes signature) {
             super(considerationToken, considerationIdentifier, considerationAmount, offerer, zone, offerToken, offerIdentifier, offerAmount, basicOrderType, startTime, endTime, zoneHash, salt, offererConduitKey, fulfillerConduitKey, totalOriginalAdditionalRecipients, additionalRecipients, signature);
             this.considerationToken = considerationToken.getValue();
             this.considerationIdentifier = considerationIdentifier.getValue();
@@ -583,7 +647,8 @@ public class OpenseaInterface extends Contract {
 
         public byte[] extraData;
 
-        public AdvancedOrder(OrderParameters parameters, BigInteger numerator, BigInteger denominator, byte[] signature, byte[] extraData) {
+        public AdvancedOrder(OrderParameters parameters, BigInteger numerator,
+                BigInteger denominator, byte[] signature, byte[] extraData) {
             super(parameters, 
                     new org.web3j.abi.datatypes.generated.Uint120(numerator), 
                     new org.web3j.abi.datatypes.generated.Uint120(denominator), 
@@ -596,7 +661,8 @@ public class OpenseaInterface extends Contract {
             this.extraData = extraData;
         }
 
-        public AdvancedOrder(OrderParameters parameters, Uint120 numerator, Uint120 denominator, DynamicBytes signature, DynamicBytes extraData) {
+        public AdvancedOrder(OrderParameters parameters, Uint120 numerator, Uint120 denominator,
+                DynamicBytes signature, DynamicBytes extraData) {
             super(parameters, numerator, denominator, signature, extraData);
             this.parameters = parameters;
             this.numerator = numerator.getValue();

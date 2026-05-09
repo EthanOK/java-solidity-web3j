@@ -30,13 +30,15 @@ import org.web3j.tx.gas.ContractGasProvider;
  * <p><strong>Do not modify!</strong>
  * <p>Please use the <a href="https://docs.web3j.io/command_line.html">web3j command line tools</a>,
  * or the org.web3j.codegen.SolidityFunctionWrapperGenerator in the 
- * <a href="https://github.com/web3j/web3j/tree/master/codegen">codegen module</a> to update.
+ * <a href="https://github.com/hyperledger-web3j/web3j/tree/main/codegen">codegen module</a> to update.
  *
- * <p>Generated with web3j version 4.11.0.
+ * <p>Generated with web3j version 4.12.3.
  */
 @SuppressWarnings("rawtypes")
 public class IOwnable extends Contract {
     public static final String BINARY = "";
+
+    private static String librariesLinkedBinary;
 
     public static final String FUNC_OWNER = "owner";
 
@@ -47,24 +49,29 @@ public class IOwnable extends Contract {
     ;
 
     @Deprecated
-    protected IOwnable(String contractAddress, Web3j web3j, Credentials credentials, BigInteger gasPrice, BigInteger gasLimit) {
+    protected IOwnable(String contractAddress, Web3j web3j, Credentials credentials,
+            BigInteger gasPrice, BigInteger gasLimit) {
         super(BINARY, contractAddress, web3j, credentials, gasPrice, gasLimit);
     }
 
-    protected IOwnable(String contractAddress, Web3j web3j, Credentials credentials, ContractGasProvider contractGasProvider) {
+    protected IOwnable(String contractAddress, Web3j web3j, Credentials credentials,
+            ContractGasProvider contractGasProvider) {
         super(BINARY, contractAddress, web3j, credentials, contractGasProvider);
     }
 
     @Deprecated
-    protected IOwnable(String contractAddress, Web3j web3j, TransactionManager transactionManager, BigInteger gasPrice, BigInteger gasLimit) {
+    protected IOwnable(String contractAddress, Web3j web3j, TransactionManager transactionManager,
+            BigInteger gasPrice, BigInteger gasLimit) {
         super(BINARY, contractAddress, web3j, transactionManager, gasPrice, gasLimit);
     }
 
-    protected IOwnable(String contractAddress, Web3j web3j, TransactionManager transactionManager, ContractGasProvider contractGasProvider) {
+    protected IOwnable(String contractAddress, Web3j web3j, TransactionManager transactionManager,
+            ContractGasProvider contractGasProvider) {
         super(BINARY, contractAddress, web3j, transactionManager, contractGasProvider);
     }
 
-    public static List<OwnershipTransferredEventResponse> getOwnershipTransferredEvents(TransactionReceipt transactionReceipt) {
+    public static List<OwnershipTransferredEventResponse> getOwnershipTransferredEvents(
+            TransactionReceipt transactionReceipt) {
         List<Contract.EventValuesWithLog> valueList = staticExtractEventParametersWithLog(OWNERSHIPTRANSFERRED_EVENT, transactionReceipt);
         ArrayList<OwnershipTransferredEventResponse> responses = new ArrayList<OwnershipTransferredEventResponse>(valueList.size());
         for (Contract.EventValuesWithLog eventValues : valueList) {
@@ -86,11 +93,13 @@ public class IOwnable extends Contract {
         return typedResponse;
     }
 
-    public Flowable<OwnershipTransferredEventResponse> ownershipTransferredEventFlowable(EthFilter filter) {
+    public Flowable<OwnershipTransferredEventResponse> ownershipTransferredEventFlowable(
+            EthFilter filter) {
         return web3j.ethLogFlowable(filter).map(log -> getOwnershipTransferredEventFromLog(log));
     }
 
-    public Flowable<OwnershipTransferredEventResponse> ownershipTransferredEventFlowable(DefaultBlockParameter startBlock, DefaultBlockParameter endBlock) {
+    public Flowable<OwnershipTransferredEventResponse> ownershipTransferredEventFlowable(
+            DefaultBlockParameter startBlock, DefaultBlockParameter endBlock) {
         EthFilter filter = new EthFilter(startBlock, endBlock, getContractAddress());
         filter.addSingleTopic(EventEncoder.encode(OWNERSHIPTRANSFERRED_EVENT));
         return ownershipTransferredEventFlowable(filter);
@@ -112,39 +121,59 @@ public class IOwnable extends Contract {
     }
 
     @Deprecated
-    public static IOwnable load(String contractAddress, Web3j web3j, Credentials credentials, BigInteger gasPrice, BigInteger gasLimit) {
+    public static IOwnable load(String contractAddress, Web3j web3j, Credentials credentials,
+            BigInteger gasPrice, BigInteger gasLimit) {
         return new IOwnable(contractAddress, web3j, credentials, gasPrice, gasLimit);
     }
 
     @Deprecated
-    public static IOwnable load(String contractAddress, Web3j web3j, TransactionManager transactionManager, BigInteger gasPrice, BigInteger gasLimit) {
+    public static IOwnable load(String contractAddress, Web3j web3j,
+            TransactionManager transactionManager, BigInteger gasPrice, BigInteger gasLimit) {
         return new IOwnable(contractAddress, web3j, transactionManager, gasPrice, gasLimit);
     }
 
-    public static IOwnable load(String contractAddress, Web3j web3j, Credentials credentials, ContractGasProvider contractGasProvider) {
+    public static IOwnable load(String contractAddress, Web3j web3j, Credentials credentials,
+            ContractGasProvider contractGasProvider) {
         return new IOwnable(contractAddress, web3j, credentials, contractGasProvider);
     }
 
-    public static IOwnable load(String contractAddress, Web3j web3j, TransactionManager transactionManager, ContractGasProvider contractGasProvider) {
+    public static IOwnable load(String contractAddress, Web3j web3j,
+            TransactionManager transactionManager, ContractGasProvider contractGasProvider) {
         return new IOwnable(contractAddress, web3j, transactionManager, contractGasProvider);
     }
 
-    public static RemoteCall<IOwnable> deploy(Web3j web3j, Credentials credentials, ContractGasProvider contractGasProvider) {
-        return deployRemoteCall(IOwnable.class, web3j, credentials, contractGasProvider, BINARY, "");
+    public static RemoteCall<IOwnable> deploy(Web3j web3j, Credentials credentials,
+            ContractGasProvider contractGasProvider) {
+        return deployRemoteCall(IOwnable.class, web3j, credentials, contractGasProvider, getDeploymentBinary(), "");
     }
 
     @Deprecated
-    public static RemoteCall<IOwnable> deploy(Web3j web3j, Credentials credentials, BigInteger gasPrice, BigInteger gasLimit) {
-        return deployRemoteCall(IOwnable.class, web3j, credentials, gasPrice, gasLimit, BINARY, "");
+    public static RemoteCall<IOwnable> deploy(Web3j web3j, Credentials credentials,
+            BigInteger gasPrice, BigInteger gasLimit) {
+        return deployRemoteCall(IOwnable.class, web3j, credentials, gasPrice, gasLimit, getDeploymentBinary(), "");
     }
 
-    public static RemoteCall<IOwnable> deploy(Web3j web3j, TransactionManager transactionManager, ContractGasProvider contractGasProvider) {
-        return deployRemoteCall(IOwnable.class, web3j, transactionManager, contractGasProvider, BINARY, "");
+    public static RemoteCall<IOwnable> deploy(Web3j web3j, TransactionManager transactionManager,
+            ContractGasProvider contractGasProvider) {
+        return deployRemoteCall(IOwnable.class, web3j, transactionManager, contractGasProvider, getDeploymentBinary(), "");
     }
 
     @Deprecated
-    public static RemoteCall<IOwnable> deploy(Web3j web3j, TransactionManager transactionManager, BigInteger gasPrice, BigInteger gasLimit) {
-        return deployRemoteCall(IOwnable.class, web3j, transactionManager, gasPrice, gasLimit, BINARY, "");
+    public static RemoteCall<IOwnable> deploy(Web3j web3j, TransactionManager transactionManager,
+            BigInteger gasPrice, BigInteger gasLimit) {
+        return deployRemoteCall(IOwnable.class, web3j, transactionManager, gasPrice, gasLimit, getDeploymentBinary(), "");
+    }
+
+    public static void linkLibraries(List<Contract.LinkReference> references) {
+        librariesLinkedBinary = linkBinaryWithReferences(BINARY, references);
+    }
+
+    private static String getDeploymentBinary() {
+        if (librariesLinkedBinary != null) {
+            return librariesLinkedBinary;
+        } else {
+            return BINARY;
+        }
     }
 
     public static class OwnershipTransferredEventResponse extends BaseEventResponse {

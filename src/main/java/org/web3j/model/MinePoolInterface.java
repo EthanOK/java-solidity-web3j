@@ -2,6 +2,7 @@ package org.web3j.model;
 
 import java.math.BigInteger;
 import java.util.Arrays;
+import java.util.List;
 import org.web3j.abi.TypeReference;
 import org.web3j.abi.datatypes.Address;
 import org.web3j.abi.datatypes.Bool;
@@ -20,33 +21,39 @@ import org.web3j.tx.gas.ContractGasProvider;
  * <p><strong>Do not modify!</strong>
  * <p>Please use the <a href="https://docs.web3j.io/command_line.html">web3j command line tools</a>,
  * or the org.web3j.codegen.SolidityFunctionWrapperGenerator in the 
- * <a href="https://github.com/web3j/web3j/tree/master/codegen">codegen module</a> to update.
+ * <a href="https://github.com/hyperledger-web3j/web3j/tree/main/codegen">codegen module</a> to update.
  *
- * <p>Generated with web3j version 4.11.0.
+ * <p>Generated with web3j version 4.12.3.
  */
 @SuppressWarnings("rawtypes")
 public class MinePoolInterface extends Contract {
     public static final String BINARY = "";
+
+    private static String librariesLinkedBinary;
 
     public static final String FUNC_GETMINEOWNER = "getMineOwner";
 
     public static final String FUNC_GETORDERSTATE = "getOrderState";
 
     @Deprecated
-    protected MinePoolInterface(String contractAddress, Web3j web3j, Credentials credentials, BigInteger gasPrice, BigInteger gasLimit) {
+    protected MinePoolInterface(String contractAddress, Web3j web3j, Credentials credentials,
+            BigInteger gasPrice, BigInteger gasLimit) {
         super(BINARY, contractAddress, web3j, credentials, gasPrice, gasLimit);
     }
 
-    protected MinePoolInterface(String contractAddress, Web3j web3j, Credentials credentials, ContractGasProvider contractGasProvider) {
+    protected MinePoolInterface(String contractAddress, Web3j web3j, Credentials credentials,
+            ContractGasProvider contractGasProvider) {
         super(BINARY, contractAddress, web3j, credentials, contractGasProvider);
     }
 
     @Deprecated
-    protected MinePoolInterface(String contractAddress, Web3j web3j, TransactionManager transactionManager, BigInteger gasPrice, BigInteger gasLimit) {
+    protected MinePoolInterface(String contractAddress, Web3j web3j,
+            TransactionManager transactionManager, BigInteger gasPrice, BigInteger gasLimit) {
         super(BINARY, contractAddress, web3j, transactionManager, gasPrice, gasLimit);
     }
 
-    protected MinePoolInterface(String contractAddress, Web3j web3j, TransactionManager transactionManager, ContractGasProvider contractGasProvider) {
+    protected MinePoolInterface(String contractAddress, Web3j web3j,
+            TransactionManager transactionManager, ContractGasProvider contractGasProvider) {
         super(BINARY, contractAddress, web3j, transactionManager, contractGasProvider);
     }
 
@@ -65,38 +72,58 @@ public class MinePoolInterface extends Contract {
     }
 
     @Deprecated
-    public static MinePoolInterface load(String contractAddress, Web3j web3j, Credentials credentials, BigInteger gasPrice, BigInteger gasLimit) {
+    public static MinePoolInterface load(String contractAddress, Web3j web3j,
+            Credentials credentials, BigInteger gasPrice, BigInteger gasLimit) {
         return new MinePoolInterface(contractAddress, web3j, credentials, gasPrice, gasLimit);
     }
 
     @Deprecated
-    public static MinePoolInterface load(String contractAddress, Web3j web3j, TransactionManager transactionManager, BigInteger gasPrice, BigInteger gasLimit) {
+    public static MinePoolInterface load(String contractAddress, Web3j web3j,
+            TransactionManager transactionManager, BigInteger gasPrice, BigInteger gasLimit) {
         return new MinePoolInterface(contractAddress, web3j, transactionManager, gasPrice, gasLimit);
     }
 
-    public static MinePoolInterface load(String contractAddress, Web3j web3j, Credentials credentials, ContractGasProvider contractGasProvider) {
+    public static MinePoolInterface load(String contractAddress, Web3j web3j,
+            Credentials credentials, ContractGasProvider contractGasProvider) {
         return new MinePoolInterface(contractAddress, web3j, credentials, contractGasProvider);
     }
 
-    public static MinePoolInterface load(String contractAddress, Web3j web3j, TransactionManager transactionManager, ContractGasProvider contractGasProvider) {
+    public static MinePoolInterface load(String contractAddress, Web3j web3j,
+            TransactionManager transactionManager, ContractGasProvider contractGasProvider) {
         return new MinePoolInterface(contractAddress, web3j, transactionManager, contractGasProvider);
     }
 
-    public static RemoteCall<MinePoolInterface> deploy(Web3j web3j, Credentials credentials, ContractGasProvider contractGasProvider) {
-        return deployRemoteCall(MinePoolInterface.class, web3j, credentials, contractGasProvider, BINARY, "");
+    public static RemoteCall<MinePoolInterface> deploy(Web3j web3j, Credentials credentials,
+            ContractGasProvider contractGasProvider) {
+        return deployRemoteCall(MinePoolInterface.class, web3j, credentials, contractGasProvider, getDeploymentBinary(), "");
     }
 
     @Deprecated
-    public static RemoteCall<MinePoolInterface> deploy(Web3j web3j, Credentials credentials, BigInteger gasPrice, BigInteger gasLimit) {
-        return deployRemoteCall(MinePoolInterface.class, web3j, credentials, gasPrice, gasLimit, BINARY, "");
+    public static RemoteCall<MinePoolInterface> deploy(Web3j web3j, Credentials credentials,
+            BigInteger gasPrice, BigInteger gasLimit) {
+        return deployRemoteCall(MinePoolInterface.class, web3j, credentials, gasPrice, gasLimit, getDeploymentBinary(), "");
     }
 
-    public static RemoteCall<MinePoolInterface> deploy(Web3j web3j, TransactionManager transactionManager, ContractGasProvider contractGasProvider) {
-        return deployRemoteCall(MinePoolInterface.class, web3j, transactionManager, contractGasProvider, BINARY, "");
+    public static RemoteCall<MinePoolInterface> deploy(Web3j web3j,
+            TransactionManager transactionManager, ContractGasProvider contractGasProvider) {
+        return deployRemoteCall(MinePoolInterface.class, web3j, transactionManager, contractGasProvider, getDeploymentBinary(), "");
     }
 
     @Deprecated
-    public static RemoteCall<MinePoolInterface> deploy(Web3j web3j, TransactionManager transactionManager, BigInteger gasPrice, BigInteger gasLimit) {
-        return deployRemoteCall(MinePoolInterface.class, web3j, transactionManager, gasPrice, gasLimit, BINARY, "");
+    public static RemoteCall<MinePoolInterface> deploy(Web3j web3j,
+            TransactionManager transactionManager, BigInteger gasPrice, BigInteger gasLimit) {
+        return deployRemoteCall(MinePoolInterface.class, web3j, transactionManager, gasPrice, gasLimit, getDeploymentBinary(), "");
+    }
+
+    public static void linkLibraries(List<Contract.LinkReference> references) {
+        librariesLinkedBinary = linkBinaryWithReferences(BINARY, references);
+    }
+
+    private static String getDeploymentBinary() {
+        if (librariesLinkedBinary != null) {
+            return librariesLinkedBinary;
+        } else {
+            return BINARY;
+        }
     }
 }

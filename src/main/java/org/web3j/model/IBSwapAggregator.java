@@ -35,13 +35,15 @@ import org.web3j.tx.gas.ContractGasProvider;
  * <p><strong>Do not modify!</strong>
  * <p>Please use the <a href="https://docs.web3j.io/command_line.html">web3j command line tools</a>,
  * or the org.web3j.codegen.SolidityFunctionWrapperGenerator in the 
- * <a href="https://github.com/web3j/web3j/tree/master/codegen">codegen module</a> to update.
+ * <a href="https://github.com/hyperledger-web3j/web3j/tree/main/codegen">codegen module</a> to update.
  *
- * <p>Generated with web3j version 4.11.0.
+ * <p>Generated with web3j version 4.12.3.
  */
 @SuppressWarnings("rawtypes")
 public class IBSwapAggregator extends Contract {
     public static final String BINARY = "";
+
+    private static String librariesLinkedBinary;
 
     public static final String FUNC_SWAP = "swap";
 
@@ -60,24 +62,29 @@ public class IBSwapAggregator extends Contract {
     ;
 
     @Deprecated
-    protected IBSwapAggregator(String contractAddress, Web3j web3j, Credentials credentials, BigInteger gasPrice, BigInteger gasLimit) {
+    protected IBSwapAggregator(String contractAddress, Web3j web3j, Credentials credentials,
+            BigInteger gasPrice, BigInteger gasLimit) {
         super(BINARY, contractAddress, web3j, credentials, gasPrice, gasLimit);
     }
 
-    protected IBSwapAggregator(String contractAddress, Web3j web3j, Credentials credentials, ContractGasProvider contractGasProvider) {
+    protected IBSwapAggregator(String contractAddress, Web3j web3j, Credentials credentials,
+            ContractGasProvider contractGasProvider) {
         super(BINARY, contractAddress, web3j, credentials, contractGasProvider);
     }
 
     @Deprecated
-    protected IBSwapAggregator(String contractAddress, Web3j web3j, TransactionManager transactionManager, BigInteger gasPrice, BigInteger gasLimit) {
+    protected IBSwapAggregator(String contractAddress, Web3j web3j,
+            TransactionManager transactionManager, BigInteger gasPrice, BigInteger gasLimit) {
         super(BINARY, contractAddress, web3j, transactionManager, gasPrice, gasLimit);
     }
 
-    protected IBSwapAggregator(String contractAddress, Web3j web3j, TransactionManager transactionManager, ContractGasProvider contractGasProvider) {
+    protected IBSwapAggregator(String contractAddress, Web3j web3j,
+            TransactionManager transactionManager, ContractGasProvider contractGasProvider) {
         super(BINARY, contractAddress, web3j, transactionManager, contractGasProvider);
     }
 
-    public static List<SwapExactEventEventResponse> getSwapExactEventEvents(TransactionReceipt transactionReceipt) {
+    public static List<SwapExactEventEventResponse> getSwapExactEventEvents(
+            TransactionReceipt transactionReceipt) {
         List<Contract.EventValuesWithLog> valueList = staticExtractEventParametersWithLog(SWAPEXACTEVENT_EVENT, transactionReceipt);
         ArrayList<SwapExactEventEventResponse> responses = new ArrayList<SwapExactEventEventResponse>(valueList.size());
         for (Contract.EventValuesWithLog eventValues : valueList) {
@@ -113,13 +120,15 @@ public class IBSwapAggregator extends Contract {
         return web3j.ethLogFlowable(filter).map(log -> getSwapExactEventEventFromLog(log));
     }
 
-    public Flowable<SwapExactEventEventResponse> swapExactEventEventFlowable(DefaultBlockParameter startBlock, DefaultBlockParameter endBlock) {
+    public Flowable<SwapExactEventEventResponse> swapExactEventEventFlowable(
+            DefaultBlockParameter startBlock, DefaultBlockParameter endBlock) {
         EthFilter filter = new EthFilter(startBlock, endBlock, getContractAddress());
         filter.addSingleTopic(EventEncoder.encode(SWAPEXACTEVENT_EVENT));
         return swapExactEventEventFlowable(filter);
     }
 
-    public static List<SwapSingleEventResponse> getSwapSingleEvents(TransactionReceipt transactionReceipt) {
+    public static List<SwapSingleEventResponse> getSwapSingleEvents(
+            TransactionReceipt transactionReceipt) {
         List<Contract.EventValuesWithLog> valueList = staticExtractEventParametersWithLog(SWAPSINGLE_EVENT, transactionReceipt);
         ArrayList<SwapSingleEventResponse> responses = new ArrayList<SwapSingleEventResponse>(valueList.size());
         for (Contract.EventValuesWithLog eventValues : valueList) {
@@ -147,13 +156,15 @@ public class IBSwapAggregator extends Contract {
         return web3j.ethLogFlowable(filter).map(log -> getSwapSingleEventFromLog(log));
     }
 
-    public Flowable<SwapSingleEventResponse> swapSingleEventFlowable(DefaultBlockParameter startBlock, DefaultBlockParameter endBlock) {
+    public Flowable<SwapSingleEventResponse> swapSingleEventFlowable(
+            DefaultBlockParameter startBlock, DefaultBlockParameter endBlock) {
         EthFilter filter = new EthFilter(startBlock, endBlock, getContractAddress());
         filter.addSingleTopic(EventEncoder.encode(SWAPSINGLE_EVENT));
         return swapSingleEventFlowable(filter);
     }
 
-    public RemoteFunctionCall<TransactionReceipt> swap(String tokenIn, BigInteger amountIn, SwapData swapData, BigInteger weiValue) {
+    public RemoteFunctionCall<TransactionReceipt> swap(String tokenIn, BigInteger amountIn,
+            SwapData swapData, BigInteger weiValue) {
         final Function function = new Function(
                 FUNC_SWAP, 
                 Arrays.<Type>asList(new org.web3j.abi.datatypes.Address(160, tokenIn), 
@@ -163,7 +174,8 @@ public class IBSwapAggregator extends Contract {
         return executeRemoteCallTransaction(function, weiValue);
     }
 
-    public RemoteFunctionCall<TransactionReceipt> swapExactInput(SwapDataInfo swapDataInfo, BigInteger weiValue) {
+    public RemoteFunctionCall<TransactionReceipt> swapExactInput(SwapDataInfo swapDataInfo,
+            BigInteger weiValue) {
         final Function function = new Function(
                 FUNC_SWAPEXACTINPUT, 
                 Arrays.<Type>asList(swapDataInfo), 
@@ -171,7 +183,8 @@ public class IBSwapAggregator extends Contract {
         return executeRemoteCallTransaction(function, weiValue);
     }
 
-    public RemoteFunctionCall<TransactionReceipt> swapExactInputWithPermit(SwapDataInfo swapDataInfo, BigInteger deadline, byte[] signature, BigInteger weiValue) {
+    public RemoteFunctionCall<TransactionReceipt> swapExactInputWithPermit(
+            SwapDataInfo swapDataInfo, BigInteger deadline, byte[] signature, BigInteger weiValue) {
         final Function function = new Function(
                 FUNC_SWAPEXACTINPUTWITHPERMIT, 
                 Arrays.<Type>asList(swapDataInfo, 
@@ -181,7 +194,9 @@ public class IBSwapAggregator extends Contract {
         return executeRemoteCallTransaction(function, weiValue);
     }
 
-    public RemoteFunctionCall<TransactionReceipt> swapExactInputWithPermit2(SwapDataInfo swapDataInfo, BigInteger nonce, BigInteger deadline, byte[] signature, BigInteger weiValue) {
+    public RemoteFunctionCall<TransactionReceipt> swapExactInputWithPermit2(
+            SwapDataInfo swapDataInfo, BigInteger nonce, BigInteger deadline, byte[] signature,
+            BigInteger weiValue) {
         final Function function = new Function(
                 FUNC_SWAPEXACTINPUTWITHPERMIT2, 
                 Arrays.<Type>asList(swapDataInfo, 
@@ -193,39 +208,59 @@ public class IBSwapAggregator extends Contract {
     }
 
     @Deprecated
-    public static IBSwapAggregator load(String contractAddress, Web3j web3j, Credentials credentials, BigInteger gasPrice, BigInteger gasLimit) {
+    public static IBSwapAggregator load(String contractAddress, Web3j web3j,
+            Credentials credentials, BigInteger gasPrice, BigInteger gasLimit) {
         return new IBSwapAggregator(contractAddress, web3j, credentials, gasPrice, gasLimit);
     }
 
     @Deprecated
-    public static IBSwapAggregator load(String contractAddress, Web3j web3j, TransactionManager transactionManager, BigInteger gasPrice, BigInteger gasLimit) {
+    public static IBSwapAggregator load(String contractAddress, Web3j web3j,
+            TransactionManager transactionManager, BigInteger gasPrice, BigInteger gasLimit) {
         return new IBSwapAggregator(contractAddress, web3j, transactionManager, gasPrice, gasLimit);
     }
 
-    public static IBSwapAggregator load(String contractAddress, Web3j web3j, Credentials credentials, ContractGasProvider contractGasProvider) {
+    public static IBSwapAggregator load(String contractAddress, Web3j web3j,
+            Credentials credentials, ContractGasProvider contractGasProvider) {
         return new IBSwapAggregator(contractAddress, web3j, credentials, contractGasProvider);
     }
 
-    public static IBSwapAggregator load(String contractAddress, Web3j web3j, TransactionManager transactionManager, ContractGasProvider contractGasProvider) {
+    public static IBSwapAggregator load(String contractAddress, Web3j web3j,
+            TransactionManager transactionManager, ContractGasProvider contractGasProvider) {
         return new IBSwapAggregator(contractAddress, web3j, transactionManager, contractGasProvider);
     }
 
-    public static RemoteCall<IBSwapAggregator> deploy(Web3j web3j, Credentials credentials, ContractGasProvider contractGasProvider) {
-        return deployRemoteCall(IBSwapAggregator.class, web3j, credentials, contractGasProvider, BINARY, "");
+    public static RemoteCall<IBSwapAggregator> deploy(Web3j web3j, Credentials credentials,
+            ContractGasProvider contractGasProvider) {
+        return deployRemoteCall(IBSwapAggregator.class, web3j, credentials, contractGasProvider, getDeploymentBinary(), "");
     }
 
     @Deprecated
-    public static RemoteCall<IBSwapAggregator> deploy(Web3j web3j, Credentials credentials, BigInteger gasPrice, BigInteger gasLimit) {
-        return deployRemoteCall(IBSwapAggregator.class, web3j, credentials, gasPrice, gasLimit, BINARY, "");
+    public static RemoteCall<IBSwapAggregator> deploy(Web3j web3j, Credentials credentials,
+            BigInteger gasPrice, BigInteger gasLimit) {
+        return deployRemoteCall(IBSwapAggregator.class, web3j, credentials, gasPrice, gasLimit, getDeploymentBinary(), "");
     }
 
-    public static RemoteCall<IBSwapAggregator> deploy(Web3j web3j, TransactionManager transactionManager, ContractGasProvider contractGasProvider) {
-        return deployRemoteCall(IBSwapAggregator.class, web3j, transactionManager, contractGasProvider, BINARY, "");
+    public static RemoteCall<IBSwapAggregator> deploy(Web3j web3j,
+            TransactionManager transactionManager, ContractGasProvider contractGasProvider) {
+        return deployRemoteCall(IBSwapAggregator.class, web3j, transactionManager, contractGasProvider, getDeploymentBinary(), "");
     }
 
     @Deprecated
-    public static RemoteCall<IBSwapAggregator> deploy(Web3j web3j, TransactionManager transactionManager, BigInteger gasPrice, BigInteger gasLimit) {
-        return deployRemoteCall(IBSwapAggregator.class, web3j, transactionManager, gasPrice, gasLimit, BINARY, "");
+    public static RemoteCall<IBSwapAggregator> deploy(Web3j web3j,
+            TransactionManager transactionManager, BigInteger gasPrice, BigInteger gasLimit) {
+        return deployRemoteCall(IBSwapAggregator.class, web3j, transactionManager, gasPrice, gasLimit, getDeploymentBinary(), "");
+    }
+
+    public static void linkLibraries(List<Contract.LinkReference> references) {
+        librariesLinkedBinary = linkBinaryWithReferences(BINARY, references);
+    }
+
+    private static String getDeploymentBinary() {
+        if (librariesLinkedBinary != null) {
+            return librariesLinkedBinary;
+        } else {
+            return BINARY;
+        }
     }
 
     public static class SwapData extends DynamicStruct {
@@ -237,7 +272,8 @@ public class IBSwapAggregator extends Contract {
 
         public Boolean needScale;
 
-        public SwapData(BigInteger swapType, String extRouter, byte[] extCalldata, Boolean needScale) {
+        public SwapData(BigInteger swapType, String extRouter, byte[] extCalldata,
+                Boolean needScale) {
             super(new org.web3j.abi.datatypes.generated.Uint8(swapType), 
                     new org.web3j.abi.datatypes.Address(160, extRouter), 
                     new org.web3j.abi.datatypes.DynamicBytes(extCalldata), 
@@ -248,7 +284,8 @@ public class IBSwapAggregator extends Contract {
             this.needScale = needScale;
         }
 
-        public SwapData(Uint8 swapType, Address extRouter, DynamicBytes extCalldata, Bool needScale) {
+        public SwapData(Uint8 swapType, Address extRouter, DynamicBytes extCalldata,
+                Bool needScale) {
             super(swapType, extRouter, extCalldata, needScale);
             this.swapType = swapType.getValue();
             this.extRouter = extRouter.getValue();
@@ -270,7 +307,8 @@ public class IBSwapAggregator extends Contract {
 
         public SwapData swapData;
 
-        public SwapDataInfo(String tokenIn, BigInteger amountIn, String tokenOut, BigInteger minOut, String receiver, SwapData swapData) {
+        public SwapDataInfo(String tokenIn, BigInteger amountIn, String tokenOut, BigInteger minOut,
+                String receiver, SwapData swapData) {
             super(new org.web3j.abi.datatypes.Address(160, tokenIn), 
                     new org.web3j.abi.datatypes.generated.Uint256(amountIn), 
                     new org.web3j.abi.datatypes.Address(160, tokenOut), 
@@ -285,7 +323,8 @@ public class IBSwapAggregator extends Contract {
             this.swapData = swapData;
         }
 
-        public SwapDataInfo(Address tokenIn, Uint256 amountIn, Address tokenOut, Uint256 minOut, Address receiver, SwapData swapData) {
+        public SwapDataInfo(Address tokenIn, Uint256 amountIn, Address tokenOut, Uint256 minOut,
+                Address receiver, SwapData swapData) {
             super(tokenIn, amountIn, tokenOut, minOut, receiver, swapData);
             this.tokenIn = tokenIn.getValue();
             this.amountIn = amountIn.getValue();

@@ -16,10 +16,17 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
     <dependencies>
+
+        <dependency>
+            <groupId>com.okx</groupId>
+            <artifactId>x402-java-core</artifactId>
+            <version>1.0.0</version>
+        </dependency>
+
         <dependency>
             <groupId>org.web3j</groupId>
             <artifactId>core</artifactId>
-            <version>4.11.0</version>
+            <version>4.12.3</version>
 
         </dependency>
         <dependency>
@@ -57,7 +64,7 @@
         <dependency>
             <groupId>net.osslabz</groupId>
             <artifactId>evm-abi-decoder</artifactId>
-            <version>0.0.8</version>
+            <version>0.1.2</version>
         </dependency>
 
         <!-- JUnit 5 for unit testing -->
@@ -76,15 +83,23 @@
             <id>central-repo1</id>
             <name>Maven Central (repo1)</name>
             <url>https://repo1.maven.org/maven2/</url>
-            <releases><enabled>true</enabled></releases>
-            <snapshots><enabled>false</enabled></snapshots>
+            <releases>
+                <enabled>true</enabled>
+            </releases>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
         </repository>
         <repository>
             <id>central-aliyun</id>
             <name>Maven Central (Aliyun mirror)</name>
             <url>https://maven.aliyun.com/repository/central</url>
-            <releases><enabled>true</enabled></releases>
-            <snapshots><enabled>false</enabled></snapshots>
+            <releases>
+                <enabled>true</enabled>
+            </releases>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
         </repository>
         <repository>
             <id>consensys</id>
@@ -98,7 +113,7 @@
                 <plugin>
                     <groupId>org.web3j</groupId>
                     <artifactId>web3j-maven-plugin</artifactId>
-                    <version>4.11.0</version>
+                    <version>4.12.3</version>
                     <configuration>
                         <soliditySourceFiles />
                     </configuration>
