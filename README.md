@@ -13,3 +13,7 @@ https://github.com/web3j/web3j-maven-plugin
 ## format code
 
 `mvn formatter:format`
+
+## release
+
+`mvn release:prepare -Darguments="-DskipTests"`
