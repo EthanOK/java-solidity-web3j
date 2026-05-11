@@ -1,20 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project
-    xmlns="http://maven.apache.org/POM/4.0.0"
-    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
 
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>org.example</groupId>
     <artifactId>myweb3_java</artifactId>
-    <version>1.1.1-SNAPSHOT</version>
+    <version>1.1.1</version>
 
     <scm>
         <connection>scm:git:https://github.com/EthanOK/java-solidity-web3j.git</connection>
         <developerConnection>scm:git:https://github.com/EthanOK/java-solidity-web3j.git</developerConnection>
         <url>https://github.com/EthanOK/java-solidity-web3j</url>
-    </scm>
+      <tag>myweb3_java-1.1.1</tag>
+  </scm>
 
     <properties>
         <maven.compiler.source>18</maven.compiler.source>
