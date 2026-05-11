@@ -36,4 +36,8 @@ build/
 
 ####
 .env
+
+### Maven Release Plugin ###
+release.properties
+pom.xml.releaseBackup
 /.idea/
