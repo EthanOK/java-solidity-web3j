@@ -16,4 +16,6 @@ https://github.com/web3j/web3j-maven-plugin
 
 ## release
 
+`mvn release:clean`
+
 `mvn release:prepare -Darguments="-DskipTests"`
