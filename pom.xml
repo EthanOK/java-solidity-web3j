@@ -5,13 +5,13 @@
 
     <groupId>org.example</groupId>
     <artifactId>myweb3_java</artifactId>
-    <version>1.1.2-SNAPSHOT</version>
+    <version>1.1.2</version>
 
     <scm>
         <connection>scm:git:https://github.com/EthanOK/java-solidity-web3j.git</connection>
         <developerConnection>scm:git:https://github.com/EthanOK/java-solidity-web3j.git</developerConnection>
         <url>https://github.com/EthanOK/java-solidity-web3j</url>
-      <tag>myweb3_java-1.1.1</tag>
+      <tag>myweb3_java-1.1.2</tag>
   </scm>
 
     <properties>
