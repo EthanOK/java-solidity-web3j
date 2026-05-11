@@ -25,8 +25,7 @@ public class GetYGIOConvertEvent {
     static BigInteger startBlockNumber = new BigInteger("10392353");
 
     public static void main(String[] args) throws IOException {
-        Web3j web3j = Web3j
-                .build(new HttpService(RPC));
+        Web3j web3j = Web3j.build(new HttpService(RPC));
 
         // 死循环 6s执行一次
         while (true) {
@@ -62,8 +61,7 @@ public class GetYGIOConvertEvent {
         System.out.println("BlockHash: " + latestBlock.getHash());
         String blockHash = latestBlock.getHash();
 
-        EthFilter filter = new EthFilter(blockHash)
-                .addOptionalTopics(ConvertTopic);
+        EthFilter filter = new EthFilter(blockHash).addOptionalTopics(ConvertTopic);
 
         // Only get data no listen
         // 2:ethGetLogs

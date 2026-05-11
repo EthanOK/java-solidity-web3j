@@ -64,8 +64,7 @@ public class AlchemyWebSocketClient extends WebSocketClient {
     public void onClose(int code, String reason, boolean remote) {
         // The close codes are documented in class org.java_websocket.framing.CloseFrame
         System.out.println(
-                "Connection closed by " + (remote ? "remote peer" : "us") + " Code: " + code + " Reason: "
-                        + reason);
+                "Connection closed by " + (remote ? "remote peer" : "us") + " Code: " + code + " Reason: " + reason);
 
     }
 
@@ -125,8 +124,7 @@ public class AlchemyWebSocketClient extends WebSocketClient {
                 String to = topics.getString(2);
                 String fromAddress = FunctionReturnDecoder.decodeAddress(from);
                 String toAddress = FunctionReturnDecoder.decodeAddress(to);
-                if (!fromAddress.equals(EnsUtils.EMPTY_ADDRESS)
-                        && !toAddress.equals(EnsUtils.EMPTY_ADDRESS)) {
+                if (!fromAddress.equals(EnsUtils.EMPTY_ADDRESS) && !toAddress.equals(EnsUtils.EMPTY_ADDRESS)) {
 
                     String tokenId = topics.getString(3);
 
@@ -136,10 +134,8 @@ public class AlchemyWebSocketClient extends WebSocketClient {
                     try {
 
                         String encodeData = FunctionEncoder
-                                .encodeConstructor(Arrays.<Type>asList(new Address(token), new Address(fromAddress),
-                                        new Address(toAddress),
-                                        new Uint256(tokenIdBig),
-                                        new Uint256(blockNumberBig)));
+                                .encodeConstructor(Arrays.<Type> asList(new Address(token), new Address(fromAddress),
+                                        new Address(toAddress), new Uint256(tokenIdBig), new Uint256(blockNumberBig)));
                         String encodeDataHash = Hash.sha3("0x" + encodeData);
 
                         String insertQuery = "INSERT IGNORE INTO aggregator_ethan.event_transfer_erc721 "

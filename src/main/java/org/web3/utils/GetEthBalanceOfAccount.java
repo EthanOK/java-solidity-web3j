@@ -23,14 +23,13 @@ public class GetEthBalanceOfAccount {
     static String RPC = dotenv.get("ETH_MAIN_URL");
 
     public static void main(String[] args) throws InterruptedException, ExecutionException, IOException {
-        Web3j web3j = Web3j
-                .build(new HttpService(RPC));
+        Web3j web3j = Web3j.build(new HttpService(RPC));
         EthBlockNumber number = web3j.ethBlockNumber().send();
 
         System.out.println(number.getBlockNumber());
 
-        EthGetBalance ethGetBalance = web3j.ethGetBalance("0xC8AF6822A556f7BEbA1C8894bc59777302d8E7ba",
-                DefaultBlockParameterName.LATEST).send();
+        EthGetBalance ethGetBalance = web3j
+                .ethGetBalance("0xC8AF6822A556f7BEbA1C8894bc59777302d8E7ba", DefaultBlockParameterName.LATEST).send();
         System.out.println(ethGetBalance.getBalance());
         BigDecimal res = Convert.fromWei(ethGetBalance.getBalance().toString(), Unit.ETHER);
         System.out.println(res);

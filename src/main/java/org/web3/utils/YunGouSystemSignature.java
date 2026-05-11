@@ -68,13 +68,11 @@ public class YunGouSystemSignature {
         return false;
     }
 
-    public static String getEthereumSignature(String messageHashHex,
-            String privateKeyHex) {
+    public static String getEthereumSignature(String messageHashHex, String privateKeyHex) {
         byte[] messageHash = Numeric.hexStringToByteArray(messageHashHex);
         Credentials credentials = Credentials.create(privateKeyHex);
         Sign.SignatureData signatureData = Sign.signPrefixedMessage(messageHash, credentials.getEcKeyPair());
-        String signature = Numeric.toHexString(signatureData.getR())
-                + Numeric.toHexStringNoPrefix(signatureData.getS())
+        String signature = Numeric.toHexString(signatureData.getR()) + Numeric.toHexStringNoPrefix(signatureData.getS())
                 + Numeric.toHexStringNoPrefix(signatureData.getV());
         return signature;
     }
@@ -104,14 +102,8 @@ public class YunGouSystemSignature {
         Uint256 totalPayment = new Uint256(new BigInteger("64000000000000000"));
         Uint256 expiryDate = new Uint256(new BigInteger("1688047530"));
 
-        List<Type> lists = Arrays.asList(
-                orderSignature,
-                buyAmount,
-                totalRoyaltyFee,
-                totalPlatformFee,
-                totalAfterTaxIncome,
-                totalPayment,
-                expiryDate);
+        List<Type> lists = Arrays.asList(orderSignature, buyAmount, totalRoyaltyFee, totalPlatformFee,
+                totalAfterTaxIncome, totalPayment, expiryDate);
         String encodeData = FunctionEncoder.encodeConstructor(lists);
         String encodeDataHex = "0x" + encodeData;
         System.out.println(encodeDataHex);

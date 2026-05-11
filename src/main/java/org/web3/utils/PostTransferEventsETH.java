@@ -83,11 +83,8 @@ public class PostTransferEventsETH {
         MediaType mediaType = MediaType.parse("application/json");
         String requestBody_ = "{\"jsonrpc\":\"2.0\",\"method\":\"eth_getLogs\",\"params\":[{\"fromBlock\":\"%s\",\"toBlock\":\"%s\",\"topics\":[\"0xddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef\"]}],\"id\":1}";
         String requestBody = String.format(requestBody_, fromBlockHex, toBlockHex);
-        Request request = new Request.Builder()
-                .url(INFURA_HTTP_MAIN)
-                .post(RequestBody.create(mediaType, requestBody))
-                .addHeader("Content-Type", "application/json")
-                .build();
+        Request request = new Request.Builder().url(INFURA_HTTP_MAIN).post(RequestBody.create(mediaType, requestBody))
+                .addHeader("Content-Type", "application/json").build();
 
         try (Response response = client.newCall(request).execute()) {
             if (response.isSuccessful()) {
@@ -127,11 +124,8 @@ public class PostTransferEventsETH {
             requestBody = String.format(requestBody_, fromBlockHex);
         }
 
-        Request request = new Request.Builder()
-                .url(INFURA_HTTP_MAIN)
-                .post(RequestBody.create(mediaType, requestBody))
-                .addHeader("Content-Type", "application/json")
-                .build();
+        Request request = new Request.Builder().url(INFURA_HTTP_MAIN).post(RequestBody.create(mediaType, requestBody))
+                .addHeader("Content-Type", "application/json").build();
 
         try (Response response = client.newCall(request).execute()) {
             if (response.isSuccessful()) {
@@ -169,8 +163,7 @@ public class PostTransferEventsETH {
                 String fromAddress = FunctionReturnDecoder.decodeAddress(from);
                 String toAddress = FunctionReturnDecoder.decodeAddress(to);
 
-                if (!fromAddress.equals(EMPTY_ADDRESS)
-                        && !toAddress.equals(EMPTY_ADDRESS)
+                if (!fromAddress.equals(EMPTY_ADDRESS) && !toAddress.equals(EMPTY_ADDRESS)
                         && !toAddress.equals(DEAD_ADDRESS)) {
 
                     String tokenId = topics.getString(3);
@@ -182,10 +175,8 @@ public class PostTransferEventsETH {
                     // TODO: check data of on sale
                     try {
                         String encodeData = FunctionEncoder
-                                .encodeConstructor(Arrays.<Type>asList(new Address(token), new Address(fromAddress),
-                                        new Address(toAddress),
-                                        new Uint256(tokenIdBig),
-                                        new Uint256(blockNumberBig)));
+                                .encodeConstructor(Arrays.<Type> asList(new Address(token), new Address(fromAddress),
+                                        new Address(toAddress), new Uint256(tokenIdBig), new Uint256(blockNumberBig)));
                         String encodeDataHash = Hash.sha3("0x" + encodeData);
 
                         String insertQuery = "INSERT IGNORE INTO aggregator_ethan.event_transfer_erc721 "
@@ -234,8 +225,8 @@ public class PostTransferEventsETH {
     private static long getLatestBlockTimestamp() throws IOException {
         Web3j web3j = Web3j.build(new HttpService(INFURA_HTTP_MAIN));
 
-        EthBlock.Block latestBlock = web3j.ethGetBlockByNumber(DefaultBlockParameterName.LATEST, false)
-                .send().getBlock();
+        EthBlock.Block latestBlock = web3j.ethGetBlockByNumber(DefaultBlockParameterName.LATEST, false).send()
+                .getBlock();
 
         BigInteger timestamp = latestBlock.getTimestamp();
         // System.out.println("Timestamp of the Latest Block: " + timestamp);
@@ -248,8 +239,8 @@ public class PostTransferEventsETH {
     private static long getBlockTimestamp(BigInteger blockNumber) throws IOException {
         Web3j web3j = Web3j.build(new HttpService(INFURA_HTTP_MAIN));
 
-        EthBlock.Block latestBlock = web3j.ethGetBlockByNumber(DefaultBlockParameter.valueOf(blockNumber), false)
-                .send().getBlock();
+        EthBlock.Block latestBlock = web3j.ethGetBlockByNumber(DefaultBlockParameter.valueOf(blockNumber), false).send()
+                .getBlock();
 
         BigInteger timestamp = latestBlock.getTimestamp();
         return timestamp.longValue();

@@ -10,8 +10,7 @@ import io.github.cdimascio.dotenv.Dotenv;
 public class SelectENSByAddress {
     static Dotenv dotenv = Dotenv.load();
     static String RPC = dotenv.get("ETH_MAIN_URL");
-    static Web3j web3j = Web3j
-            .build(new HttpService(RPC));
+    static Web3j web3j = Web3j.build(new HttpService(RPC));
     static private EnsResolver ensResolver = new EnsResolver(web3j);
 
     public static String getENSNameByAddress(String address) throws Exception {

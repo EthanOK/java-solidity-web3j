@@ -28,10 +28,7 @@ public class RefreshOpenSeaMetadata {
         // 获取程序开始时间
         long startTime = System.currentTimeMillis();
 
-        Ticket ticket = updateOpenSeaMetadata(
-                "0x60e4d786628fea6478f785a6d7e704777c86a7c6",
-                "2000",
-                "2100");
+        Ticket ticket = updateOpenSeaMetadata("0x60e4d786628fea6478f785a6d7e704777c86a7c6", "2000", "2100");
         // ticket.setTokenIdsFail(tokenIdsFail);
         System.out.println("获取失败：" + Arrays.toString(ticket.getTokenIdsFail().toArray()));
 
@@ -174,16 +171,11 @@ class Ticket implements Runnable {
     public void excute(String tokenId) {
         OkHttpClient client = new OkHttpClient();
 
-        String url = "https://api.opensea.io/api/v2/chain/ethereum/contract/"
-                + address + "/nfts/"
-                + tokenId
+        String url = "https://api.opensea.io/api/v2/chain/ethereum/contract/" + address + "/nfts/" + tokenId
                 + "/refresh";
 
         RequestBody requestBody = RequestBody.create("", MediaType.parse("application/json"));
-        Request request = new Request.Builder()
-                .url(url)
-                .post(requestBody)
-                .addHeader("x-api-key", openseaApiKey)
+        Request request = new Request.Builder().url(url).post(requestBody).addHeader("x-api-key", openseaApiKey)
                 .build();
 
         Response response;

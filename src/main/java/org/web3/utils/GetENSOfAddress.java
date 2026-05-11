@@ -38,9 +38,7 @@ public class GetENSOfAddress {
         String dataParams = encodeFunctionCall(reverseNameHex);
 
         String postData = "{\"method\":\"eth_call\",\"params\":[{\"to\":\"0xc0497e381f536be9ce14b0dd3817cbcae57d2f62\","
-                +
-                "\"data\":\"" + dataParams + "\"},"
-                + "\"latest\"],\"id\":44,\"jsonrpc\":\"2.0\"}";
+                + "\"data\":\"" + dataParams + "\"}," + "\"latest\"],\"id\":44,\"jsonrpc\":\"2.0\"}";
 
         try {
             String response = sendPostRequest(GET_ENS_URL, postData);
@@ -71,10 +69,7 @@ public class GetENSOfAddress {
         MediaType mediaType = MediaType.parse("application/json");
         RequestBody requestBody = RequestBody.create(postData, mediaType);
 
-        Request request = new Request.Builder()
-                .url(url)
-                .post(requestBody)
-                .addHeader("content-type", "application/json")
+        Request request = new Request.Builder().url(url).post(requestBody).addHeader("content-type", "application/json")
                 .build();
 
         try (Response response = httpClient.newCall(request).execute()) {
@@ -87,16 +82,11 @@ public class GetENSOfAddress {
 
     public static List<Type> decodeFunctionCall(String decodedData) {
 
-        Function function = new Function("reverse",
-                Arrays.asList(),
-                Arrays.asList(new TypeReference<Utf8String>() {
-                },
-                        new TypeReference<Address>() {
-                        },
-                        new TypeReference<Address>() {
-                        },
-                        new TypeReference<Address>() {
-                        }));
+        Function function = new Function("reverse", Arrays.asList(), Arrays.asList(new TypeReference<Utf8String>() {
+        }, new TypeReference<Address>() {
+        }, new TypeReference<Address>() {
+        }, new TypeReference<Address>() {
+        }));
 
         return FunctionReturnDecoder.decode(decodedData, function.getOutputParameters());
     }
@@ -106,13 +96,10 @@ public class GetENSOfAddress {
         Function function = new Function("reverse",
                 Arrays.asList(new DynamicBytes(Numeric.hexStringToByteArray(reverseNameHex))),
                 Arrays.asList(new TypeReference<Utf8String>() {
-                },
-                        new TypeReference<Address>() {
-                        },
-                        new TypeReference<Address>() {
-                        },
-                        new TypeReference<Address>() {
-                        }));
+                }, new TypeReference<Address>() {
+                }, new TypeReference<Address>() {
+                }, new TypeReference<Address>() {
+                }));
 
         String encodedHex = FunctionEncoder.encode(function);
         return encodedHex;

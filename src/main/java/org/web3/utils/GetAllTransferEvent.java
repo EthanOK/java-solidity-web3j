@@ -32,8 +32,7 @@ public class GetAllTransferEvent {
     static BigInteger startBlockNumber = new BigInteger("10320093");
 
     public static void main(String[] args) throws IOException {
-        Web3j web3j = Web3j
-                .build(new HttpService(RPC));
+        Web3j web3j = Web3j.build(new HttpService(RPC));
 
         // 死循环 6s执行一次
         while (true) {
@@ -59,8 +58,7 @@ public class GetAllTransferEvent {
 
         System.out.println("BlockHash: " + latestBlock.getHash());
         String blockHash = latestBlock.getHash();
-        EthFilter filter = new EthFilter(blockHash)
-                .addOptionalTopics(TransferTopic);
+        EthFilter filter = new EthFilter(blockHash).addOptionalTopics(TransferTopic);
 
         // function 1: only get data no listen
         EthLog ethLog = web3j.ethGetLogs(filter).send();

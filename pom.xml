@@ -14,6 +14,7 @@
         <maven.compiler.source>18</maven.compiler.source>
         <maven.compiler.target>18</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <formatter-maven-plugin.version>2.24.1</formatter-maven-plugin.version>
     </properties>
     <dependencies>
 
@@ -111,6 +112,11 @@
         <pluginManagement>
             <plugins>
                 <plugin>
+                    <groupId>net.revelc.code.formatter</groupId>
+                    <artifactId>formatter-maven-plugin</artifactId>
+                    <version>${formatter-maven-plugin.version}</version>
+                </plugin>
+                <plugin>
                     <groupId>org.web3j</groupId>
                     <artifactId>web3j-maven-plugin</artifactId>
                     <version>4.12.3</version>
@@ -120,6 +126,18 @@
                 </plugin>
             </plugins>
         </pluginManagement>
+        <plugins>
+            <plugin>
+                <groupId>net.revelc.code.formatter</groupId>
+                <artifactId>formatter-maven-plugin</artifactId>
+                <configuration>
+                    <!-- Generated / vendored web3j wrappers under src/main/java/org/web3j -->
+                    <excludes>
+                        <exclude>org/web3j/**</exclude>
+                    </excludes>
+                </configuration>
+            </plugin>
+        </plugins>
     </build>
 
 </project>

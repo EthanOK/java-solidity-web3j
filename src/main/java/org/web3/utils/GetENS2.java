@@ -9,8 +9,7 @@ import io.github.cdimascio.dotenv.Dotenv;
 public class GetENS2 {
     static Dotenv dotenv = Dotenv.load();
     static String URL = dotenv.get("GET_ENS_URL");
-    static Web3j web3j = Web3j
-            .build(new HttpService(URL));
+    static Web3j web3j = Web3j.build(new HttpService(URL));
     static EnsResolver ensResolver = new EnsResolver(web3j);
 
     public static void main(String[] args) {

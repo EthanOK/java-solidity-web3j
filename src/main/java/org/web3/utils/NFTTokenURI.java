@@ -14,72 +14,62 @@ import java.math.BigInteger;
 import java.util.*;
 
 public class NFTTokenURI {
-        public static Map<String, String> getTokenURI(Web3j web3j, String multicalladdress, String tokenAddress,
-                        String[] tokenIds) throws Exception {
-                Set<String> set = new HashSet<>(Arrays.asList(tokenIds));
-                String[] uniqueTokenIds = set.toArray(new String[0]);
-                Map<String, String> map = new HashMap<>();
+    public static Map<String, String> getTokenURI(Web3j web3j, String multicalladdress, String tokenAddress,
+            String[] tokenIds) throws Exception {
+        Set<String> set = new HashSet<>(Arrays.asList(tokenIds));
+        String[] uniqueTokenIds = set.toArray(new String[0]);
+        Map<String, String> map = new HashMap<>();
 
-                int len = uniqueTokenIds.length;
+        int len = uniqueTokenIds.length;
 
-                DynamicStruct[] callDatas = new DynamicStruct[len];
+        DynamicStruct[] callDatas = new DynamicStruct[len];
 
-                for (int i = 0; i < len; i++) {
-                        Function tokenURI = new Function("tokenURI",
-                                        Arrays.asList(new Uint256(new BigInteger(uniqueTokenIds[i]))),
-                                        Arrays.asList(new TypeReference<Utf8String>() {
-                                        }));
-                        String encodedtokenURI = FunctionEncoder.encode(tokenURI);
-                        byte[] bytesData = Numeric.hexStringToByteArray(encodedtokenURI);
+        for (int i = 0; i < len; i++) {
+            Function tokenURI = new Function("tokenURI", Arrays.asList(new Uint256(new BigInteger(uniqueTokenIds[i]))),
+                    Arrays.asList(new TypeReference<Utf8String>() {
+                    }));
+            String encodedtokenURI = FunctionEncoder.encode(tokenURI);
+            byte[] bytesData = Numeric.hexStringToByteArray(encodedtokenURI);
 
-                        callDatas[i] = new DynamicStruct(
-                                        new Address(tokenAddress),
-                                        new DynamicBytes(bytesData));
-                }
-
-                DynamicArray<DynamicStruct> callDatasArray = new DynamicArray<DynamicStruct>(DynamicStruct.class,
-                                callDatas);
-
-                Function function = new Function("aggregate", Arrays.asList(callDatasArray),
-                                Arrays.asList(new TypeReference<Uint256>() {
-                                }, new TypeReference<DynamicArray<DynamicBytes>>() {
-                                }));
-
-                String encodedFunction = FunctionEncoder.encode(function);
-                // https://docs.web3j.io/4.11.0/transactions/transactions_and_smart_contracts/#querying-the-state-of-a-smart-contract
-                EthCall ethCall = web3j.ethCall(
-                                Transaction.createEthCallTransaction(
-                                                null,
-                                                multicalladdress,
-                                                encodedFunction),
-                                DefaultBlockParameterName.LATEST)
-                                .sendAsync().get();
-
-                // 解析返回数据
-                List<Type> response = FunctionReturnDecoder.decode(ethCall.getValue(), function.getOutputParameters());
-                // Uint256 blockNumber = (Uint256) response.get(0);
-                DynamicArray<DynamicBytes> returnDataArray = (DynamicArray<DynamicBytes>) response.get(1);
-                if (returnDataArray.getValue().size() != len) {
-                        throw new Exception("Mismatched length");
-                }
-                // bytes[]
-                List<DynamicBytes> listBytes = returnDataArray.getValue();
-
-                for (int i = 0; i < listBytes.size(); i++) {
-                        String bytesHex = Numeric.toHexString(listBytes.get(i).getValue());
-                        // method1: bytes decode String
-                        byte[] decodedValues = FunctionReturnDecoder.decodeDynamicBytes(
-                                        bytesHex);
-                        String tokenURI = new String(decodedValues, "UTF-8");
-                        map.put(uniqueTokenIds[i], tokenURI);
-
-                        // method2:
-                        // List<Type> listTokenURI = FunctionReturnDecoder.decode(bytesHex,
-                        // functionString.getOutputParameters());
-                        // listTokenURI.get(0).getValue();
-                        // System.out.println(listTokenURI.get(0).getValue().toString());
-                }
-                return map;
-
+            callDatas[i] = new DynamicStruct(new Address(tokenAddress), new DynamicBytes(bytesData));
         }
+
+        DynamicArray<DynamicStruct> callDatasArray = new DynamicArray<DynamicStruct>(DynamicStruct.class, callDatas);
+
+        Function function = new Function("aggregate", Arrays.asList(callDatasArray),
+                Arrays.asList(new TypeReference<Uint256>() {
+                }, new TypeReference<DynamicArray<DynamicBytes>>() {
+                }));
+
+        String encodedFunction = FunctionEncoder.encode(function);
+        // https://docs.web3j.io/4.11.0/transactions/transactions_and_smart_contracts/#querying-the-state-of-a-smart-contract
+        EthCall ethCall = web3j.ethCall(Transaction.createEthCallTransaction(null, multicalladdress, encodedFunction),
+                DefaultBlockParameterName.LATEST).sendAsync().get();
+
+        // 解析返回数据
+        List<Type> response = FunctionReturnDecoder.decode(ethCall.getValue(), function.getOutputParameters());
+        // Uint256 blockNumber = (Uint256) response.get(0);
+        DynamicArray<DynamicBytes> returnDataArray = (DynamicArray<DynamicBytes>) response.get(1);
+        if (returnDataArray.getValue().size() != len) {
+            throw new Exception("Mismatched length");
+        }
+        // bytes[]
+        List<DynamicBytes> listBytes = returnDataArray.getValue();
+
+        for (int i = 0; i < listBytes.size(); i++) {
+            String bytesHex = Numeric.toHexString(listBytes.get(i).getValue());
+            // method1: bytes decode String
+            byte[] decodedValues = FunctionReturnDecoder.decodeDynamicBytes(bytesHex);
+            String tokenURI = new String(decodedValues, "UTF-8");
+            map.put(uniqueTokenIds[i], tokenURI);
+
+            // method2:
+            // List<Type> listTokenURI = FunctionReturnDecoder.decode(bytesHex,
+            // functionString.getOutputParameters());
+            // listTokenURI.get(0).getValue();
+            // System.out.println(listTokenURI.get(0).getValue().toString());
+        }
+        return map;
+
+    }
 }

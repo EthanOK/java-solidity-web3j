@@ -27,9 +27,7 @@ public class GETTokenURIs {
 
         ContractGasProvider contractGasProvider = new DefaultGasProvider();
         // 只有operator可以读
-        Multicall contract = Multicall.load(multicalladdress, web3j,
-                new RawTransactionManager(web3j,
-                        credentials),
+        Multicall contract = Multicall.load(multicalladdress, web3j, new RawTransactionManager(web3j, credentials),
                 contractGasProvider);
         ;
 

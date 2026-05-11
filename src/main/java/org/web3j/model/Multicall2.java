@@ -26,13 +26,17 @@ import org.web3j.tx.TransactionManager;
 import org.web3j.tx.gas.ContractGasProvider;
 
 /**
- * <p>Auto generated code.
- * <p><strong>Do not modify!</strong>
- * <p>Please use the <a href="https://docs.web3j.io/command_line.html">web3j command line tools</a>,
- * or the org.web3j.codegen.SolidityFunctionWrapperGenerator in the 
+ * <p>
+ * Auto generated code.
+ * <p>
+ * <strong>Do not modify!</strong>
+ * <p>
+ * Please use the <a href="https://docs.web3j.io/command_line.html">web3j command line tools</a>, or the
+ * org.web3j.codegen.SolidityFunctionWrapperGenerator in the
  * <a href="https://github.com/web3j/web3j/tree/master/codegen">codegen module</a> to update.
  *
- * <p>Generated with web3j version 4.10.0.
+ * <p>
+ * Generated with web3j version 4.10.0.
  */
 @SuppressWarnings("rawtypes")
 public class Multicall2 extends Contract {
@@ -65,162 +69,173 @@ public class Multicall2 extends Contract {
     public static final String FUNC_TRYBLOCKANDAGGREGATE = "tryBlockAndAggregate";
 
     @Deprecated
-    protected Multicall2(String contractAddress, Web3j web3j, Credentials credentials, BigInteger gasPrice, BigInteger gasLimit) {
+    protected Multicall2(String contractAddress, Web3j web3j, Credentials credentials, BigInteger gasPrice,
+            BigInteger gasLimit) {
         super(BINARY, contractAddress, web3j, credentials, gasPrice, gasLimit);
     }
 
-    protected Multicall2(String contractAddress, Web3j web3j, Credentials credentials, ContractGasProvider contractGasProvider) {
+    protected Multicall2(String contractAddress, Web3j web3j, Credentials credentials,
+            ContractGasProvider contractGasProvider) {
         super(BINARY, contractAddress, web3j, credentials, contractGasProvider);
     }
 
     @Deprecated
-    protected Multicall2(String contractAddress, Web3j web3j, TransactionManager transactionManager, BigInteger gasPrice, BigInteger gasLimit) {
+    protected Multicall2(String contractAddress, Web3j web3j, TransactionManager transactionManager,
+            BigInteger gasPrice, BigInteger gasLimit) {
         super(BINARY, contractAddress, web3j, transactionManager, gasPrice, gasLimit);
     }
 
-    protected Multicall2(String contractAddress, Web3j web3j, TransactionManager transactionManager, ContractGasProvider contractGasProvider) {
+    protected Multicall2(String contractAddress, Web3j web3j, TransactionManager transactionManager,
+            ContractGasProvider contractGasProvider) {
         super(BINARY, contractAddress, web3j, transactionManager, contractGasProvider);
     }
 
     public RemoteFunctionCall<TransactionReceipt> aggregate(List<Call> calls) {
-        final Function function = new Function(
-                FUNC_AGGREGATE, 
-                Arrays.<Type>asList(new org.web3j.abi.datatypes.DynamicArray<Call>(Call.class, calls)), 
-                Collections.<TypeReference<?>>emptyList());
+        final Function function = new Function(FUNC_AGGREGATE,
+                Arrays.<Type> asList(new org.web3j.abi.datatypes.DynamicArray<Call>(Call.class, calls)),
+                Collections.<TypeReference<?>> emptyList());
         return executeRemoteCallTransaction(function);
     }
 
     public RemoteFunctionCall<Tuple2<BigInteger, List<byte[]>>> aggregateStaticCall(List<Call> calls) {
-        final Function function = new Function(FUNC_AGGREGATESTATICCALL, 
-                Arrays.<Type>asList(new org.web3j.abi.datatypes.DynamicArray<Call>(Call.class, calls)), 
-                Arrays.<TypeReference<?>>asList(new TypeReference<Uint256>() {}, new TypeReference<DynamicArray<DynamicBytes>>() {}));
+        final Function function = new Function(FUNC_AGGREGATESTATICCALL,
+                Arrays.<Type> asList(new org.web3j.abi.datatypes.DynamicArray<Call>(Call.class, calls)),
+                Arrays.<TypeReference<?>> asList(new TypeReference<Uint256>() {
+                }, new TypeReference<DynamicArray<DynamicBytes>>() {
+                }));
         return new RemoteFunctionCall<Tuple2<BigInteger, List<byte[]>>>(function,
                 new Callable<Tuple2<BigInteger, List<byte[]>>>() {
                     @Override
                     public Tuple2<BigInteger, List<byte[]>> call() throws Exception {
                         List<Type> results = executeCallMultipleValueReturn(function);
-                        return new Tuple2<BigInteger, List<byte[]>>(
-                                (BigInteger) results.get(0).getValue(), 
+                        return new Tuple2<BigInteger, List<byte[]>>((BigInteger) results.get(0).getValue(),
                                 convertToNative((List<DynamicBytes>) results.get(1).getValue()));
                     }
                 });
     }
 
     public RemoteFunctionCall<TransactionReceipt> blockAndAggregate(List<Call> calls) {
-        final Function function = new Function(
-                FUNC_BLOCKANDAGGREGATE, 
-                Arrays.<Type>asList(new org.web3j.abi.datatypes.DynamicArray<Call>(Call.class, calls)), 
-                Collections.<TypeReference<?>>emptyList());
+        final Function function = new Function(FUNC_BLOCKANDAGGREGATE,
+                Arrays.<Type> asList(new org.web3j.abi.datatypes.DynamicArray<Call>(Call.class, calls)),
+                Collections.<TypeReference<?>> emptyList());
         return executeRemoteCallTransaction(function);
     }
 
     public RemoteFunctionCall<byte[]> getBlockHash(BigInteger blockNumber) {
-        final Function function = new Function(FUNC_GETBLOCKHASH, 
-                Arrays.<Type>asList(new org.web3j.abi.datatypes.generated.Uint256(blockNumber)), 
-                Arrays.<TypeReference<?>>asList(new TypeReference<Bytes32>() {}));
+        final Function function = new Function(FUNC_GETBLOCKHASH,
+                Arrays.<Type> asList(new org.web3j.abi.datatypes.generated.Uint256(blockNumber)),
+                Arrays.<TypeReference<?>> asList(new TypeReference<Bytes32>() {
+                }));
         return executeRemoteCallSingleValueReturn(function, byte[].class);
     }
 
     public RemoteFunctionCall<BigInteger> getBlockNumber() {
-        final Function function = new Function(FUNC_GETBLOCKNUMBER, 
-                Arrays.<Type>asList(), 
-                Arrays.<TypeReference<?>>asList(new TypeReference<Uint256>() {}));
+        final Function function = new Function(FUNC_GETBLOCKNUMBER, Arrays.<Type> asList(),
+                Arrays.<TypeReference<?>> asList(new TypeReference<Uint256>() {
+                }));
         return executeRemoteCallSingleValueReturn(function, BigInteger.class);
     }
 
     public RemoteFunctionCall<String> getCurrentBlockCoinbase() {
-        final Function function = new Function(FUNC_GETCURRENTBLOCKCOINBASE, 
-                Arrays.<Type>asList(), 
-                Arrays.<TypeReference<?>>asList(new TypeReference<Address>() {}));
+        final Function function = new Function(FUNC_GETCURRENTBLOCKCOINBASE, Arrays.<Type> asList(),
+                Arrays.<TypeReference<?>> asList(new TypeReference<Address>() {
+                }));
         return executeRemoteCallSingleValueReturn(function, String.class);
     }
 
     public RemoteFunctionCall<BigInteger> getCurrentBlockDifficulty() {
-        final Function function = new Function(FUNC_GETCURRENTBLOCKDIFFICULTY, 
-                Arrays.<Type>asList(), 
-                Arrays.<TypeReference<?>>asList(new TypeReference<Uint256>() {}));
+        final Function function = new Function(FUNC_GETCURRENTBLOCKDIFFICULTY, Arrays.<Type> asList(),
+                Arrays.<TypeReference<?>> asList(new TypeReference<Uint256>() {
+                }));
         return executeRemoteCallSingleValueReturn(function, BigInteger.class);
     }
 
     public RemoteFunctionCall<BigInteger> getCurrentBlockGasLimit() {
-        final Function function = new Function(FUNC_GETCURRENTBLOCKGASLIMIT, 
-                Arrays.<Type>asList(), 
-                Arrays.<TypeReference<?>>asList(new TypeReference<Uint256>() {}));
+        final Function function = new Function(FUNC_GETCURRENTBLOCKGASLIMIT, Arrays.<Type> asList(),
+                Arrays.<TypeReference<?>> asList(new TypeReference<Uint256>() {
+                }));
         return executeRemoteCallSingleValueReturn(function, BigInteger.class);
     }
 
     public RemoteFunctionCall<BigInteger> getCurrentBlockTimestamp() {
-        final Function function = new Function(FUNC_GETCURRENTBLOCKTIMESTAMP, 
-                Arrays.<Type>asList(), 
-                Arrays.<TypeReference<?>>asList(new TypeReference<Uint256>() {}));
+        final Function function = new Function(FUNC_GETCURRENTBLOCKTIMESTAMP, Arrays.<Type> asList(),
+                Arrays.<TypeReference<?>> asList(new TypeReference<Uint256>() {
+                }));
         return executeRemoteCallSingleValueReturn(function, BigInteger.class);
     }
 
     public RemoteFunctionCall<BigInteger> getEthBalance(String addr) {
-        final Function function = new Function(FUNC_GETETHBALANCE, 
-                Arrays.<Type>asList(new org.web3j.abi.datatypes.Address(160, addr)), 
-                Arrays.<TypeReference<?>>asList(new TypeReference<Uint256>() {}));
+        final Function function = new Function(FUNC_GETETHBALANCE,
+                Arrays.<Type> asList(new org.web3j.abi.datatypes.Address(160, addr)),
+                Arrays.<TypeReference<?>> asList(new TypeReference<Uint256>() {
+                }));
         return executeRemoteCallSingleValueReturn(function, BigInteger.class);
     }
 
     public RemoteFunctionCall<byte[]> getLastBlockHash() {
-        final Function function = new Function(FUNC_GETLASTBLOCKHASH, 
-                Arrays.<Type>asList(), 
-                Arrays.<TypeReference<?>>asList(new TypeReference<Bytes32>() {}));
+        final Function function = new Function(FUNC_GETLASTBLOCKHASH, Arrays.<Type> asList(),
+                Arrays.<TypeReference<?>> asList(new TypeReference<Bytes32>() {
+                }));
         return executeRemoteCallSingleValueReturn(function, byte[].class);
     }
 
     public RemoteFunctionCall<TransactionReceipt> tryAggregate(Boolean requireSuccess, List<Call> calls) {
-        final Function function = new Function(
-                FUNC_TRYAGGREGATE, 
-                Arrays.<Type>asList(new org.web3j.abi.datatypes.Bool(requireSuccess), 
-                new org.web3j.abi.datatypes.DynamicArray<Call>(Call.class, calls)), 
-                Collections.<TypeReference<?>>emptyList());
+        final Function function = new Function(FUNC_TRYAGGREGATE,
+                Arrays.<Type> asList(new org.web3j.abi.datatypes.Bool(requireSuccess),
+                        new org.web3j.abi.datatypes.DynamicArray<Call>(Call.class, calls)),
+                Collections.<TypeReference<?>> emptyList());
         return executeRemoteCallTransaction(function);
     }
 
     public RemoteFunctionCall<TransactionReceipt> tryBlockAndAggregate(Boolean requireSuccess, List<Call> calls) {
-        final Function function = new Function(
-                FUNC_TRYBLOCKANDAGGREGATE, 
-                Arrays.<Type>asList(new org.web3j.abi.datatypes.Bool(requireSuccess), 
-                new org.web3j.abi.datatypes.DynamicArray<Call>(Call.class, calls)), 
-                Collections.<TypeReference<?>>emptyList());
+        final Function function = new Function(FUNC_TRYBLOCKANDAGGREGATE,
+                Arrays.<Type> asList(new org.web3j.abi.datatypes.Bool(requireSuccess),
+                        new org.web3j.abi.datatypes.DynamicArray<Call>(Call.class, calls)),
+                Collections.<TypeReference<?>> emptyList());
         return executeRemoteCallTransaction(function);
     }
 
     @Deprecated
-    public static Multicall2 load(String contractAddress, Web3j web3j, Credentials credentials, BigInteger gasPrice, BigInteger gasLimit) {
+    public static Multicall2 load(String contractAddress, Web3j web3j, Credentials credentials, BigInteger gasPrice,
+            BigInteger gasLimit) {
         return new Multicall2(contractAddress, web3j, credentials, gasPrice, gasLimit);
     }
 
     @Deprecated
-    public static Multicall2 load(String contractAddress, Web3j web3j, TransactionManager transactionManager, BigInteger gasPrice, BigInteger gasLimit) {
+    public static Multicall2 load(String contractAddress, Web3j web3j, TransactionManager transactionManager,
+            BigInteger gasPrice, BigInteger gasLimit) {
         return new Multicall2(contractAddress, web3j, transactionManager, gasPrice, gasLimit);
     }
 
-    public static Multicall2 load(String contractAddress, Web3j web3j, Credentials credentials, ContractGasProvider contractGasProvider) {
+    public static Multicall2 load(String contractAddress, Web3j web3j, Credentials credentials,
+            ContractGasProvider contractGasProvider) {
         return new Multicall2(contractAddress, web3j, credentials, contractGasProvider);
     }
 
-    public static Multicall2 load(String contractAddress, Web3j web3j, TransactionManager transactionManager, ContractGasProvider contractGasProvider) {
+    public static Multicall2 load(String contractAddress, Web3j web3j, TransactionManager transactionManager,
+            ContractGasProvider contractGasProvider) {
         return new Multicall2(contractAddress, web3j, transactionManager, contractGasProvider);
     }
 
-    public static RemoteCall<Multicall2> deploy(Web3j web3j, Credentials credentials, ContractGasProvider contractGasProvider) {
+    public static RemoteCall<Multicall2> deploy(Web3j web3j, Credentials credentials,
+            ContractGasProvider contractGasProvider) {
         return deployRemoteCall(Multicall2.class, web3j, credentials, contractGasProvider, BINARY, "");
     }
 
     @Deprecated
-    public static RemoteCall<Multicall2> deploy(Web3j web3j, Credentials credentials, BigInteger gasPrice, BigInteger gasLimit) {
+    public static RemoteCall<Multicall2> deploy(Web3j web3j, Credentials credentials, BigInteger gasPrice,
+            BigInteger gasLimit) {
         return deployRemoteCall(Multicall2.class, web3j, credentials, gasPrice, gasLimit, BINARY, "");
     }
 
-    public static RemoteCall<Multicall2> deploy(Web3j web3j, TransactionManager transactionManager, ContractGasProvider contractGasProvider) {
+    public static RemoteCall<Multicall2> deploy(Web3j web3j, TransactionManager transactionManager,
+            ContractGasProvider contractGasProvider) {
         return deployRemoteCall(Multicall2.class, web3j, transactionManager, contractGasProvider, BINARY, "");
     }
 
     @Deprecated
-    public static RemoteCall<Multicall2> deploy(Web3j web3j, TransactionManager transactionManager, BigInteger gasPrice, BigInteger gasLimit) {
+    public static RemoteCall<Multicall2> deploy(Web3j web3j, TransactionManager transactionManager, BigInteger gasPrice,
+            BigInteger gasLimit) {
         return deployRemoteCall(Multicall2.class, web3j, transactionManager, gasPrice, gasLimit, BINARY, "");
     }
 
@@ -230,8 +245,7 @@ public class Multicall2 extends Contract {
         public byte[] callData;
 
         public Call(String target, byte[] callData) {
-            super(new org.web3j.abi.datatypes.Address(160, target), 
-                    new org.web3j.abi.datatypes.DynamicBytes(callData));
+            super(new org.web3j.abi.datatypes.Address(160, target), new org.web3j.abi.datatypes.DynamicBytes(callData));
             this.target = target;
             this.callData = callData;
         }
@@ -249,8 +263,7 @@ public class Multicall2 extends Contract {
         public byte[] returnData;
 
         public Result(Boolean success, byte[] returnData) {
-            super(new org.web3j.abi.datatypes.Bool(success), 
-                    new org.web3j.abi.datatypes.DynamicBytes(returnData));
+            super(new org.web3j.abi.datatypes.Bool(success), new org.web3j.abi.datatypes.DynamicBytes(returnData));
             this.success = success;
             this.returnData = returnData;
         }

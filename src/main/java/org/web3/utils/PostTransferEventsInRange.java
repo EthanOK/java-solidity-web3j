@@ -42,11 +42,8 @@ public class PostTransferEventsInRange {
         MediaType mediaType = MediaType.parse("application/json");
         String requestBody_ = "{\"jsonrpc\":\"2.0\",\"method\":\"eth_getLogs\",\"params\":[{\"fromBlock\":\"%s\",\"toBlock\":\"%s\",\"topics\":[\"0xddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef\"]}],\"id\":1}";
         String requestBody = String.format(requestBody_, fromBlockHex, toBlockHex);
-        Request request = new Request.Builder()
-                .url(INFURA_HTTP_MAIN)
-                .post(RequestBody.create(mediaType, requestBody))
-                .addHeader("Content-Type", "application/json")
-                .build();
+        Request request = new Request.Builder().url(INFURA_HTTP_MAIN).post(RequestBody.create(mediaType, requestBody))
+                .addHeader("Content-Type", "application/json").build();
 
         try (Response response = client.newCall(request).execute()) {
             if (response.isSuccessful()) {
@@ -71,23 +68,13 @@ public class PostTransferEventsInRange {
 
     private static void handleResponseResult(JSONArray results) {
         /*
-         * {
-         * "address": "0xf6afc05fccea5a53f22a3e39ffee861e016bd9a0",
-         * "blockHash":
-         * "0xcb2a112831cc2a7ab0d6e93b0dda0aba046de1391c294da381f8e34e049198fc",
-         * "blockNumber": "0x11297f1",
-         * "data": "0x00000000000000000000000000000000000000000003ae67cbce6ebf24144000",
-         * "logIndex": "0x2",
-         * "removed": false,
-         * "topics": [
-         * "0xddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef",
+         * { "address": "0xf6afc05fccea5a53f22a3e39ffee861e016bd9a0", "blockHash":
+         * "0xcb2a112831cc2a7ab0d6e93b0dda0aba046de1391c294da381f8e34e049198fc", "blockNumber": "0x11297f1", "data":
+         * "0x00000000000000000000000000000000000000000003ae67cbce6ebf24144000", "logIndex": "0x2", "removed": false,
+         * "topics": [ "0xddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef",
          * "0x000000000000000000000000120051a72966950b8ce12eb5496b5d1eeec1541b",
-         * "0x000000000000000000000000e977791b2cd891e5dcd54d3a530ae413e8d2f242"
-         * ],
-         * "transactionHash":
-         * "0x24106b7d2950fa908d441381ab10fe8848305e81b901ac2e40f83771e1f64a62",
-         * "transactionIndex": "0x2"
-         * }
+         * "0x000000000000000000000000e977791b2cd891e5dcd54d3a530ae413e8d2f242" ], "transactionHash":
+         * "0x24106b7d2950fa908d441381ab10fe8848305e81b901ac2e40f83771e1f64a62", "transactionIndex": "0x2" }
          */
         for (int i = 0; i < results.length(); i++) {
             JSONObject result = results.getJSONObject(i);
@@ -101,8 +88,7 @@ public class PostTransferEventsInRange {
                 String to = topics.getString(2);
                 String fromAddress = FunctionReturnDecoder.decodeAddress(from);
                 String toAddress = FunctionReturnDecoder.decodeAddress(to);
-                if (!fromAddress.equals(EnsUtils.EMPTY_ADDRESS)
-                        && !toAddress.equals(EnsUtils.EMPTY_ADDRESS)) {
+                if (!fromAddress.equals(EnsUtils.EMPTY_ADDRESS) && !toAddress.equals(EnsUtils.EMPTY_ADDRESS)) {
 
                     String tokenId = topics.getString(3);
 
@@ -113,10 +99,8 @@ public class PostTransferEventsInRange {
                     // TODO: check data of on sale
                     try {
                         String encodeData = FunctionEncoder
-                                .encodeConstructor(Arrays.<Type>asList(new Address(token), new Address(fromAddress),
-                                        new Address(toAddress),
-                                        new Uint256(tokenIdBig),
-                                        new Uint256(blockNumberBig)));
+                                .encodeConstructor(Arrays.<Type> asList(new Address(token), new Address(fromAddress),
+                                        new Address(toAddress), new Uint256(tokenIdBig), new Uint256(blockNumberBig)));
                         String encodeDataHash = Hash.sha3("0x" + encodeData);
 
                         String insertQuery = "INSERT IGNORE INTO aggregator_ethan.event_transfer_erc721 "

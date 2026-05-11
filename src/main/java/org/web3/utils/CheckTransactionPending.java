@@ -15,10 +15,7 @@ import io.github.cdimascio.dotenv.Dotenv;
 public class CheckTransactionPending {
 
     enum TxStatus {
-        NOTFOUND("NotFound"),
-        PENDING("Pending"),
-        SUCCESS("Success"),
-        FAILURE("Failure");
+        NOTFOUND("NotFound"), PENDING("Pending"), SUCCESS("Success"), FAILURE("Failure");
 
         private final String label;
 
@@ -63,9 +60,7 @@ public class CheckTransactionPending {
             return TxStatus.PENDING;
         }
 
-        EthGetTransactionReceipt transactionReceipt = web3j
-                .ethGetTransactionReceipt(txhash)
-                .sendAsync().get();
+        EthGetTransactionReceipt transactionReceipt = web3j.ethGetTransactionReceipt(txhash).sendAsync().get();
         TransactionReceipt receipt = transactionReceipt.getResult();
 
         if (receipt == null || receipt.getStatus() == null) {

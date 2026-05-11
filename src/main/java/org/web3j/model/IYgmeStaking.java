@@ -35,13 +35,17 @@ import org.web3j.tx.TransactionManager;
 import org.web3j.tx.gas.ContractGasProvider;
 
 /**
- * <p>Auto generated code.
- * <p><strong>Do not modify!</strong>
- * <p>Please use the <a href="https://docs.web3j.io/command_line.html">web3j command line tools</a>,
- * or the org.web3j.codegen.SolidityFunctionWrapperGenerator in the 
+ * <p>
+ * Auto generated code.
+ * <p>
+ * <strong>Do not modify!</strong>
+ * <p>
+ * Please use the <a href="https://docs.web3j.io/command_line.html">web3j command line tools</a>, or the
+ * org.web3j.codegen.SolidityFunctionWrapperGenerator in the
  * <a href="https://github.com/web3j/web3j/tree/master/codegen">codegen module</a> to update.
  *
- * <p>Generated with web3j version 4.10.0.
+ * <p>
+ * Generated with web3j version 4.10.0.
  */
 @SuppressWarnings("rawtypes")
 public class IYgmeStaking extends Contract {
@@ -79,34 +83,46 @@ public class IYgmeStaking extends Contract {
 
     public static final String FUNC_YGMETOTAL = "ygmeTotal";
 
-    public static final Event STAKING_EVENT = new Event("Staking", 
-            Arrays.<TypeReference<?>>asList(new TypeReference<Address>(true) {}, new TypeReference<Uint256>(true) {}, new TypeReference<Address>(true) {}, new TypeReference<Uint256>() {}, new TypeReference<Uint256>() {}, new TypeReference<Uint256>() {}));
-    ;
+    public static final Event STAKING_EVENT = new Event("Staking",
+            Arrays.<TypeReference<?>> asList(new TypeReference<Address>(true) {
+            }, new TypeReference<Uint256>(true) {
+            }, new TypeReference<Address>(true) {
+            }, new TypeReference<Uint256>() {
+            }, new TypeReference<Uint256>() {
+            }, new TypeReference<Uint256>() {
+            }));;
 
-    public static final Event WITHDRAWERC20_EVENT = new Event("WithdrawERC20", 
-            Arrays.<TypeReference<?>>asList(new TypeReference<Uint256>() {}, new TypeReference<Address>() {}, new TypeReference<Uint256>() {}));
-    ;
+    public static final Event WITHDRAWERC20_EVENT = new Event("WithdrawERC20",
+            Arrays.<TypeReference<?>> asList(new TypeReference<Uint256>() {
+            }, new TypeReference<Address>() {
+            }, new TypeReference<Uint256>() {
+            }));;
 
     @Deprecated
-    protected IYgmeStaking(String contractAddress, Web3j web3j, Credentials credentials, BigInteger gasPrice, BigInteger gasLimit) {
+    protected IYgmeStaking(String contractAddress, Web3j web3j, Credentials credentials, BigInteger gasPrice,
+            BigInteger gasLimit) {
         super(BINARY, contractAddress, web3j, credentials, gasPrice, gasLimit);
     }
 
-    protected IYgmeStaking(String contractAddress, Web3j web3j, Credentials credentials, ContractGasProvider contractGasProvider) {
+    protected IYgmeStaking(String contractAddress, Web3j web3j, Credentials credentials,
+            ContractGasProvider contractGasProvider) {
         super(BINARY, contractAddress, web3j, credentials, contractGasProvider);
     }
 
     @Deprecated
-    protected IYgmeStaking(String contractAddress, Web3j web3j, TransactionManager transactionManager, BigInteger gasPrice, BigInteger gasLimit) {
+    protected IYgmeStaking(String contractAddress, Web3j web3j, TransactionManager transactionManager,
+            BigInteger gasPrice, BigInteger gasLimit) {
         super(BINARY, contractAddress, web3j, transactionManager, gasPrice, gasLimit);
     }
 
-    protected IYgmeStaking(String contractAddress, Web3j web3j, TransactionManager transactionManager, ContractGasProvider contractGasProvider) {
+    protected IYgmeStaking(String contractAddress, Web3j web3j, TransactionManager transactionManager,
+            ContractGasProvider contractGasProvider) {
         super(BINARY, contractAddress, web3j, transactionManager, contractGasProvider);
     }
 
     public static List<StakingEventResponse> getStakingEvents(TransactionReceipt transactionReceipt) {
-        List<Contract.EventValuesWithLog> valueList = staticExtractEventParametersWithLog(STAKING_EVENT, transactionReceipt);
+        List<Contract.EventValuesWithLog> valueList = staticExtractEventParametersWithLog(STAKING_EVENT,
+                transactionReceipt);
         ArrayList<StakingEventResponse> responses = new ArrayList<StakingEventResponse>(valueList.size());
         for (Contract.EventValuesWithLog eventValues : valueList) {
             StakingEventResponse typedResponse = new StakingEventResponse();
@@ -139,14 +155,16 @@ public class IYgmeStaking extends Contract {
         return web3j.ethLogFlowable(filter).map(log -> getStakingEventFromLog(log));
     }
 
-    public Flowable<StakingEventResponse> stakingEventFlowable(DefaultBlockParameter startBlock, DefaultBlockParameter endBlock) {
+    public Flowable<StakingEventResponse> stakingEventFlowable(DefaultBlockParameter startBlock,
+            DefaultBlockParameter endBlock) {
         EthFilter filter = new EthFilter(startBlock, endBlock, getContractAddress());
         filter.addSingleTopic(EventEncoder.encode(STAKING_EVENT));
         return stakingEventFlowable(filter);
     }
 
     public static List<WithdrawERC20EventResponse> getWithdrawERC20Events(TransactionReceipt transactionReceipt) {
-        List<Contract.EventValuesWithLog> valueList = staticExtractEventParametersWithLog(WITHDRAWERC20_EVENT, transactionReceipt);
+        List<Contract.EventValuesWithLog> valueList = staticExtractEventParametersWithLog(WITHDRAWERC20_EVENT,
+                transactionReceipt);
         ArrayList<WithdrawERC20EventResponse> responses = new ArrayList<WithdrawERC20EventResponse>(valueList.size());
         for (Contract.EventValuesWithLog eventValues : valueList) {
             WithdrawERC20EventResponse typedResponse = new WithdrawERC20EventResponse();
@@ -173,212 +191,222 @@ public class IYgmeStaking extends Contract {
         return web3j.ethLogFlowable(filter).map(log -> getWithdrawERC20EventFromLog(log));
     }
 
-    public Flowable<WithdrawERC20EventResponse> withdrawERC20EventFlowable(DefaultBlockParameter startBlock, DefaultBlockParameter endBlock) {
+    public Flowable<WithdrawERC20EventResponse> withdrawERC20EventFlowable(DefaultBlockParameter startBlock,
+            DefaultBlockParameter endBlock) {
         EthFilter filter = new EthFilter(startBlock, endBlock, getContractAddress());
         filter.addSingleTopic(EventEncoder.encode(WITHDRAWERC20_EVENT));
         return withdrawERC20EventFlowable(filter);
     }
 
     public RemoteFunctionCall<BigInteger> ONE_CYCLE() {
-        final Function function = new Function(FUNC_ONE_CYCLE, 
-                Arrays.<Type>asList(), 
-                Arrays.<TypeReference<?>>asList(new TypeReference<Uint64>() {}));
+        final Function function = new Function(FUNC_ONE_CYCLE, Arrays.<Type> asList(),
+                Arrays.<TypeReference<?>> asList(new TypeReference<Uint64>() {
+                }));
         return executeRemoteCallSingleValueReturn(function, BigInteger.class);
     }
 
     public RemoteFunctionCall<BigInteger> accountTotal() {
-        final Function function = new Function(FUNC_ACCOUNTTOTAL, 
-                Arrays.<Type>asList(), 
-                Arrays.<TypeReference<?>>asList(new TypeReference<Uint128>() {}));
+        final Function function = new Function(FUNC_ACCOUNTTOTAL, Arrays.<Type> asList(),
+                Arrays.<TypeReference<?>> asList(new TypeReference<Uint128>() {
+                }));
         return executeRemoteCallSingleValueReturn(function, BigInteger.class);
     }
 
     public RemoteFunctionCall<List> getStakingPeriods() {
-        final Function function = new Function(FUNC_GETSTAKINGPERIODS, 
-                Arrays.<Type>asList(), 
-                Arrays.<TypeReference<?>>asList(new TypeReference<StaticArray3<Uint64>>() {}));
-        return new RemoteFunctionCall<List>(function,
-                new Callable<List>() {
-                    @Override
-                    @SuppressWarnings("unchecked")
-                    public List call() throws Exception {
-                        List<Type> result = (List<Type>) executeCallSingleValueReturn(function, List.class);
-                        return convertToNative(result);
-                    }
-                });
+        final Function function = new Function(FUNC_GETSTAKINGPERIODS, Arrays.<Type> asList(),
+                Arrays.<TypeReference<?>> asList(new TypeReference<StaticArray3<Uint64>>() {
+                }));
+        return new RemoteFunctionCall<List>(function, new Callable<List>() {
+            @Override
+            @SuppressWarnings("unchecked")
+            public List call() throws Exception {
+                List<Type> result = (List<Type>) executeCallSingleValueReturn(function, List.class);
+                return convertToNative(result);
+            }
+        });
     }
 
     public RemoteFunctionCall<List> getStakingTokenIds(String _account) {
-        final Function function = new Function(FUNC_GETSTAKINGTOKENIDS, 
-                Arrays.<Type>asList(new org.web3j.abi.datatypes.Address(160, _account)), 
-                Arrays.<TypeReference<?>>asList(new TypeReference<DynamicArray<Uint256>>() {}));
-        return new RemoteFunctionCall<List>(function,
-                new Callable<List>() {
-                    @Override
-                    @SuppressWarnings("unchecked")
-                    public List call() throws Exception {
-                        List<Type> result = (List<Type>) executeCallSingleValueReturn(function, List.class);
-                        return convertToNative(result);
-                    }
-                });
+        final Function function = new Function(FUNC_GETSTAKINGTOKENIDS,
+                Arrays.<Type> asList(new org.web3j.abi.datatypes.Address(160, _account)),
+                Arrays.<TypeReference<?>> asList(new TypeReference<DynamicArray<Uint256>>() {
+                }));
+        return new RemoteFunctionCall<List>(function, new Callable<List>() {
+            @Override
+            @SuppressWarnings("unchecked")
+            public List call() throws Exception {
+                List<Type> result = (List<Type>) executeCallSingleValueReturn(function, List.class);
+                return convertToNative(result);
+            }
+        });
     }
 
     public RemoteFunctionCall<String> getWithdrawSigner() {
-        final Function function = new Function(FUNC_GETWITHDRAWSIGNER, 
-                Arrays.<Type>asList(), 
-                Arrays.<TypeReference<?>>asList(new TypeReference<Address>() {}));
+        final Function function = new Function(FUNC_GETWITHDRAWSIGNER, Arrays.<Type> asList(),
+                Arrays.<TypeReference<?>> asList(new TypeReference<Address>() {
+                }));
         return executeRemoteCallSingleValueReturn(function, String.class);
     }
 
     public RemoteFunctionCall<Boolean> orderIsInvalid(BigInteger param0) {
-        final Function function = new Function(FUNC_ORDERISINVALID, 
-                Arrays.<Type>asList(new org.web3j.abi.datatypes.generated.Uint256(param0)), 
-                Arrays.<TypeReference<?>>asList(new TypeReference<Bool>() {}));
+        final Function function = new Function(FUNC_ORDERISINVALID,
+                Arrays.<Type> asList(new org.web3j.abi.datatypes.generated.Uint256(param0)),
+                Arrays.<TypeReference<?>> asList(new TypeReference<Bool>() {
+                }));
         return executeRemoteCallSingleValueReturn(function, Boolean.class);
     }
 
     public RemoteFunctionCall<TransactionReceipt> setPause() {
-        final Function function = new Function(
-                FUNC_SETPAUSE, 
-                Arrays.<Type>asList(), 
-                Collections.<TypeReference<?>>emptyList());
+        final Function function = new Function(FUNC_SETPAUSE, Arrays.<Type> asList(),
+                Collections.<TypeReference<?>> emptyList());
         return executeRemoteCallTransaction(function);
     }
 
     public RemoteFunctionCall<TransactionReceipt> setStakingPeriods(List<BigInteger> _days) {
-        final Function function = new Function(
-                FUNC_SETSTAKINGPERIODS, 
-                Arrays.<Type>asList(new org.web3j.abi.datatypes.generated.StaticArray3<org.web3j.abi.datatypes.generated.Uint64>(
-                        org.web3j.abi.datatypes.generated.Uint64.class,
-                        org.web3j.abi.Utils.typeMap(_days, org.web3j.abi.datatypes.generated.Uint64.class))), 
-                Collections.<TypeReference<?>>emptyList());
+        final Function function = new Function(FUNC_SETSTAKINGPERIODS,
+                Arrays.<Type> asList(
+                        new org.web3j.abi.datatypes.generated.StaticArray3<org.web3j.abi.datatypes.generated.Uint64>(
+                                org.web3j.abi.datatypes.generated.Uint64.class,
+                                org.web3j.abi.Utils.typeMap(_days, org.web3j.abi.datatypes.generated.Uint64.class))),
+                Collections.<TypeReference<?>> emptyList());
         return executeRemoteCallTransaction(function);
     }
 
     public RemoteFunctionCall<TransactionReceipt> setWithdrawSigner(String _withdrawSigner) {
-        final Function function = new Function(
-                FUNC_SETWITHDRAWSIGNER, 
-                Arrays.<Type>asList(new org.web3j.abi.datatypes.Address(160, _withdrawSigner)), 
-                Collections.<TypeReference<?>>emptyList());
+        final Function function = new Function(FUNC_SETWITHDRAWSIGNER,
+                Arrays.<Type> asList(new org.web3j.abi.datatypes.Address(160, _withdrawSigner)),
+                Collections.<TypeReference<?>> emptyList());
         return executeRemoteCallTransaction(function);
     }
 
     public RemoteFunctionCall<TransactionReceipt> staking(List<BigInteger> _tokenIds, BigInteger _stakeDays) {
-        final Function function = new Function(
-                FUNC_STAKING, 
-                Arrays.<Type>asList(new org.web3j.abi.datatypes.DynamicArray<org.web3j.abi.datatypes.generated.Uint256>(
-                        org.web3j.abi.datatypes.generated.Uint256.class,
-                        org.web3j.abi.Utils.typeMap(_tokenIds, org.web3j.abi.datatypes.generated.Uint256.class)), 
-                new org.web3j.abi.datatypes.generated.Uint256(_stakeDays)), 
-                Collections.<TypeReference<?>>emptyList());
+        final Function function = new Function(FUNC_STAKING,
+                Arrays.<Type> asList(
+                        new org.web3j.abi.datatypes.DynamicArray<org.web3j.abi.datatypes.generated.Uint256>(
+                                org.web3j.abi.datatypes.generated.Uint256.class,
+                                org.web3j.abi.Utils.typeMap(_tokenIds,
+                                        org.web3j.abi.datatypes.generated.Uint256.class)),
+                        new org.web3j.abi.datatypes.generated.Uint256(_stakeDays)),
+                Collections.<TypeReference<?>> emptyList());
         return executeRemoteCallTransaction(function);
     }
 
     public RemoteFunctionCall<Tuple4<String, Boolean, BigInteger, BigInteger>> stakingDatas(BigInteger param0) {
-        final Function function = new Function(FUNC_STAKINGDATAS, 
-                Arrays.<Type>asList(new org.web3j.abi.datatypes.generated.Uint256(param0)), 
-                Arrays.<TypeReference<?>>asList(new TypeReference<Address>() {}, new TypeReference<Bool>() {}, new TypeReference<Uint128>() {}, new TypeReference<Uint128>() {}));
+        final Function function = new Function(FUNC_STAKINGDATAS,
+                Arrays.<Type> asList(new org.web3j.abi.datatypes.generated.Uint256(param0)),
+                Arrays.<TypeReference<?>> asList(new TypeReference<Address>() {
+                }, new TypeReference<Bool>() {
+                }, new TypeReference<Uint128>() {
+                }, new TypeReference<Uint128>() {
+                }));
         return new RemoteFunctionCall<Tuple4<String, Boolean, BigInteger, BigInteger>>(function,
                 new Callable<Tuple4<String, Boolean, BigInteger, BigInteger>>() {
                     @Override
                     public Tuple4<String, Boolean, BigInteger, BigInteger> call() throws Exception {
                         List<Type> results = executeCallMultipleValueReturn(function);
-                        return new Tuple4<String, Boolean, BigInteger, BigInteger>(
-                                (String) results.get(0).getValue(), 
-                                (Boolean) results.get(1).getValue(), 
-                                (BigInteger) results.get(2).getValue(), 
+                        return new Tuple4<String, Boolean, BigInteger, BigInteger>((String) results.get(0).getValue(),
+                                (Boolean) results.get(1).getValue(), (BigInteger) results.get(2).getValue(),
                                 (BigInteger) results.get(3).getValue());
                     }
                 });
     }
 
     public RemoteFunctionCall<TransactionReceipt> unStake(List<BigInteger> _tokenIds) {
-        final Function function = new Function(
-                FUNC_UNSTAKE, 
-                Arrays.<Type>asList(new org.web3j.abi.datatypes.DynamicArray<org.web3j.abi.datatypes.generated.Uint256>(
+        final Function function = new Function(FUNC_UNSTAKE, Arrays
+                .<Type> asList(new org.web3j.abi.datatypes.DynamicArray<org.web3j.abi.datatypes.generated.Uint256>(
                         org.web3j.abi.datatypes.generated.Uint256.class,
-                        org.web3j.abi.Utils.typeMap(_tokenIds, org.web3j.abi.datatypes.generated.Uint256.class))), 
-                Collections.<TypeReference<?>>emptyList());
+                        org.web3j.abi.Utils.typeMap(_tokenIds, org.web3j.abi.datatypes.generated.Uint256.class))),
+                Collections.<TypeReference<?>> emptyList());
         return executeRemoteCallTransaction(function);
     }
 
     public RemoteFunctionCall<TransactionReceipt> unStakeOnlyOwner(List<BigInteger> _tokenIds) {
-        final Function function = new Function(
-                FUNC_UNSTAKEONLYOWNER, 
-                Arrays.<Type>asList(new org.web3j.abi.datatypes.DynamicArray<org.web3j.abi.datatypes.generated.Uint256>(
+        final Function function = new Function(FUNC_UNSTAKEONLYOWNER, Arrays
+                .<Type> asList(new org.web3j.abi.datatypes.DynamicArray<org.web3j.abi.datatypes.generated.Uint256>(
                         org.web3j.abi.datatypes.generated.Uint256.class,
-                        org.web3j.abi.Utils.typeMap(_tokenIds, org.web3j.abi.datatypes.generated.Uint256.class))), 
-                Collections.<TypeReference<?>>emptyList());
+                        org.web3j.abi.Utils.typeMap(_tokenIds, org.web3j.abi.datatypes.generated.Uint256.class))),
+                Collections.<TypeReference<?>> emptyList());
         return executeRemoteCallTransaction(function);
     }
 
     public RemoteFunctionCall<String> ygio() {
-        final Function function = new Function(FUNC_YGIO, 
-                Arrays.<Type>asList(), 
-                Arrays.<TypeReference<?>>asList(new TypeReference<Address>() {}));
+        final Function function = new Function(FUNC_YGIO, Arrays.<Type> asList(),
+                Arrays.<TypeReference<?>> asList(new TypeReference<Address>() {
+                }));
         return executeRemoteCallSingleValueReturn(function, String.class);
     }
 
     public RemoteFunctionCall<String> ygme() {
-        final Function function = new Function(FUNC_YGME, 
-                Arrays.<Type>asList(), 
-                Arrays.<TypeReference<?>>asList(new TypeReference<Address>() {}));
+        final Function function = new Function(FUNC_YGME, Arrays.<Type> asList(),
+                Arrays.<TypeReference<?>> asList(new TypeReference<Address>() {
+                }));
         return executeRemoteCallSingleValueReturn(function, String.class);
     }
 
     public RemoteFunctionCall<BigInteger> ygmeTotal() {
-        final Function function = new Function(FUNC_YGMETOTAL, 
-                Arrays.<Type>asList(), 
-                Arrays.<TypeReference<?>>asList(new TypeReference<Uint128>() {}));
+        final Function function = new Function(FUNC_YGMETOTAL, Arrays.<Type> asList(),
+                Arrays.<TypeReference<?>> asList(new TypeReference<Uint128>() {
+                }));
         return executeRemoteCallSingleValueReturn(function, BigInteger.class);
     }
 
     @Deprecated
-    public static IYgmeStaking load(String contractAddress, Web3j web3j, Credentials credentials, BigInteger gasPrice, BigInteger gasLimit) {
+    public static IYgmeStaking load(String contractAddress, Web3j web3j, Credentials credentials, BigInteger gasPrice,
+            BigInteger gasLimit) {
         return new IYgmeStaking(contractAddress, web3j, credentials, gasPrice, gasLimit);
     }
 
     @Deprecated
-    public static IYgmeStaking load(String contractAddress, Web3j web3j, TransactionManager transactionManager, BigInteger gasPrice, BigInteger gasLimit) {
+    public static IYgmeStaking load(String contractAddress, Web3j web3j, TransactionManager transactionManager,
+            BigInteger gasPrice, BigInteger gasLimit) {
         return new IYgmeStaking(contractAddress, web3j, transactionManager, gasPrice, gasLimit);
     }
 
-    public static IYgmeStaking load(String contractAddress, Web3j web3j, Credentials credentials, ContractGasProvider contractGasProvider) {
+    public static IYgmeStaking load(String contractAddress, Web3j web3j, Credentials credentials,
+            ContractGasProvider contractGasProvider) {
         return new IYgmeStaking(contractAddress, web3j, credentials, contractGasProvider);
     }
 
-    public static IYgmeStaking load(String contractAddress, Web3j web3j, TransactionManager transactionManager, ContractGasProvider contractGasProvider) {
+    public static IYgmeStaking load(String contractAddress, Web3j web3j, TransactionManager transactionManager,
+            ContractGasProvider contractGasProvider) {
         return new IYgmeStaking(contractAddress, web3j, transactionManager, contractGasProvider);
     }
 
-    public static RemoteCall<IYgmeStaking> deploy(Web3j web3j, Credentials credentials, ContractGasProvider contractGasProvider, String _ygme, String _ygio, String _withdrawSigner) {
-        String encodedConstructor = FunctionEncoder.encodeConstructor(Arrays.<Type>asList(new org.web3j.abi.datatypes.Address(160, _ygme), 
-                new org.web3j.abi.datatypes.Address(160, _ygio), 
+    public static RemoteCall<IYgmeStaking> deploy(Web3j web3j, Credentials credentials,
+            ContractGasProvider contractGasProvider, String _ygme, String _ygio, String _withdrawSigner) {
+        String encodedConstructor = FunctionEncoder.encodeConstructor(Arrays.<Type> asList(
+                new org.web3j.abi.datatypes.Address(160, _ygme), new org.web3j.abi.datatypes.Address(160, _ygio),
                 new org.web3j.abi.datatypes.Address(160, _withdrawSigner)));
-        return deployRemoteCall(IYgmeStaking.class, web3j, credentials, contractGasProvider, BINARY, encodedConstructor);
+        return deployRemoteCall(IYgmeStaking.class, web3j, credentials, contractGasProvider, BINARY,
+                encodedConstructor);
     }
 
-    public static RemoteCall<IYgmeStaking> deploy(Web3j web3j, TransactionManager transactionManager, ContractGasProvider contractGasProvider, String _ygme, String _ygio, String _withdrawSigner) {
-        String encodedConstructor = FunctionEncoder.encodeConstructor(Arrays.<Type>asList(new org.web3j.abi.datatypes.Address(160, _ygme), 
-                new org.web3j.abi.datatypes.Address(160, _ygio), 
+    public static RemoteCall<IYgmeStaking> deploy(Web3j web3j, TransactionManager transactionManager,
+            ContractGasProvider contractGasProvider, String _ygme, String _ygio, String _withdrawSigner) {
+        String encodedConstructor = FunctionEncoder.encodeConstructor(Arrays.<Type> asList(
+                new org.web3j.abi.datatypes.Address(160, _ygme), new org.web3j.abi.datatypes.Address(160, _ygio),
                 new org.web3j.abi.datatypes.Address(160, _withdrawSigner)));
-        return deployRemoteCall(IYgmeStaking.class, web3j, transactionManager, contractGasProvider, BINARY, encodedConstructor);
+        return deployRemoteCall(IYgmeStaking.class, web3j, transactionManager, contractGasProvider, BINARY,
+                encodedConstructor);
     }
 
     @Deprecated
-    public static RemoteCall<IYgmeStaking> deploy(Web3j web3j, Credentials credentials, BigInteger gasPrice, BigInteger gasLimit, String _ygme, String _ygio, String _withdrawSigner) {
-        String encodedConstructor = FunctionEncoder.encodeConstructor(Arrays.<Type>asList(new org.web3j.abi.datatypes.Address(160, _ygme), 
-                new org.web3j.abi.datatypes.Address(160, _ygio), 
+    public static RemoteCall<IYgmeStaking> deploy(Web3j web3j, Credentials credentials, BigInteger gasPrice,
+            BigInteger gasLimit, String _ygme, String _ygio, String _withdrawSigner) {
+        String encodedConstructor = FunctionEncoder.encodeConstructor(Arrays.<Type> asList(
+                new org.web3j.abi.datatypes.Address(160, _ygme), new org.web3j.abi.datatypes.Address(160, _ygio),
                 new org.web3j.abi.datatypes.Address(160, _withdrawSigner)));
         return deployRemoteCall(IYgmeStaking.class, web3j, credentials, gasPrice, gasLimit, BINARY, encodedConstructor);
     }
 
     @Deprecated
-    public static RemoteCall<IYgmeStaking> deploy(Web3j web3j, TransactionManager transactionManager, BigInteger gasPrice, BigInteger gasLimit, String _ygme, String _ygio, String _withdrawSigner) {
-        String encodedConstructor = FunctionEncoder.encodeConstructor(Arrays.<Type>asList(new org.web3j.abi.datatypes.Address(160, _ygme), 
-                new org.web3j.abi.datatypes.Address(160, _ygio), 
+    public static RemoteCall<IYgmeStaking> deploy(Web3j web3j, TransactionManager transactionManager,
+            BigInteger gasPrice, BigInteger gasLimit, String _ygme, String _ygio, String _withdrawSigner) {
+        String encodedConstructor = FunctionEncoder.encodeConstructor(Arrays.<Type> asList(
+                new org.web3j.abi.datatypes.Address(160, _ygme), new org.web3j.abi.datatypes.Address(160, _ygio),
                 new org.web3j.abi.datatypes.Address(160, _withdrawSigner)));
-        return deployRemoteCall(IYgmeStaking.class, web3j, transactionManager, gasPrice, gasLimit, BINARY, encodedConstructor);
+        return deployRemoteCall(IYgmeStaking.class, web3j, transactionManager, gasPrice, gasLimit, BINARY,
+                encodedConstructor);
     }
 
     public static class StakingEventResponse extends BaseEventResponse {

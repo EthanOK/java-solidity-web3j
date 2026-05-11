@@ -41,8 +41,7 @@ public class DecodeData {
         outputParameters.add((TypeReference) new TypeReference<Uint256>() {
         });
 
-        List<Type> decodedString = FunctionReturnDecoder.decode(
-                dataHex, outputParameters);
+        List<Type> decodedString = FunctionReturnDecoder.decode(dataHex, outputParameters);
         byte[] orderHash_ = (byte[]) decodedString.get(0).getValue();
         // byte[] to hexstring
         String orderHash = Numeric.toHexString(orderHash_);

@@ -47,8 +47,7 @@ public class X402DemoClient {
             }
 
             // Step 1: Create signer from private key
-            OKXEvmSigner signer = OKXSignerFactory.createOKXSigner(
-                    new OKXSignerConfig().privateKey(privateKey));
+            OKXEvmSigner signer = OKXSignerFactory.createOKXSigner(new OKXSignerConfig().privateKey(privateKey));
             System.out.println("Signer address: " + signer.getAddress());
 
             // Step 2: Create auto-402 handling client
@@ -82,11 +81,9 @@ public class X402DemoClient {
             String uri = OKX_BASE_URL + requestPath;
             Map<String, String> headers = auth.createHeaders("GET", requestPath, "");
 
-            HttpRequest request = HttpRequest.newBuilder()
-                    .uri(URI.create(uri))
+            HttpRequest request = HttpRequest.newBuilder().uri(URI.create(uri))
                     // headers(name, value, name, value, ...) — must be an even number of strings
-                    .headers(headers.entrySet().stream()
-                            .flatMap(e -> Stream.of(e.getKey(), e.getValue()))
+                    .headers(headers.entrySet().stream().flatMap(e -> Stream.of(e.getKey(), e.getValue()))
                             .toArray(String[]::new))
                     .build();
             HttpResponse<String> resp = client.request(request);
@@ -122,13 +119,10 @@ public class X402DemoClient {
 
             Map<String, String> priceInfoHeaders = auth.createHeaders("POST", priceInfoRequestPath, priceInfoBody);
 
-            HttpRequest priceInfoRequest = HttpRequest.newBuilder()
-                    .uri(URI.create(priceInfoUri))
-                    .headers(priceInfoHeaders.entrySet().stream()
-                            .flatMap(e -> Stream.of(e.getKey(), e.getValue()))
-                            .toArray(String[]::new))
-                    .POST(HttpRequest.BodyPublishers.ofString(priceInfoBody))
-                    .build();
+            HttpRequest priceInfoRequest = HttpRequest
+                    .newBuilder().uri(URI.create(priceInfoUri)).headers(priceInfoHeaders.entrySet().stream()
+                            .flatMap(e -> Stream.of(e.getKey(), e.getValue())).toArray(String[]::new))
+                    .POST(HttpRequest.BodyPublishers.ofString(priceInfoBody)).build();
             HttpResponse<String> priceInfoResp = client.request(priceInfoRequest);
             System.out.println("Status: " + priceInfoResp.statusCode());
             System.out.println("Body: " + priceInfoResp.body());

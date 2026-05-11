@@ -52,11 +52,8 @@ public class PostTransferEventsBSC {
     public static void executeTransferEventERC721() throws IOException, InterruptedException {
         // 什么时候开始呢？当前时间戳 - 最新的区块时间戳
         /*
-         * long interval = getSystemTimestamp() - getLatestBlockTimestamp();
-         * System.out.println(interval);
-         * if (interval > 0) {
-         * Thread.sleep((INTERVAL_BLOCK - interval + 1) * 1000);
-         * }
+         * long interval = getSystemTimestamp() - getLatestBlockTimestamp(); System.out.println(interval); if (interval
+         * > 0) { Thread.sleep((INTERVAL_BLOCK - interval + 1) * 1000); }
          */
         while (true) {
             try {
@@ -86,42 +83,25 @@ public class PostTransferEventsBSC {
     }
 
     /*
-     * public static void postTransferEventsInRange(String fromBlock, String
-     * toBlock) {
-     * OkHttpClient client = new OkHttpClient();
-     * String fromBlockHex = Numeric.toHexStringWithPrefix(new
-     * BigInteger(fromBlock));
-     * String toBlockHex = Numeric.toHexStringWithPrefix(new BigInteger(toBlock));
-     * MediaType mediaType = MediaType.parse("application/json");
-     * String requestBody_ =
+     * public static void postTransferEventsInRange(String fromBlock, String toBlock) { OkHttpClient client = new
+     * OkHttpClient(); String fromBlockHex = Numeric.toHexStringWithPrefix(new BigInteger(fromBlock)); String toBlockHex
+     * = Numeric.toHexStringWithPrefix(new BigInteger(toBlock)); MediaType mediaType =
+     * MediaType.parse("application/json"); String requestBody_ =
      * "{\"jsonrpc\":\"2.0\",\"method\":\"eth_getLogs\",\"params\":[{\"fromBlock\":\"%s\",\"toBlock\":\"%s\",\"topics\":[\"0xddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef\"]}],\"id\":1}";
-     * String requestBody = String.format(requestBody_, fromBlockHex, toBlockHex);
-     * Request request = new Request.Builder()
-     * .url(ANKR_HTTP_BSC)
-     * .post(RequestBody.create(mediaType, requestBody))
-     * .addHeader("Content-Type", "application/json")
-     * .build();
-     * 
-     * try (Response response = client.newCall(request).execute()) {
-     * if (response.isSuccessful()) {
-     * String responseBody = response.body().string();
-     * 
+     * String requestBody = String.format(requestBody_, fromBlockHex, toBlockHex); Request request = new
+     * Request.Builder() .url(ANKR_HTTP_BSC) .post(RequestBody.create(mediaType, requestBody))
+     * .addHeader("Content-Type", "application/json") .build();
+     *
+     * try (Response response = client.newCall(request).execute()) { if (response.isSuccessful()) { String responseBody
+     * = response.body().string();
+     *
      * JSONObject json = new JSONObject(responseBody);
-     * 
-     * JSONArray results = json.getJSONArray("result");
-     * // System.out.println(results.toString());
-     * if (results.length() > 0) {
-     * // handle Response Result
-     * handleResponseResult(results);
-     * }
-     * } else {
-     * System.out.println("POST request failed with response code: " +
-     * response.code());
-     * }
-     * } catch (IOException e) {
-     * e.printStackTrace();
-     * }
-     * 
+     *
+     * JSONArray results = json.getJSONArray("result"); // System.out.println(results.toString()); if (results.length()
+     * > 0) { // handle Response Result handleResponseResult(results); } } else {
+     * System.out.println("POST request failed with response code: " + response.code()); } } catch (IOException e) {
+     * e.printStackTrace(); }
+     *
      * }
      */
 
@@ -140,11 +120,8 @@ public class PostTransferEventsBSC {
             requestBody = String.format(requestBody_, fromBlockHex);
         }
 
-        Request request = new Request.Builder()
-                .url(ANKR_HTTP_BSC)
-                .post(RequestBody.create(mediaType, requestBody))
-                .addHeader("Content-Type", "application/json")
-                .build();
+        Request request = new Request.Builder().url(ANKR_HTTP_BSC).post(RequestBody.create(mediaType, requestBody))
+                .addHeader("Content-Type", "application/json").build();
 
         try {
             Response response = client.newCall(request).execute();
@@ -193,8 +170,7 @@ public class PostTransferEventsBSC {
                 String fromAddress = FunctionReturnDecoder.decodeAddress(from);
                 String toAddress = FunctionReturnDecoder.decodeAddress(to);
 
-                if (!fromAddress.equals(EMPTY_ADDRESS)
-                        && !toAddress.equals(EMPTY_ADDRESS)
+                if (!fromAddress.equals(EMPTY_ADDRESS) && !toAddress.equals(EMPTY_ADDRESS)
                         && !toAddress.equals(DEAD_ADDRESS)) {
 
                     String tokenId = topics.getString(3);
@@ -206,10 +182,8 @@ public class PostTransferEventsBSC {
                     // TODO: check data of on sale
                     try {
                         String encodeData = FunctionEncoder
-                                .encodeConstructor(Arrays.<Type>asList(new Address(token), new Address(fromAddress),
-                                        new Address(toAddress),
-                                        new Uint256(tokenIdBig),
-                                        new Uint256(blockNumberBig)));
+                                .encodeConstructor(Arrays.<Type> asList(new Address(token), new Address(fromAddress),
+                                        new Address(toAddress), new Uint256(tokenIdBig), new Uint256(blockNumberBig)));
                         String encodeDataHash = Hash.sha3("0x" + encodeData);
 
                         String insertQuery = "INSERT IGNORE INTO aggregator_ethan.event_transfer_erc721_bsc "
@@ -233,9 +207,8 @@ public class PostTransferEventsBSC {
                             ResultSet generatedKeys = preparedStatement.getGeneratedKeys();
                             if (generatedKeys.next()) {
                                 long generatedId = generatedKeys.getLong(1);
-                                System.out.println(
-                                        "event_transfer_erc721 insert Id: " + generatedId + " in " + blockNumberBig
-                                                + " " + transactionHash);
+                                System.out.println("event_transfer_erc721 insert Id: " + generatedId + " in "
+                                        + blockNumberBig + " " + transactionHash);
 
                             }
 
@@ -261,8 +234,8 @@ public class PostTransferEventsBSC {
     private static long getLatestBlockTimestamp() throws IOException {
         Web3j web3j = Web3j.build(new HttpService(ANKR_HTTP_BSC));
 
-        EthBlock.Block latestBlock = web3j.ethGetBlockByNumber(DefaultBlockParameterName.LATEST, false)
-                .send().getBlock();
+        EthBlock.Block latestBlock = web3j.ethGetBlockByNumber(DefaultBlockParameterName.LATEST, false).send()
+                .getBlock();
 
         BigInteger timestamp = latestBlock.getTimestamp();
         // System.out.println("Timestamp of the Latest Block: " + timestamp);
@@ -275,8 +248,8 @@ public class PostTransferEventsBSC {
     private static long getBlockTimestamp(BigInteger blockNumber) throws IOException {
         Web3j web3j = Web3j.build(new HttpService(ANKR_HTTP_BSC));
 
-        EthBlock.Block latestBlock = web3j.ethGetBlockByNumber(DefaultBlockParameter.valueOf(blockNumber), false)
-                .send().getBlock();
+        EthBlock.Block latestBlock = web3j.ethGetBlockByNumber(DefaultBlockParameter.valueOf(blockNumber), false).send()
+                .getBlock();
 
         BigInteger timestamp = latestBlock.getTimestamp();
         return timestamp.longValue();

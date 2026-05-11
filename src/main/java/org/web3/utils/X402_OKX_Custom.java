@@ -18,22 +18,15 @@ public class X402_OKX_Custom {
     public record X402Resource(String url, String mimeType) {
     }
 
-    public record X402Accepted(
-            String scheme,
-            String network,
-            String amount,
-            String payTo,
-            long maxTimeoutSeconds,
-            String asset,
-            Map<String, String> extra) {
+    public record X402Accepted(String scheme, String network, String amount, String payTo, long maxTimeoutSeconds,
+            String asset, Map<String, String> extra) {
     }
 
     public record Payload(String signature, Object authorization) {
     }
 
     public record X402Payload(int x402Version, String scheme, String network, X402Resource resource,
-            X402Accepted accepted,
-            Payload payload) {
+            X402Accepted accepted, Payload payload) {
 
     }
 
@@ -41,26 +34,17 @@ public class X402_OKX_Custom {
      * 将 EIP-3009 签名结果包装为 x402 PAYMENT-SIGNATURE header 值（Base64 JSON）
      */
     public static String buildX402Header(int x402Version, SignResult signResult, X402Resource resource,
-            X402Accepted accepted)
-            throws Exception {
-        X402Payload payload = new X402Payload(
-                x402Version,
-                accepted.scheme(),
-                accepted.network(),
-                resource,
-                accepted,
+            X402Accepted accepted) throws Exception {
+        X402Payload payload = new X402Payload(x402Version, accepted.scheme(), accepted.network(), resource, accepted,
                 new Payload(signResult.signature(), signResult.authorization()));
 
         String json = mapper.writeValueAsString(payload);
         return Base64.getEncoder().encodeToString(json.getBytes(StandardCharsets.UTF_8));
     }
 
-    public static String signTypedData(
-            String privateKey,
-            Map<String, Object> domain,
-            Map<String, List<Map<String, String>>> types,
-            Map<String, Object> message,
-            String primaryType) throws Exception {
+    public static String signTypedData(String privateKey, Map<String, Object> domain,
+            Map<String, List<Map<String, String>>> types, Map<String, Object> message, String primaryType)
+            throws Exception {
 
         // ⚠️ ethers 不需要你传 EIP712Domain，这里要自动补
         types = new LinkedHashMap<>(types);
@@ -83,8 +67,7 @@ public class X402_OKX_Custom {
         ECKeyPair keyPair = ECKeyPair.create(Numeric.hexStringToByteArray(privateKey));
         Sign.SignatureData sig = Sign.signMessage(hash, keyPair, false);
 
-        String signature = Numeric.toHexString(sig.getR())
-                + Numeric.toHexStringNoPrefix(sig.getS())
+        String signature = Numeric.toHexString(sig.getR()) + Numeric.toHexStringNoPrefix(sig.getS())
                 + Numeric.toHexStringNoPrefix(sig.getV());
 
         return signature;

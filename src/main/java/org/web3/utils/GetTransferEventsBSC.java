@@ -134,8 +134,7 @@ public class GetTransferEventsBSC {
                 String fromAddress = FunctionReturnDecoder.decodeAddress(from);
                 String toAddress = FunctionReturnDecoder.decodeAddress(to);
 
-                if (!fromAddress.equals(EMPTY_ADDRESS)
-                        && !toAddress.equals(EMPTY_ADDRESS)
+                if (!fromAddress.equals(EMPTY_ADDRESS) && !toAddress.equals(EMPTY_ADDRESS)
                         && !toAddress.equals(DEAD_ADDRESS)) {
 
                     String tokenId = topics.getString(3);
@@ -147,10 +146,8 @@ public class GetTransferEventsBSC {
                     // TODO: check data of on sale
                     try {
                         String encodeData = FunctionEncoder
-                                .encodeConstructor(Arrays.<Type>asList(new Address(token), new Address(fromAddress),
-                                        new Address(toAddress),
-                                        new Uint256(tokenIdBig),
-                                        new Uint256(blockNumberBig)));
+                                .encodeConstructor(Arrays.<Type> asList(new Address(token), new Address(fromAddress),
+                                        new Address(toAddress), new Uint256(tokenIdBig), new Uint256(blockNumberBig)));
                         String encodeDataHash = Hash.sha3("0x" + encodeData);
 
                         String insertQuery = "INSERT IGNORE INTO aggregator_ethan.event_transfer_erc721_bsc "
@@ -174,9 +171,8 @@ public class GetTransferEventsBSC {
                             ResultSet generatedKeys = preparedStatement.getGeneratedKeys();
                             if (generatedKeys.next()) {
                                 long generatedId = generatedKeys.getLong(1);
-                                System.out.println(
-                                        "event_transfer_erc721 insert Id: " + generatedId + " in " + blockNumberBig
-                                                + " " + transactionHash);
+                                System.out.println("event_transfer_erc721 insert Id: " + generatedId + " in "
+                                        + blockNumberBig + " " + transactionHash);
 
                             }
 
@@ -201,8 +197,8 @@ public class GetTransferEventsBSC {
     private static long getLatestBlockTimestamp() throws IOException {
         Web3j web3j = Web3j.build(new HttpService(ANKR_HTTP_BSC));
 
-        EthBlock.Block latestBlock = web3j.ethGetBlockByNumber(DefaultBlockParameterName.LATEST, false)
-                .send().getBlock();
+        EthBlock.Block latestBlock = web3j.ethGetBlockByNumber(DefaultBlockParameterName.LATEST, false).send()
+                .getBlock();
 
         BigInteger timestamp = latestBlock.getTimestamp();
         // System.out.println("Timestamp of the Latest Block: " + timestamp);
@@ -215,8 +211,8 @@ public class GetTransferEventsBSC {
     private static long getBlockTimestamp(BigInteger blockNumber) throws IOException {
         Web3j web3j = Web3j.build(new HttpService(ANKR_HTTP_BSC));
 
-        EthBlock.Block latestBlock = web3j.ethGetBlockByNumber(DefaultBlockParameter.valueOf(blockNumber), false)
-                .send().getBlock();
+        EthBlock.Block latestBlock = web3j.ethGetBlockByNumber(DefaultBlockParameter.valueOf(blockNumber), false).send()
+                .getBlock();
 
         BigInteger timestamp = latestBlock.getTimestamp();
         return timestamp.longValue();

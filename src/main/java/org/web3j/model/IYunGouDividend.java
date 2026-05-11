@@ -28,13 +28,17 @@ import org.web3j.tx.TransactionManager;
 import org.web3j.tx.gas.ContractGasProvider;
 
 /**
- * <p>Auto generated code.
- * <p><strong>Do not modify!</strong>
- * <p>Please use the <a href="https://docs.web3j.io/command_line.html">web3j command line tools</a>,
- * or the org.web3j.codegen.SolidityFunctionWrapperGenerator in the 
+ * <p>
+ * Auto generated code.
+ * <p>
+ * <strong>Do not modify!</strong>
+ * <p>
+ * Please use the <a href="https://docs.web3j.io/command_line.html">web3j command line tools</a>, or the
+ * org.web3j.codegen.SolidityFunctionWrapperGenerator in the
  * <a href="https://github.com/web3j/web3j/tree/master/codegen">codegen module</a> to update.
  *
- * <p>Generated with web3j version 4.10.0.
+ * <p>
+ * Generated with web3j version 4.10.0.
  */
 @SuppressWarnings("rawtypes")
 public class IYunGouDividend extends Contract {
@@ -48,34 +52,43 @@ public class IYunGouDividend extends Contract {
 
     public static final String FUNC_WITHDRAW = "withdraw";
 
-    public static final Event DEPOSIT_EVENT = new Event("Deposit", 
-            Arrays.<TypeReference<?>>asList(new TypeReference<Address>(true) {}, new TypeReference<Uint256>(true) {}));
-    ;
+    public static final Event DEPOSIT_EVENT = new Event("Deposit",
+            Arrays.<TypeReference<?>> asList(new TypeReference<Address>(true) {
+            }, new TypeReference<Uint256>(true) {
+            }));;
 
-    public static final Event WITHDRAW_EVENT = new Event("Withdraw", 
-            Arrays.<TypeReference<?>>asList(new TypeReference<Uint256>(true) {}, new TypeReference<Address>(true) {}, new TypeReference<Address>(true) {}, new TypeReference<Uint256>() {}));
-    ;
+    public static final Event WITHDRAW_EVENT = new Event("Withdraw",
+            Arrays.<TypeReference<?>> asList(new TypeReference<Uint256>(true) {
+            }, new TypeReference<Address>(true) {
+            }, new TypeReference<Address>(true) {
+            }, new TypeReference<Uint256>() {
+            }));;
 
     @Deprecated
-    protected IYunGouDividend(String contractAddress, Web3j web3j, Credentials credentials, BigInteger gasPrice, BigInteger gasLimit) {
+    protected IYunGouDividend(String contractAddress, Web3j web3j, Credentials credentials, BigInteger gasPrice,
+            BigInteger gasLimit) {
         super(BINARY, contractAddress, web3j, credentials, gasPrice, gasLimit);
     }
 
-    protected IYunGouDividend(String contractAddress, Web3j web3j, Credentials credentials, ContractGasProvider contractGasProvider) {
+    protected IYunGouDividend(String contractAddress, Web3j web3j, Credentials credentials,
+            ContractGasProvider contractGasProvider) {
         super(BINARY, contractAddress, web3j, credentials, contractGasProvider);
     }
 
     @Deprecated
-    protected IYunGouDividend(String contractAddress, Web3j web3j, TransactionManager transactionManager, BigInteger gasPrice, BigInteger gasLimit) {
+    protected IYunGouDividend(String contractAddress, Web3j web3j, TransactionManager transactionManager,
+            BigInteger gasPrice, BigInteger gasLimit) {
         super(BINARY, contractAddress, web3j, transactionManager, gasPrice, gasLimit);
     }
 
-    protected IYunGouDividend(String contractAddress, Web3j web3j, TransactionManager transactionManager, ContractGasProvider contractGasProvider) {
+    protected IYunGouDividend(String contractAddress, Web3j web3j, TransactionManager transactionManager,
+            ContractGasProvider contractGasProvider) {
         super(BINARY, contractAddress, web3j, transactionManager, contractGasProvider);
     }
 
     public static List<DepositEventResponse> getDepositEvents(TransactionReceipt transactionReceipt) {
-        List<Contract.EventValuesWithLog> valueList = staticExtractEventParametersWithLog(DEPOSIT_EVENT, transactionReceipt);
+        List<Contract.EventValuesWithLog> valueList = staticExtractEventParametersWithLog(DEPOSIT_EVENT,
+                transactionReceipt);
         ArrayList<DepositEventResponse> responses = new ArrayList<DepositEventResponse>(valueList.size());
         for (Contract.EventValuesWithLog eventValues : valueList) {
             DepositEventResponse typedResponse = new DepositEventResponse();
@@ -100,14 +113,16 @@ public class IYunGouDividend extends Contract {
         return web3j.ethLogFlowable(filter).map(log -> getDepositEventFromLog(log));
     }
 
-    public Flowable<DepositEventResponse> depositEventFlowable(DefaultBlockParameter startBlock, DefaultBlockParameter endBlock) {
+    public Flowable<DepositEventResponse> depositEventFlowable(DefaultBlockParameter startBlock,
+            DefaultBlockParameter endBlock) {
         EthFilter filter = new EthFilter(startBlock, endBlock, getContractAddress());
         filter.addSingleTopic(EventEncoder.encode(DEPOSIT_EVENT));
         return depositEventFlowable(filter);
     }
 
     public static List<WithdrawEventResponse> getWithdrawEvents(TransactionReceipt transactionReceipt) {
-        List<Contract.EventValuesWithLog> valueList = staticExtractEventParametersWithLog(WITHDRAW_EVENT, transactionReceipt);
+        List<Contract.EventValuesWithLog> valueList = staticExtractEventParametersWithLog(WITHDRAW_EVENT,
+                transactionReceipt);
         ArrayList<WithdrawEventResponse> responses = new ArrayList<WithdrawEventResponse>(valueList.size());
         for (Contract.EventValuesWithLog eventValues : valueList) {
             WithdrawEventResponse typedResponse = new WithdrawEventResponse();
@@ -136,75 +151,85 @@ public class IYunGouDividend extends Contract {
         return web3j.ethLogFlowable(filter).map(log -> getWithdrawEventFromLog(log));
     }
 
-    public Flowable<WithdrawEventResponse> withdrawEventFlowable(DefaultBlockParameter startBlock, DefaultBlockParameter endBlock) {
+    public Flowable<WithdrawEventResponse> withdrawEventFlowable(DefaultBlockParameter startBlock,
+            DefaultBlockParameter endBlock) {
         EthFilter filter = new EthFilter(startBlock, endBlock, getContractAddress());
         filter.addSingleTopic(EventEncoder.encode(WITHDRAW_EVENT));
         return withdrawEventFlowable(filter);
     }
 
     public RemoteFunctionCall<BigInteger> getERC20Balance(String coinAddress) {
-        final Function function = new Function(FUNC_GETERC20BALANCE, 
-                Arrays.<Type>asList(new org.web3j.abi.datatypes.Address(160, coinAddress)), 
-                Arrays.<TypeReference<?>>asList(new TypeReference<Uint256>() {}));
+        final Function function = new Function(FUNC_GETERC20BALANCE,
+                Arrays.<Type> asList(new org.web3j.abi.datatypes.Address(160, coinAddress)),
+                Arrays.<TypeReference<?>> asList(new TypeReference<Uint256>() {
+                }));
         return executeRemoteCallSingleValueReturn(function, BigInteger.class);
     }
 
     public RemoteFunctionCall<BigInteger> getETHBalance() {
-        final Function function = new Function(FUNC_GETETHBALANCE, 
-                Arrays.<Type>asList(), 
-                Arrays.<TypeReference<?>>asList(new TypeReference<Uint256>() {}));
+        final Function function = new Function(FUNC_GETETHBALANCE, Arrays.<Type> asList(),
+                Arrays.<TypeReference<?>> asList(new TypeReference<Uint256>() {
+                }));
         return executeRemoteCallSingleValueReturn(function, BigInteger.class);
     }
 
     public RemoteFunctionCall<Boolean> getOrderIdState(BigInteger orderId) {
-        final Function function = new Function(FUNC_GETORDERIDSTATE, 
-                Arrays.<Type>asList(new org.web3j.abi.datatypes.generated.Uint256(orderId)), 
-                Arrays.<TypeReference<?>>asList(new TypeReference<Bool>() {}));
+        final Function function = new Function(FUNC_GETORDERIDSTATE,
+                Arrays.<Type> asList(new org.web3j.abi.datatypes.generated.Uint256(orderId)),
+                Arrays.<TypeReference<?>> asList(new TypeReference<Bool>() {
+                }));
         return executeRemoteCallSingleValueReturn(function, Boolean.class);
     }
 
     public RemoteFunctionCall<TransactionReceipt> withdraw(byte[] data, byte[] signature) {
-        final Function function = new Function(
-                FUNC_WITHDRAW, 
-                Arrays.<Type>asList(new org.web3j.abi.datatypes.DynamicBytes(data), 
-                new org.web3j.abi.datatypes.DynamicBytes(signature)), 
-                Collections.<TypeReference<?>>emptyList());
+        final Function function = new Function(FUNC_WITHDRAW,
+                Arrays.<Type> asList(new org.web3j.abi.datatypes.DynamicBytes(data),
+                        new org.web3j.abi.datatypes.DynamicBytes(signature)),
+                Collections.<TypeReference<?>> emptyList());
         return executeRemoteCallTransaction(function);
     }
 
     @Deprecated
-    public static IYunGouDividend load(String contractAddress, Web3j web3j, Credentials credentials, BigInteger gasPrice, BigInteger gasLimit) {
+    public static IYunGouDividend load(String contractAddress, Web3j web3j, Credentials credentials,
+            BigInteger gasPrice, BigInteger gasLimit) {
         return new IYunGouDividend(contractAddress, web3j, credentials, gasPrice, gasLimit);
     }
 
     @Deprecated
-    public static IYunGouDividend load(String contractAddress, Web3j web3j, TransactionManager transactionManager, BigInteger gasPrice, BigInteger gasLimit) {
+    public static IYunGouDividend load(String contractAddress, Web3j web3j, TransactionManager transactionManager,
+            BigInteger gasPrice, BigInteger gasLimit) {
         return new IYunGouDividend(contractAddress, web3j, transactionManager, gasPrice, gasLimit);
     }
 
-    public static IYunGouDividend load(String contractAddress, Web3j web3j, Credentials credentials, ContractGasProvider contractGasProvider) {
+    public static IYunGouDividend load(String contractAddress, Web3j web3j, Credentials credentials,
+            ContractGasProvider contractGasProvider) {
         return new IYunGouDividend(contractAddress, web3j, credentials, contractGasProvider);
     }
 
-    public static IYunGouDividend load(String contractAddress, Web3j web3j, TransactionManager transactionManager, ContractGasProvider contractGasProvider) {
+    public static IYunGouDividend load(String contractAddress, Web3j web3j, TransactionManager transactionManager,
+            ContractGasProvider contractGasProvider) {
         return new IYunGouDividend(contractAddress, web3j, transactionManager, contractGasProvider);
     }
 
-    public static RemoteCall<IYunGouDividend> deploy(Web3j web3j, Credentials credentials, ContractGasProvider contractGasProvider) {
+    public static RemoteCall<IYunGouDividend> deploy(Web3j web3j, Credentials credentials,
+            ContractGasProvider contractGasProvider) {
         return deployRemoteCall(IYunGouDividend.class, web3j, credentials, contractGasProvider, BINARY, "");
     }
 
     @Deprecated
-    public static RemoteCall<IYunGouDividend> deploy(Web3j web3j, Credentials credentials, BigInteger gasPrice, BigInteger gasLimit) {
+    public static RemoteCall<IYunGouDividend> deploy(Web3j web3j, Credentials credentials, BigInteger gasPrice,
+            BigInteger gasLimit) {
         return deployRemoteCall(IYunGouDividend.class, web3j, credentials, gasPrice, gasLimit, BINARY, "");
     }
 
-    public static RemoteCall<IYunGouDividend> deploy(Web3j web3j, TransactionManager transactionManager, ContractGasProvider contractGasProvider) {
+    public static RemoteCall<IYunGouDividend> deploy(Web3j web3j, TransactionManager transactionManager,
+            ContractGasProvider contractGasProvider) {
         return deployRemoteCall(IYunGouDividend.class, web3j, transactionManager, contractGasProvider, BINARY, "");
     }
 
     @Deprecated
-    public static RemoteCall<IYunGouDividend> deploy(Web3j web3j, TransactionManager transactionManager, BigInteger gasPrice, BigInteger gasLimit) {
+    public static RemoteCall<IYunGouDividend> deploy(Web3j web3j, TransactionManager transactionManager,
+            BigInteger gasPrice, BigInteger gasLimit) {
         return deployRemoteCall(IYunGouDividend.class, web3j, transactionManager, gasPrice, gasLimit, BINARY, "");
     }
 

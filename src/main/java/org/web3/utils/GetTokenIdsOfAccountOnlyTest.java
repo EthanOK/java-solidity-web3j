@@ -29,8 +29,7 @@ public class GetTokenIdsOfAccountOnlyTest {
         System.out.println(result_G);
 
         System.out.println("`````````````````````");
-        String result_TB = getTokenIdsOfContractAndAccount("97", "0xDb6c494BE6Aae80cc042f9CDA24Ce573aD163A46",
-                account);
+        String result_TB = getTokenIdsOfContractAndAccount("97", "0xDb6c494BE6Aae80cc042f9CDA24Ce573aD163A46", account);
         System.out.println(result_TB);
 
         System.out.println("`````````````````````");
@@ -49,23 +48,23 @@ public class GetTokenIdsOfAccountOnlyTest {
         if (chainId == "1") {
             String url = "https://api.etherscan.io";
             String apiKey = apiKey_E;
-            urlLink = url + "/api?module=account&action=tokennfttx&contractaddress=" + nftaddress +
-                    "&address=" + account + "&startblock=0&endblock=latest&sort=asc&apikey=" + apiKey;
+            urlLink = url + "/api?module=account&action=tokennfttx&contractaddress=" + nftaddress + "&address="
+                    + account + "&startblock=0&endblock=latest&sort=asc&apikey=" + apiKey;
         } else if (chainId == "5") {
             String url = "https://api-goerli.etherscan.io";
             String apiKey = apiKey_E;
-            urlLink = url + "/api?module=account&action=tokennfttx&contractaddress=" + nftaddress +
-                    "&address=" + account + "&startblock=0&endblock=latest&sort=asc&apikey=" + apiKey;
+            urlLink = url + "/api?module=account&action=tokennfttx&contractaddress=" + nftaddress + "&address="
+                    + account + "&startblock=0&endblock=latest&sort=asc&apikey=" + apiKey;
         } else if (chainId == "97") {
             String url = "https://api-testnet.bscscan.com";
             String apiKey = apiKey_B;
-            urlLink = url + "/api?module=account&action=tokennfttx&contractaddress=" + nftaddress +
-                    "&address=" + account + "&startblock=0&endblock=latest&sort=asc&apikey=" + apiKey;
+            urlLink = url + "/api?module=account&action=tokennfttx&contractaddress=" + nftaddress + "&address="
+                    + account + "&startblock=0&endblock=latest&sort=asc&apikey=" + apiKey;
         } else if (chainId == "56") {
             String url = "https://api.bscscan.com";
             String apiKey = apiKey_B;
-            urlLink = url + "/api?module=account&action=tokennfttx&contractaddress=" + nftaddress +
-                    "&address=" + account + "&startblock=0&endblock=latest&sort=asc&apikey=" + apiKey;
+            urlLink = url + "/api?module=account&action=tokennfttx&contractaddress=" + nftaddress + "&address="
+                    + account + "&startblock=0&endblock=latest&sort=asc&apikey=" + apiKey;
         }
 
         // System.out.println(url);

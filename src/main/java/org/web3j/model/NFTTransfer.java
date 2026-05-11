@@ -24,50 +24,65 @@ import org.web3j.tx.TransactionManager;
 import org.web3j.tx.gas.ContractGasProvider;
 
 /**
- * <p>Auto generated code.
- * <p><strong>Do not modify!</strong>
- * <p>Please use the <a href="https://docs.web3j.io/command_line.html">web3j command line tools</a>,
- * or the org.web3j.codegen.SolidityFunctionWrapperGenerator in the 
+ * <p>
+ * Auto generated code.
+ * <p>
+ * <strong>Do not modify!</strong>
+ * <p>
+ * Please use the <a href="https://docs.web3j.io/command_line.html">web3j command line tools</a>, or the
+ * org.web3j.codegen.SolidityFunctionWrapperGenerator in the
  * <a href="https://github.com/web3j/web3j/tree/master/codegen">codegen module</a> to update.
  *
- * <p>Generated with web3j version 4.10.0.
+ * <p>
+ * Generated with web3j version 4.10.0.
  */
 @SuppressWarnings("rawtypes")
 public class NFTTransfer extends Contract {
     public static final String BINARY = "6080604052348015600f57600080fd5b50603f80601d6000396000f3fe6080604052600080fdfea2646970667358221220cbadd0ed97178c0a67eba81e8a9e276a5565a8294b674e6a1ae21f1da6a3133d64736f6c63430008110033";
 
-    public static final Event APPROVAL_EVENT = new Event("Approval", 
-            Arrays.<TypeReference<?>>asList(new TypeReference<Address>(true) {}, new TypeReference<Address>(true) {}, new TypeReference<Uint256>(true) {}));
-    ;
+    public static final Event APPROVAL_EVENT = new Event("Approval",
+            Arrays.<TypeReference<?>> asList(new TypeReference<Address>(true) {
+            }, new TypeReference<Address>(true) {
+            }, new TypeReference<Uint256>(true) {
+            }));;
 
-    public static final Event APPROVALFORALL_EVENT = new Event("ApprovalForAll", 
-            Arrays.<TypeReference<?>>asList(new TypeReference<Address>(true) {}, new TypeReference<Address>(true) {}, new TypeReference<Bool>() {}));
-    ;
+    public static final Event APPROVALFORALL_EVENT = new Event("ApprovalForAll",
+            Arrays.<TypeReference<?>> asList(new TypeReference<Address>(true) {
+            }, new TypeReference<Address>(true) {
+            }, new TypeReference<Bool>() {
+            }));;
 
-    public static final Event TRANSFER_EVENT = new Event("Transfer", 
-            Arrays.<TypeReference<?>>asList(new TypeReference<Address>(true) {}, new TypeReference<Address>(true) {}, new TypeReference<Uint256>(true) {}));
-    ;
+    public static final Event TRANSFER_EVENT = new Event("Transfer",
+            Arrays.<TypeReference<?>> asList(new TypeReference<Address>(true) {
+            }, new TypeReference<Address>(true) {
+            }, new TypeReference<Uint256>(true) {
+            }));;
 
     @Deprecated
-    protected NFTTransfer(String contractAddress, Web3j web3j, Credentials credentials, BigInteger gasPrice, BigInteger gasLimit) {
+    protected NFTTransfer(String contractAddress, Web3j web3j, Credentials credentials, BigInteger gasPrice,
+            BigInteger gasLimit) {
         super(BINARY, contractAddress, web3j, credentials, gasPrice, gasLimit);
     }
 
-    protected NFTTransfer(String contractAddress, Web3j web3j, Credentials credentials, ContractGasProvider contractGasProvider) {
+    protected NFTTransfer(String contractAddress, Web3j web3j, Credentials credentials,
+            ContractGasProvider contractGasProvider) {
         super(BINARY, contractAddress, web3j, credentials, contractGasProvider);
     }
 
     @Deprecated
-    protected NFTTransfer(String contractAddress, Web3j web3j, TransactionManager transactionManager, BigInteger gasPrice, BigInteger gasLimit) {
+    protected NFTTransfer(String contractAddress, Web3j web3j, TransactionManager transactionManager,
+            BigInteger gasPrice, BigInteger gasLimit) {
         super(BINARY, contractAddress, web3j, transactionManager, gasPrice, gasLimit);
     }
 
-    protected NFTTransfer(String contractAddress, Web3j web3j, TransactionManager transactionManager, ContractGasProvider contractGasProvider) {
+    protected NFTTransfer(String contractAddress, Web3j web3j, TransactionManager transactionManager,
+            ContractGasProvider contractGasProvider) {
         super(BINARY, contractAddress, web3j, transactionManager, contractGasProvider);
     }
 
     public static List<ApprovalEventResponse> getApprovalEvents(TransactionReceipt transactionReceipt) {
-        List<Contract.EventValuesWithLog> valueList = staticExtractEventParametersWithLog(APPROVAL_EVENT, transactionReceipt);
+        List<Contract.EventValuesWithLog> valueList = staticExtractEventParametersWithLog(APPROVAL_EVENT,
+                transactionReceipt);
         ArrayList<ApprovalEventResponse> responses = new ArrayList<ApprovalEventResponse>(valueList.size());
         for (Contract.EventValuesWithLog eventValues : valueList) {
             ApprovalEventResponse typedResponse = new ApprovalEventResponse();
@@ -94,14 +109,16 @@ public class NFTTransfer extends Contract {
         return web3j.ethLogFlowable(filter).map(log -> getApprovalEventFromLog(log));
     }
 
-    public Flowable<ApprovalEventResponse> approvalEventFlowable(DefaultBlockParameter startBlock, DefaultBlockParameter endBlock) {
+    public Flowable<ApprovalEventResponse> approvalEventFlowable(DefaultBlockParameter startBlock,
+            DefaultBlockParameter endBlock) {
         EthFilter filter = new EthFilter(startBlock, endBlock, getContractAddress());
         filter.addSingleTopic(EventEncoder.encode(APPROVAL_EVENT));
         return approvalEventFlowable(filter);
     }
 
     public static List<ApprovalForAllEventResponse> getApprovalForAllEvents(TransactionReceipt transactionReceipt) {
-        List<Contract.EventValuesWithLog> valueList = staticExtractEventParametersWithLog(APPROVALFORALL_EVENT, transactionReceipt);
+        List<Contract.EventValuesWithLog> valueList = staticExtractEventParametersWithLog(APPROVALFORALL_EVENT,
+                transactionReceipt);
         ArrayList<ApprovalForAllEventResponse> responses = new ArrayList<ApprovalForAllEventResponse>(valueList.size());
         for (Contract.EventValuesWithLog eventValues : valueList) {
             ApprovalForAllEventResponse typedResponse = new ApprovalForAllEventResponse();
@@ -128,14 +145,16 @@ public class NFTTransfer extends Contract {
         return web3j.ethLogFlowable(filter).map(log -> getApprovalForAllEventFromLog(log));
     }
 
-    public Flowable<ApprovalForAllEventResponse> approvalForAllEventFlowable(DefaultBlockParameter startBlock, DefaultBlockParameter endBlock) {
+    public Flowable<ApprovalForAllEventResponse> approvalForAllEventFlowable(DefaultBlockParameter startBlock,
+            DefaultBlockParameter endBlock) {
         EthFilter filter = new EthFilter(startBlock, endBlock, getContractAddress());
         filter.addSingleTopic(EventEncoder.encode(APPROVALFORALL_EVENT));
         return approvalForAllEventFlowable(filter);
     }
 
     public static List<TransferEventResponse> getTransferEvents(TransactionReceipt transactionReceipt) {
-        List<Contract.EventValuesWithLog> valueList = staticExtractEventParametersWithLog(TRANSFER_EVENT, transactionReceipt);
+        List<Contract.EventValuesWithLog> valueList = staticExtractEventParametersWithLog(TRANSFER_EVENT,
+                transactionReceipt);
         ArrayList<TransferEventResponse> responses = new ArrayList<TransferEventResponse>(valueList.size());
         for (Contract.EventValuesWithLog eventValues : valueList) {
             TransferEventResponse typedResponse = new TransferEventResponse();
@@ -162,45 +181,54 @@ public class NFTTransfer extends Contract {
         return web3j.ethLogFlowable(filter).map(log -> getTransferEventFromLog(log));
     }
 
-    public Flowable<TransferEventResponse> transferEventFlowable(DefaultBlockParameter startBlock, DefaultBlockParameter endBlock) {
+    public Flowable<TransferEventResponse> transferEventFlowable(DefaultBlockParameter startBlock,
+            DefaultBlockParameter endBlock) {
         EthFilter filter = new EthFilter(startBlock, endBlock, getContractAddress());
         filter.addSingleTopic(EventEncoder.encode(TRANSFER_EVENT));
         return transferEventFlowable(filter);
     }
 
     @Deprecated
-    public static NFTTransfer load(String contractAddress, Web3j web3j, Credentials credentials, BigInteger gasPrice, BigInteger gasLimit) {
+    public static NFTTransfer load(String contractAddress, Web3j web3j, Credentials credentials, BigInteger gasPrice,
+            BigInteger gasLimit) {
         return new NFTTransfer(contractAddress, web3j, credentials, gasPrice, gasLimit);
     }
 
     @Deprecated
-    public static NFTTransfer load(String contractAddress, Web3j web3j, TransactionManager transactionManager, BigInteger gasPrice, BigInteger gasLimit) {
+    public static NFTTransfer load(String contractAddress, Web3j web3j, TransactionManager transactionManager,
+            BigInteger gasPrice, BigInteger gasLimit) {
         return new NFTTransfer(contractAddress, web3j, transactionManager, gasPrice, gasLimit);
     }
 
-    public static NFTTransfer load(String contractAddress, Web3j web3j, Credentials credentials, ContractGasProvider contractGasProvider) {
+    public static NFTTransfer load(String contractAddress, Web3j web3j, Credentials credentials,
+            ContractGasProvider contractGasProvider) {
         return new NFTTransfer(contractAddress, web3j, credentials, contractGasProvider);
     }
 
-    public static NFTTransfer load(String contractAddress, Web3j web3j, TransactionManager transactionManager, ContractGasProvider contractGasProvider) {
+    public static NFTTransfer load(String contractAddress, Web3j web3j, TransactionManager transactionManager,
+            ContractGasProvider contractGasProvider) {
         return new NFTTransfer(contractAddress, web3j, transactionManager, contractGasProvider);
     }
 
-    public static RemoteCall<NFTTransfer> deploy(Web3j web3j, Credentials credentials, ContractGasProvider contractGasProvider) {
+    public static RemoteCall<NFTTransfer> deploy(Web3j web3j, Credentials credentials,
+            ContractGasProvider contractGasProvider) {
         return deployRemoteCall(NFTTransfer.class, web3j, credentials, contractGasProvider, BINARY, "");
     }
 
     @Deprecated
-    public static RemoteCall<NFTTransfer> deploy(Web3j web3j, Credentials credentials, BigInteger gasPrice, BigInteger gasLimit) {
+    public static RemoteCall<NFTTransfer> deploy(Web3j web3j, Credentials credentials, BigInteger gasPrice,
+            BigInteger gasLimit) {
         return deployRemoteCall(NFTTransfer.class, web3j, credentials, gasPrice, gasLimit, BINARY, "");
     }
 
-    public static RemoteCall<NFTTransfer> deploy(Web3j web3j, TransactionManager transactionManager, ContractGasProvider contractGasProvider) {
+    public static RemoteCall<NFTTransfer> deploy(Web3j web3j, TransactionManager transactionManager,
+            ContractGasProvider contractGasProvider) {
         return deployRemoteCall(NFTTransfer.class, web3j, transactionManager, contractGasProvider, BINARY, "");
     }
 
     @Deprecated
-    public static RemoteCall<NFTTransfer> deploy(Web3j web3j, TransactionManager transactionManager, BigInteger gasPrice, BigInteger gasLimit) {
+    public static RemoteCall<NFTTransfer> deploy(Web3j web3j, TransactionManager transactionManager,
+            BigInteger gasPrice, BigInteger gasLimit) {
         return deployRemoteCall(NFTTransfer.class, web3j, transactionManager, gasPrice, gasLimit, BINARY, "");
     }
 

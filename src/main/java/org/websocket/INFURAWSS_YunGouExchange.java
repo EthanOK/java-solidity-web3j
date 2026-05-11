@@ -69,8 +69,7 @@ public class INFURAWSS_YunGouExchange extends WebSocketClient {
     public void onClose(int code, String reason, boolean remote) {
         // The close codes are documented in class org.java_websocket.framing.CloseFrame
         System.out.println(
-                "Connection closed by " + (remote ? "remote peer" : "us") + " Code: " + code + " Reason: "
-                        + reason);
+                "Connection closed by " + (remote ? "remote peer" : "us") + " Code: " + code + " Reason: " + reason);
 
     }
 
@@ -149,8 +148,7 @@ public class INFURAWSS_YunGouExchange extends WebSocketClient {
                 outputParameters.add((TypeReference) new TypeReference<Uint256>() {
                 });
 
-                List<Type> decodedString = FunctionReturnDecoder.decode(
-                        data, outputParameters);
+                List<Type> decodedString = FunctionReturnDecoder.decode(data, outputParameters);
                 byte[] orderHash_ = (byte[]) decodedString.get(0).getValue();
                 // byte[] to hexstring
                 String orderHash = Numeric.toHexString(orderHash_);

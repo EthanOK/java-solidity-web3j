@@ -22,13 +22,13 @@ public class GetTokenIdsOfAccount {
         if (chainId == "5") {
             String url = "https://api-goerli.etherscan.io";
             String apiKey = "Y5SUFPEUDZSSMMETT2ER9QYVMHB62E7QPE";
-            urlLink = url + "/api?module=account&action=tokennfttx&contractaddress=" + nftaddress +
-                    "&address=" + account + "&startblock=0&endblock=latest&sort=asc&apikey=" + apiKey;
+            urlLink = url + "/api?module=account&action=tokennfttx&contractaddress=" + nftaddress + "&address="
+                    + account + "&startblock=0&endblock=latest&sort=asc&apikey=" + apiKey;
         } else if (chainId == "97") {
             String url = "https://api-testnet.bscscan.com";
             String apiKey = "B77TXRQ15Y94BTQEFPYBB2E9IU7HC3PFJ8";
-            urlLink = url + "/api?module=account&action=tokennfttx&contractaddress=" + nftaddress +
-                    "&address=" + account + "&startblock=0&endblock=latest&sort=asc&apikey=" + apiKey;
+            urlLink = url + "/api?module=account&action=tokennfttx&contractaddress=" + nftaddress + "&address="
+                    + account + "&startblock=0&endblock=latest&sort=asc&apikey=" + apiKey;
         }
 
         // System.out.println(url);

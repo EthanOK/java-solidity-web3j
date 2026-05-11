@@ -31,8 +31,7 @@ public class GetYunGouCallData {
         // YunGouInterface YunGou = YunGouInterface.load(YunGouAddress, web3j,
         // new ReadonlyTransactionManager(web3j, null), contractGasProvider);
 
-        YunGouInterface YunGou = YunGouInterface.load(null, null,
-                new ReadonlyTransactionManager(null, null), null);
+        YunGouInterface YunGou = YunGouInterface.load(null, null, new ReadonlyTransactionManager(null, null), null);
 
         String receiver = "0x53188e798f2657576c9de8905478f46ac2f24b67";
         BigInteger weiValue = new BigInteger("0");
@@ -47,8 +46,7 @@ public class GetYunGouCallData {
         orders.add(basicOrder_7);
         BasicOrder basicOrder_8 = getBasicOrder_8();
         orders.add(basicOrder_8);
-        String calldata_batchExcuteWithETH = YunGou.batchExcuteWithETH(orders, receiver, weiValue)
-                .encodeFunctionCall();
+        String calldata_batchExcuteWithETH = YunGou.batchExcuteWithETH(orders, receiver, weiValue).encodeFunctionCall();
         System.out.println("calldata_batchExcuteWithETH:");
         System.out.println(calldata_batchExcuteWithETH);
     }
@@ -70,9 +68,8 @@ public class GetYunGouCallData {
         BigInteger afterTaxPrice = new BigInteger("9500000000000000");
 
         BasicOrderParameters basicOrderParameters = new BasicOrderParameters(orderType, offerer, offerToken,
-                offerTokenId, unitPrice,
-                sellAmount, startTime, endTime, paymentToken, paymentTokenId, salt, royaltyFee, platformFee,
-                afterTaxPrice);
+                offerTokenId, unitPrice, sellAmount, startTime, endTime, paymentToken, paymentTokenId, salt, royaltyFee,
+                platformFee, afterTaxPrice);
         String orderSignatureHex = "0xba94ee1982370efdfec73ad8ceee44f7d259e284d49fcb17cdf6d5dcf31baaad73b84189e5175b5d15c9c2d55ed8e9ad332b7f897ac1f17e1f1752eac9df51e51c";
         byte[] orderSignature = Numeric.hexStringToByteArray(orderSignatureHex);
 
@@ -92,8 +89,7 @@ public class GetYunGouCallData {
         byte[] systemSignature = Numeric.hexStringToByteArray(systemSignatureHex);
 
         BasicOrder basicOrder = new BasicOrder(basicOrderParameters, orderSignature, buyAmount, totalRoyaltyFee,
-                totalPlatformFee,
-                totalAfterTaxIncome, totalPayment, expiryDate, systemSignature);
+                totalPlatformFee, totalAfterTaxIncome, totalPayment, expiryDate, systemSignature);
         return basicOrder;
 
     }
@@ -115,9 +111,8 @@ public class GetYunGouCallData {
         BigInteger afterTaxPrice = new BigInteger("9500000000000000");
 
         BasicOrderParameters basicOrderParameters = new BasicOrderParameters(orderType, offerer, offerToken,
-                offerTokenId, unitPrice,
-                sellAmount, startTime, endTime, paymentToken, paymentTokenId, salt, royaltyFee, platformFee,
-                afterTaxPrice);
+                offerTokenId, unitPrice, sellAmount, startTime, endTime, paymentToken, paymentTokenId, salt, royaltyFee,
+                platformFee, afterTaxPrice);
         String orderSignatureHex = "0x3fd254a469286adee0ed2fa95e55de1567263cc5076992c55dff5b6c151631ac47a7ad1a6aa47113aac7ceb1b612d6bf2186225a1ffa1accf275cb57b3b6e7971c";
         byte[] orderSignature = Numeric.hexStringToByteArray(orderSignatureHex);
 
@@ -137,8 +132,7 @@ public class GetYunGouCallData {
         byte[] systemSignature = Numeric.hexStringToByteArray(systemSignatureHex);
 
         BasicOrder basicOrder = new BasicOrder(basicOrderParameters, orderSignature, buyAmount, totalRoyaltyFee,
-                totalPlatformFee,
-                totalAfterTaxIncome, totalPayment, expiryDate, systemSignature);
+                totalPlatformFee, totalAfterTaxIncome, totalPayment, expiryDate, systemSignature);
         return basicOrder;
     }
 

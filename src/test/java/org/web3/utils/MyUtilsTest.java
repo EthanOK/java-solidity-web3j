@@ -14,5 +14,4 @@ public class MyUtilsTest {
         assertTrue(ChecksumAddress.equalsAddress(address, checksumAddress), "地址不一致");
     }
 
-  
 }

@@ -42,12 +42,8 @@ public class PostERC6551AccountCreatedEvent {
 
         RequestBody body = RequestBody.create(mediaType, requestBody);
 
-        Request request = new Request.Builder()
-                .url(RPC_URL)
-                .post(body)
-                .addHeader("accept", "application/json")
-                .addHeader("content-type", "application/json")
-                .build();
+        Request request = new Request.Builder().url(RPC_URL).post(body).addHeader("accept", "application/json")
+                .addHeader("content-type", "application/json").build();
 
         Response response;
         try {

@@ -36,11 +36,8 @@ public class NftClient {
             String uri = String.format(URI_TEMPLATE, blockNet, apiKeyAlchemy, contractAddress,
                     URLEncoder.encode(nextToken, StandardCharsets.UTF_8));
             System.out.println(uri);
-            HttpRequest request = HttpRequest.newBuilder()
-                    .uri(URI.create(uri))
-                    .header("accept", "application/json")
-                    .method("GET", HttpRequest.BodyPublishers.noBody())
-                    .build();
+            HttpRequest request = HttpRequest.newBuilder().uri(URI.create(uri)).header("accept", "application/json")
+                    .method("GET", HttpRequest.BodyPublishers.noBody()).build();
             HttpResponse<String> response = HttpClient.newHttpClient().send(request,
                     HttpResponse.BodyHandlers.ofString());
             String responseBody = response.body();

@@ -42,8 +42,8 @@ public class FilterEvent {
         // 循环 12s 执行一次
         while (true) {
             try {
-                Block block = web3j.ethGetBlockByNumber(DefaultBlockParameter.valueOf(blockNumber), false)
-                        .send().getBlock();
+                Block block = web3j.ethGetBlockByNumber(DefaultBlockParameter.valueOf(blockNumber), false).send()
+                        .getBlock();
 
                 if (block == null) {
                     System.out.println("待打包区块: " + blockNumber);
@@ -54,8 +54,7 @@ public class FilterEvent {
 
                     System.out.println("blockNumber: " + Numeric.toBigInt(block.getNumberRaw()));
 
-                    HanderEthFilter(blockHash, ERC6551AccountCreated_Topics_0,
-                            Transfer_Topics_0);
+                    HanderEthFilter(blockHash, ERC6551AccountCreated_Topics_0, Transfer_Topics_0);
 
                     // TODO：写入数据库，保存中断
                     blockNumber = blockNumber.add(BigInteger.ONE);
@@ -82,8 +81,7 @@ public class FilterEvent {
     public static void HanderEthFilter(String blockHash, String... optionalTopics) {
 
         // TODO: 一次请求处理多个Topic
-        EthFilter filter = new EthFilter(blockHash)
-                .addOptionalTopics(optionalTopics);
+        EthFilter filter = new EthFilter(blockHash).addOptionalTopics(optionalTopics);
 
         try {
             EthLog ethLog = web3j.ethGetLogs(filter).send();

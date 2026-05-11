@@ -38,642 +38,557 @@ import okhttp3.Response;
 import okhttp3.ResponseBody;
 
 public class GetOpenSeaCallData {
-        static Dotenv dotenv = Dotenv.load();
-        static String OPENSEA_API_KEY = dotenv.get("OPENSEA_API_KEY");
+    static Dotenv dotenv = Dotenv.load();
+    static String OPENSEA_API_KEY = dotenv.get("OPENSEA_API_KEY");
 
-        public static void main(String[] args) throws Exception {
+    public static void main(String[] args) throws Exception {
 
-                OpenseaInterface OpenSea = OpenseaInterface.load(null, null,
-                                new ReadonlyTransactionManager(null, null), null);
+        OpenseaInterface OpenSea = OpenseaInterface.load(null, null, new ReadonlyTransactionManager(null, null), null);
 
-                BigInteger weiValue = new BigInteger("0");
-                // invalid 0xbc019d47824d6c0b2b5d4fd6563e5d2cf2d155b392b4453ac7130d1520fb78bb
-                // 0x8fa8d6cee3583ece802e81e9ea4b54bd95bfab6482afe8f0a0f09d93ada9a5ae
-                String hash_t = "0x1aa3b7733c58cc24e82f9a4701519b922c22b4183f6e6fe49a0bf30a4eb8e193";
-                String chain_t = "goerli";
-                String protocolAddress_t = "0x00000000000000adc04c56bf30ac9d3c0aaf14dc";
-                String fulfiller_t = "0x00000000000000adc04c56bf30ac9d3c0aaf14dc";
+        BigInteger weiValue = new BigInteger("0");
+        // invalid 0xbc019d47824d6c0b2b5d4fd6563e5d2cf2d155b392b4453ac7130d1520fb78bb
+        // 0x8fa8d6cee3583ece802e81e9ea4b54bd95bfab6482afe8f0a0f09d93ada9a5ae
+        String hash_t = "0x1aa3b7733c58cc24e82f9a4701519b922c22b4183f6e6fe49a0bf30a4eb8e193";
+        String chain_t = "goerli";
+        String protocolAddress_t = "0x00000000000000adc04c56bf30ac9d3c0aaf14dc";
+        String fulfiller_t = "0x00000000000000adc04c56bf30ac9d3c0aaf14dc";
 
-                /*
-                 * BasicOrderParameters parameters_test = getBasicOrderParameters(hash_t,
-                 * chain_t, protocolAddress_t,
-                 * fulfiller_t);
-                 * 
-                 * String calldata_fulfillBasicOrder_test =
-                 * OpenSea.fulfillBasicOrder(parameters_test, weiValue)
-                 * .encodeFunctionCall();
-                 * System.out.println("calldata_fulfillBasicOrder_test:");
-                 * System.out.println(calldata_fulfillBasicOrder_test);
-                 */
-                String[] hashs = { hash_t };
+        /*
+         * BasicOrderParameters parameters_test = getBasicOrderParameters(hash_t, chain_t, protocolAddress_t,
+         * fulfiller_t);
+         *
+         * String calldata_fulfillBasicOrder_test = OpenSea.fulfillBasicOrder(parameters_test, weiValue)
+         * .encodeFunctionCall(); System.out.println("calldata_fulfillBasicOrder_test:");
+         * System.out.println(calldata_fulfillBasicOrder_test);
+         */
+        String[] hashs = { hash_t };
 
-                // String hash_eth =
-                // "0x7fa7680242ebcb783f17471c241c10a80899aa8678599d1221856f99e06b2082";
-                // String chain_eth = "ethereum";
-                // String protocolAddress_eth = "0x00000000000000ADc04C56Bf30aC9d3c0aAF14dC";
-                // String fulfiller_eth = "0xc675897bb91797eaea7584f025a5533dbb13a000";
-                // BasicOrderParameters parameters_eth = getBasicOrderParameters(hash_eth,
-                // chain_eth, protocolAddress_eth,
-                // fulfiller_eth);
-                // String calldata_fulfillBasicOrder = OpenSea.fulfillBasicOrder(parameters_eth,
-                // weiValue)
-                // .encodeFunctionCall();
-                // System.out.println("calldata_fulfillBasicOrder:");
-                // System.out.println(calldata_fulfillBasicOrder);
+        // String hash_eth =
+        // "0x7fa7680242ebcb783f17471c241c10a80899aa8678599d1221856f99e06b2082";
+        // String chain_eth = "ethereum";
+        // String protocolAddress_eth = "0x00000000000000ADc04C56Bf30aC9d3c0aAF14dC";
+        // String fulfiller_eth = "0xc675897bb91797eaea7584f025a5533dbb13a000";
+        // BasicOrderParameters parameters_eth = getBasicOrderParameters(hash_eth,
+        // chain_eth, protocolAddress_eth,
+        // fulfiller_eth);
+        // String calldata_fulfillBasicOrder = OpenSea.fulfillBasicOrder(parameters_eth,
+        // weiValue)
+        // .encodeFunctionCall();
+        // System.out.println("calldata_fulfillBasicOrder:");
+        // System.out.println(calldata_fulfillBasicOrder);
 
-                // TODO: fulfillAvailableAdvancedOrders(List<AdvancedOrder> advancedOrders,
-                // List<CriteriaResolver> criteriaResolvers, List<FulfillmentComponent>
-                // offerFulfillments, List<FulfillmentComponent> considerationFulfillments,
-                // byte[] fulfillerConduitKey, String recipient, BigInteger maximumFulfilled,
-                // BigInteger weiValue)
+        // TODO: fulfillAvailableAdvancedOrders(List<AdvancedOrder> advancedOrders,
+        // List<CriteriaResolver> criteriaResolvers, List<FulfillmentComponent>
+        // offerFulfillments, List<FulfillmentComponent> considerationFulfillments,
+        // byte[] fulfillerConduitKey, String recipient, BigInteger maximumFulfilled,
+        // BigInteger weiValue)
 
-                // String fulfillmentData = getFulfillmentData(hash, chain, protocolAddress,
-                // fulfiller);
-                // System.out.println(fulfillmentData);
+        // String fulfillmentData = getFulfillmentData(hash, chain, protocolAddress,
+        // fulfiller);
+        // System.out.println(fulfillmentData);
 
-                // System.out.println(fulfillmentData_test);
-                Map<String, Object> availableAdvancedOrdersDatas = getFulfillAvailableAdvancedOrdersParameters(hashs,
-                                chain_t, protocolAddress_t,
-                                fulfiller_t);
-                List<AdvancedOrder> advancedOrders = (List<AdvancedOrder>) availableAdvancedOrdersDatas
-                                .get("advancedOrders");
-                List<CriteriaResolver> criteriaResolvers = (List<CriteriaResolver>) availableAdvancedOrdersDatas
-                                .get("criteriaResolvers");
-                List<FulfillmentComponent> offerFulfillments = (List<FulfillmentComponent>) availableAdvancedOrdersDatas
-                                .get("offerFulfillments");
-                List<FulfillmentComponent> considerationFulfillments = (List<FulfillmentComponent>) availableAdvancedOrdersDatas
-                                .get("considerationFulfillments");
-                byte[] fulfillerConduitKey = (byte[]) availableAdvancedOrdersDatas.get("fulfillerConduitKey");
-                String recipient = (String) availableAdvancedOrdersDatas.get("recipient");
-                BigInteger maximumFulfilled = (BigInteger) availableAdvancedOrdersDatas.get("maximumFulfilled");
-                // TODO: OpenSea.fulfillAvailableAdvancedOrders 有问题 不支持[][]
-                // String calldata_fulfillAvailableAdvancedOrders = OpenSea
-                // .fulfillAvailableAdvancedOrders(advancedOrders, criteriaResolvers,
-                // offerFulfillments,
-                // considerationFulfillments, fulfillerConduitKey, recipient,
-                // maximumFulfilled, weiValue)
-                // .encodeFunctionCall();
-                // System.out.println("calldata_fulfillAvailableAdvancedOrders:");
-                // System.out.println(calldata_fulfillAvailableAdvancedOrders);
-                getSignature(hash_t,
-                                chain_t, protocolAddress_t,
-                                fulfiller_t);
+        // System.out.println(fulfillmentData_test);
+        Map<String, Object> availableAdvancedOrdersDatas = getFulfillAvailableAdvancedOrdersParameters(hashs, chain_t,
+                protocolAddress_t, fulfiller_t);
+        List<AdvancedOrder> advancedOrders = (List<AdvancedOrder>) availableAdvancedOrdersDatas.get("advancedOrders");
+        List<CriteriaResolver> criteriaResolvers = (List<CriteriaResolver>) availableAdvancedOrdersDatas
+                .get("criteriaResolvers");
+        List<FulfillmentComponent> offerFulfillments = (List<FulfillmentComponent>) availableAdvancedOrdersDatas
+                .get("offerFulfillments");
+        List<FulfillmentComponent> considerationFulfillments = (List<FulfillmentComponent>) availableAdvancedOrdersDatas
+                .get("considerationFulfillments");
+        byte[] fulfillerConduitKey = (byte[]) availableAdvancedOrdersDatas.get("fulfillerConduitKey");
+        String recipient = (String) availableAdvancedOrdersDatas.get("recipient");
+        BigInteger maximumFulfilled = (BigInteger) availableAdvancedOrdersDatas.get("maximumFulfilled");
+        // TODO: OpenSea.fulfillAvailableAdvancedOrders 有问题 不支持[][]
+        // String calldata_fulfillAvailableAdvancedOrders = OpenSea
+        // .fulfillAvailableAdvancedOrders(advancedOrders, criteriaResolvers,
+        // offerFulfillments,
+        // considerationFulfillments, fulfillerConduitKey, recipient,
+        // maximumFulfilled, weiValue)
+        // .encodeFunctionCall();
+        // System.out.println("calldata_fulfillAvailableAdvancedOrders:");
+        // System.out.println(calldata_fulfillAvailableAdvancedOrders);
+        getSignature(hash_t, chain_t, protocolAddress_t, fulfiller_t);
 
-        }
+    }
 
-        public static BasicOrderParameters getBasicOrderParameters_remove() {
-                String considerationToken = "0x0000000000000000000000000000000000000000";
+    public static BasicOrderParameters getBasicOrderParameters_remove() {
+        String considerationToken = "0x0000000000000000000000000000000000000000";
 
-                BigInteger considerationIdentifier = new BigInteger("0");
+        BigInteger considerationIdentifier = new BigInteger("0");
 
-                BigInteger considerationAmount = new BigInteger("48750000000000000");
+        BigInteger considerationAmount = new BigInteger("48750000000000000");
 
-                String offerer = "0x6278a1e803a76796a3a1f7f6344fe874ebfe94b2";
+        String offerer = "0x6278a1e803a76796a3a1f7f6344fe874ebfe94b2";
 
-                String zone = "0x004c00500000ad104d7dbd00e3ae0a5c00560c00";
+        String zone = "0x004c00500000ad104d7dbd00e3ae0a5c00560c00";
 
-                String offerToken = "0xeaafcc17f28afe5cda5b3f76770efb7ef162d20b";
+        String offerToken = "0xeaafcc17f28afe5cda5b3f76770efb7ef162d20b";
 
-                BigInteger offerIdentifier = new BigInteger("19");
+        BigInteger offerIdentifier = new BigInteger("19");
 
-                BigInteger offerAmount = new BigInteger("1");
+        BigInteger offerAmount = new BigInteger("1");
 
-                BigInteger basicOrderType = new BigInteger("0");
+        BigInteger basicOrderType = new BigInteger("0");
 
-                BigInteger startTime = new BigInteger("1685354843");
+        BigInteger startTime = new BigInteger("1685354843");
 
-                BigInteger endTime = new BigInteger("1688033243");
+        BigInteger endTime = new BigInteger("1688033243");
 
-                byte[] zoneHash = convertBytes("0x0000000000000000000000000000000000000000000000000000000000000000");
+        byte[] zoneHash = convertBytes("0x0000000000000000000000000000000000000000000000000000000000000000");
 
-                BigInteger salt = new BigInteger(
-                                "24446860302761739304752683030156737591518664810215442929815938533551652895526");
+        BigInteger salt = new BigInteger(
+                "24446860302761739304752683030156737591518664810215442929815938533551652895526");
 
-                byte[] offererConduitKey = convertBytes(
-                                "0x0000007b02230091a7ed01230072f7006a004d60a8d4e71d599b8104250f0000");
+        byte[] offererConduitKey = convertBytes("0x0000007b02230091a7ed01230072f7006a004d60a8d4e71d599b8104250f0000");
 
-                byte[] fulfillerConduitKey = convertBytes(
-                                "0x0000007b02230091a7ed01230072f7006a004d60a8d4e71d599b8104250f0000");
+        byte[] fulfillerConduitKey = convertBytes("0x0000007b02230091a7ed01230072f7006a004d60a8d4e71d599b8104250f0000");
 
-                BigInteger totalOriginalAdditionalRecipients = new BigInteger("1");
+        BigInteger totalOriginalAdditionalRecipients = new BigInteger("1");
 
-                List<AdditionalRecipient> additionalRecipients = new ArrayList<>();
-                BigInteger amount = new BigInteger("1250000000000000");
-                String recipient = "0x0000a26b00c1f0df003000390027140000faa719";
-                AdditionalRecipient additionalRecipient0 = new AdditionalRecipient(amount, recipient);
-                additionalRecipients.add(additionalRecipient0);
-                byte[] signature = convertBytes(
-                                "0x38e79db0c766467da4c5a5b2607403aa286aefa37d1243e7576f570e3264aa62a793c532436a923a0ebd357bdb83076f41a689335da2d0b0419e8afb8abf85f0");
+        List<AdditionalRecipient> additionalRecipients = new ArrayList<>();
+        BigInteger amount = new BigInteger("1250000000000000");
+        String recipient = "0x0000a26b00c1f0df003000390027140000faa719";
+        AdditionalRecipient additionalRecipient0 = new AdditionalRecipient(amount, recipient);
+        additionalRecipients.add(additionalRecipient0);
+        byte[] signature = convertBytes(
+                "0x38e79db0c766467da4c5a5b2607403aa286aefa37d1243e7576f570e3264aa62a793c532436a923a0ebd357bdb83076f41a689335da2d0b0419e8afb8abf85f0");
 
-                BasicOrderParameters basicOrderParameters = new BasicOrderParameters(considerationToken,
-                                considerationIdentifier, considerationAmount, offerer, zone, offerToken,
-                                offerIdentifier, offerAmount, basicOrderType,
-                                startTime, endTime, zoneHash, salt, offererConduitKey, fulfillerConduitKey,
-                                totalOriginalAdditionalRecipients, additionalRecipients,
-                                signature);
+        BasicOrderParameters basicOrderParameters = new BasicOrderParameters(considerationToken,
+                considerationIdentifier, considerationAmount, offerer, zone, offerToken, offerIdentifier, offerAmount,
+                basicOrderType, startTime, endTime, zoneHash, salt, offererConduitKey, fulfillerConduitKey,
+                totalOriginalAdditionalRecipients, additionalRecipients, signature);
 
-                return basicOrderParameters;
+        return basicOrderParameters;
 
-        }
+    }
 
-        public static byte[] convertBytes(String dataHex) {
-                byte[] result = Numeric.hexStringToByteArray(dataHex);
-                return result;
-        }
+    public static byte[] convertBytes(String dataHex) {
+        byte[] result = Numeric.hexStringToByteArray(dataHex);
+        return result;
+    }
 
-        public static Map<String, Object> getFulfillAvailableAdvancedOrdersParameters(String[] hashs, String chainName,
-                        String protocolAddress, String fulfiller)
-                        throws Exception {
-                Map<String, Object> availableAdvancedOrdersDatas = new HashMap<>();
-                List<AdvancedOrder> advancedOrders = new ArrayList<>();
-                List<CriteriaResolver> criteriaResolvers = new ArrayList<>();
-                List<List<FulfillmentComponent>> offerFulfillments = new ArrayList<>();
-                List<List<FulfillmentComponent>> considerationFulfillments = new ArrayList<>();
-                byte[] fulfillerConduitKey = convertBytes(
-                                "0x0000000000000000000000000000000000000000000000000000000000000000");
-                String recipient = fulfiller;
-                BigInteger maximumFulfilled = BigInteger.valueOf(hashs.length);
+    public static Map<String, Object> getFulfillAvailableAdvancedOrdersParameters(String[] hashs, String chainName,
+            String protocolAddress, String fulfiller) throws Exception {
+        Map<String, Object> availableAdvancedOrdersDatas = new HashMap<>();
+        List<AdvancedOrder> advancedOrders = new ArrayList<>();
+        List<CriteriaResolver> criteriaResolvers = new ArrayList<>();
+        List<List<FulfillmentComponent>> offerFulfillments = new ArrayList<>();
+        List<List<FulfillmentComponent>> considerationFulfillments = new ArrayList<>();
+        byte[] fulfillerConduitKey = convertBytes("0x0000000000000000000000000000000000000000000000000000000000000000");
+        String recipient = fulfiller;
+        BigInteger maximumFulfilled = BigInteger.valueOf(hashs.length);
 
-                for (int i = 0; i < hashs.length; i++) {
+        for (int i = 0; i < hashs.length; i++) {
 
-                        Map<String, Object> resultDatas = getOrderParametersAndSignature(hashs[i],
-                                        chainName, protocolAddress,
-                                        fulfiller);
-                        OrderParameters orderParameters = (OrderParameters) resultDatas.get("orderParameters");
-                        String signatureHex = (String) resultDatas.get("signature");
-                        BigInteger numerator = new BigInteger("1");
+            Map<String, Object> resultDatas = getOrderParametersAndSignature(hashs[i], chainName, protocolAddress,
+                    fulfiller);
+            OrderParameters orderParameters = (OrderParameters) resultDatas.get("orderParameters");
+            String signatureHex = (String) resultDatas.get("signature");
+            BigInteger numerator = new BigInteger("1");
 
-                        BigInteger denominator = new BigInteger("1");
+            BigInteger denominator = new BigInteger("1");
 
-                        byte[] signature = convertBytes(signatureHex);
+            byte[] signature = convertBytes(signatureHex);
 
-                        byte[] extraData = convertBytes("0x");
+            byte[] extraData = convertBytes("0x");
 
-                        AdvancedOrder advancedOrder = new AdvancedOrder(orderParameters, numerator, denominator,
-                                        signature,
-                                        extraData);
-                        advancedOrders.add(advancedOrder);
+            AdvancedOrder advancedOrder = new AdvancedOrder(orderParameters, numerator, denominator, signature,
+                    extraData);
+            advancedOrders.add(advancedOrder);
 
-                        for (int j = 0; j < orderParameters.offer.size(); j++) {
-                                BigInteger orderIndex = BigInteger.valueOf(i);
+            for (int j = 0; j < orderParameters.offer.size(); j++) {
+                BigInteger orderIndex = BigInteger.valueOf(i);
 
-                                BigInteger itemIndex = BigInteger.valueOf(j);
-                                FulfillmentComponent fulfillmentComponent = new FulfillmentComponent(orderIndex,
-                                                itemIndex);
+                BigInteger itemIndex = BigInteger.valueOf(j);
+                FulfillmentComponent fulfillmentComponent = new FulfillmentComponent(orderIndex, itemIndex);
 
-                                List<FulfillmentComponent> temp = new ArrayList<>();
-                                temp.add(fulfillmentComponent);
-                                offerFulfillments.add(temp);
-                        }
-                        for (int j = 0; j < orderParameters.consideration.size(); j++) {
-                                BigInteger orderIndex = BigInteger.valueOf(i);
+                List<FulfillmentComponent> temp = new ArrayList<>();
+                temp.add(fulfillmentComponent);
+                offerFulfillments.add(temp);
+            }
+            for (int j = 0; j < orderParameters.consideration.size(); j++) {
+                BigInteger orderIndex = BigInteger.valueOf(i);
 
-                                BigInteger itemIndex = BigInteger.valueOf(j);
-                                FulfillmentComponent fulfillmentComponent = new FulfillmentComponent(orderIndex,
-                                                itemIndex);
+                BigInteger itemIndex = BigInteger.valueOf(j);
+                FulfillmentComponent fulfillmentComponent = new FulfillmentComponent(orderIndex, itemIndex);
 
-                                List<FulfillmentComponent> temp = new ArrayList<>();
-                                temp.add(fulfillmentComponent);
-                                considerationFulfillments.add(temp);
-                        }
-
-                }
-                availableAdvancedOrdersDatas.put("advancedOrders", advancedOrders);
-                availableAdvancedOrdersDatas.put("criteriaResolvers", criteriaResolvers);
-                availableAdvancedOrdersDatas.put("offerFulfillments", offerFulfillments);
-                availableAdvancedOrdersDatas.put("considerationFulfillments", considerationFulfillments);
-                availableAdvancedOrdersDatas.put("fulfillerConduitKey", fulfillerConduitKey);
-                availableAdvancedOrdersDatas.put("recipient", recipient);
-                availableAdvancedOrdersDatas.put("maximumFulfilled", maximumFulfilled);
-                return availableAdvancedOrdersDatas;
+                List<FulfillmentComponent> temp = new ArrayList<>();
+                temp.add(fulfillmentComponent);
+                considerationFulfillments.add(temp);
+            }
 
         }
+        availableAdvancedOrdersDatas.put("advancedOrders", advancedOrders);
+        availableAdvancedOrdersDatas.put("criteriaResolvers", criteriaResolvers);
+        availableAdvancedOrdersDatas.put("offerFulfillments", offerFulfillments);
+        availableAdvancedOrdersDatas.put("considerationFulfillments", considerationFulfillments);
+        availableAdvancedOrdersDatas.put("fulfillerConduitKey", fulfillerConduitKey);
+        availableAdvancedOrdersDatas.put("recipient", recipient);
+        availableAdvancedOrdersDatas.put("maximumFulfilled", maximumFulfilled);
+        return availableAdvancedOrdersDatas;
 
-        public static BasicOrderParameters getBasicOrderParameters(String hash, String chainName,
-                        String protocolAddress,
-                        String fulfiller)
-                        throws Exception {
-                String responseString = null;
-                BasicOrderParameters basicOrderParameters = null;
+    }
 
-                OkHttpClient client = new OkHttpClient();
+    public static BasicOrderParameters getBasicOrderParameters(String hash, String chainName, String protocolAddress,
+            String fulfiller) throws Exception {
+        String responseString = null;
+        BasicOrderParameters basicOrderParameters = null;
 
-                MediaType mediaType = MediaType.parse("application/json");
+        OkHttpClient client = new OkHttpClient();
 
-                String requestBodyString = "{\"listing\":{\"hash\":\"" + hash +
-                                "\",\"chain\":\"" + chainName
-                                + "\",\"protocol_address\":\"" + protocolAddress +
-                                "\"},\"fulfiller\":{\"address\":\""
-                                + fulfiller + "\"}}";
+        MediaType mediaType = MediaType.parse("application/json");
 
-                RequestBody requestBody = RequestBody.Companion.create(requestBodyString, mediaType);
-                chainName = chainName.toLowerCase();
-                Request request = null;
-                if (chainName.equals("goerli")) {
-                        request = new Request.Builder()
-                                        .url("https://testnets-api.opensea.io/v2/listings/fulfillment_data")
-                                        .post(requestBody)
-                                        .addHeader("content-type", "application/json")
-                                        .build();
+        String requestBodyString = "{\"listing\":{\"hash\":\"" + hash + "\",\"chain\":\"" + chainName
+                + "\",\"protocol_address\":\"" + protocolAddress + "\"},\"fulfiller\":{\"address\":\"" + fulfiller
+                + "\"}}";
 
-                        // test network need wait 1s
-                        Thread.sleep(1000);
-                        System.out.println(new Date());
+        RequestBody requestBody = RequestBody.Companion.create(requestBodyString, mediaType);
+        chainName = chainName.toLowerCase();
+        Request request = null;
+        if (chainName.equals("goerli")) {
+            request = new Request.Builder().url("https://testnets-api.opensea.io/v2/listings/fulfillment_data")
+                    .post(requestBody).addHeader("content-type", "application/json").build();
 
-                }
-                if (chainName.equals("ethereum")) {
+            // test network need wait 1s
+            Thread.sleep(1000);
+            System.out.println(new Date());
 
-                        request = new Request.Builder()
-                                        .url("https://api.opensea.io/v2/listings/fulfillment_data")
-                                        .post(requestBody)
-                                        .addHeader("content-type", "application/json")
-                                        .addHeader("X-API-KEY", OPENSEA_API_KEY)
-                                        .build();
-                }
+        }
+        if (chainName.equals("ethereum")) {
 
-                try (Response response = client.newCall(request).execute()) {
-                        if (response.isSuccessful()) {
-                                // Handle successful response
-
-                                ResponseBody responseBody = response.body();
-                                if (responseBody != null) {
-                                        responseString = responseBody.string();
-                                        // System.out.println(responseString);
-                                        // 将 JSON 响应转换为 JSONObject 对象
-                                        JSONObject json = new JSONObject(responseString);
-
-                                        String protocol = json.getString("protocol");
-                                        System.out.println("protocol:" + protocol);
-                                        JSONObject fulfillment_data = json.getJSONObject("fulfillment_data");
-                                        // System.out.println(fulfillment_data);
-                                        JSONObject transaction = fulfillment_data.getJSONObject("transaction");
-                                        BigInteger chain = transaction.getBigInteger("chain");
-                                        System.out.println("chain:" + chain);
-
-                                        String to = transaction.getString("to");
-                                        System.out.println("to:" + to);
-                                        BigInteger value = transaction.getBigInteger("value");
-                                        System.out.println("value:" + value);
-                                        JSONObject input_data = transaction.getJSONObject("input_data");
-
-                                        JSONObject parameters = input_data.getJSONObject("parameters");
-
-                                        // System.out.println(parameters);
-
-                                        String considerationToken = parameters.getString("considerationToken");
-
-                                        BigInteger considerationIdentifier = new BigInteger(
-                                                        parameters.getString("considerationIdentifier"));
-
-                                        BigInteger considerationAmount = new BigInteger(
-                                                        parameters.getString("considerationAmount"));
-
-                                        String offerer = parameters.getString("offerer");
-
-                                        String zone = parameters.getString("zone");
-
-                                        String offerToken = parameters.getString("offerToken");
-
-                                        BigInteger offerIdentifier = new BigInteger(
-                                                        parameters.getString("offerIdentifier"));
-
-                                        BigInteger offerAmount = new BigInteger(parameters.getString("offerAmount"));
-
-                                        BigInteger basicOrderType = parameters.getBigInteger("basicOrderType");
-
-                                        BigInteger startTime = new BigInteger(parameters.getString("startTime"));
-
-                                        BigInteger endTime = new BigInteger(parameters.getString("endTime"));
-
-                                        byte[] zoneHash = convertBytes(
-                                                        parameters.getString("zoneHash"));
-
-                                        BigInteger salt = new BigInteger(
-                                                        parameters.getString("salt"));
-
-                                        byte[] offererConduitKey = convertBytes(
-                                                        parameters.getString("offererConduitKey"));
-
-                                        byte[] fulfillerConduitKey = convertBytes(
-                                                        parameters.getString("fulfillerConduitKey"));
-
-                                        BigInteger totalOriginalAdditionalRecipients = new BigInteger(
-                                                        parameters.getString("totalOriginalAdditionalRecipients"));
-
-                                        List<AdditionalRecipient> additionalRecipients = new ArrayList<>();
-
-                                        JSONArray additionalRecipientsArray = parameters
-                                                        .getJSONArray("additionalRecipients");
-
-                                        for (int i = 0; i < additionalRecipientsArray.length(); i++) {
-                                                JSONObject additionalRecipientObject = additionalRecipientsArray
-                                                                .getJSONObject(i);
-
-                                                BigInteger amount = new BigInteger(
-                                                                additionalRecipientObject.getString("amount"));
-                                                String recipient = additionalRecipientObject.getString("recipient");
-                                                AdditionalRecipient additionalRecipient = new AdditionalRecipient(
-                                                                amount,
-                                                                recipient);
-                                                additionalRecipients.add(additionalRecipient);
-                                        }
-
-                                        byte[] signature = convertBytes(parameters.getString("signature"));
-                                        basicOrderParameters = new BasicOrderParameters(
-                                                        considerationToken,
-                                                        considerationIdentifier, considerationAmount, offerer, zone,
-                                                        offerToken,
-                                                        offerIdentifier, offerAmount, basicOrderType,
-                                                        startTime, endTime, zoneHash, salt, offererConduitKey,
-                                                        fulfillerConduitKey,
-                                                        totalOriginalAdditionalRecipients, additionalRecipients,
-                                                        signature);
-
-                                } else {
-                                        // Handle unsuccessful response
-                                        throw new Exception(
-                                                        "Failed to get fulfillment data");
-                                }
-
-                        } else {
-                                // Handle unsuccessful response
-                                throw new Exception(
-                                                "Failed to get fulfillment data");
-                        }
-                } catch (Exception e) {
-                        // Handle exception
-                        System.out.println("Order invalid");
-                        throw new Exception(e);
-                }
-
-                return basicOrderParameters;
+            request = new Request.Builder().url("https://api.opensea.io/v2/listings/fulfillment_data").post(requestBody)
+                    .addHeader("content-type", "application/json").addHeader("X-API-KEY", OPENSEA_API_KEY).build();
         }
 
-        public static Map<String, Object> getOrderParametersAndSignature(String hash, String chainName,
-                        String protocolAddress,
-                        String fulfiller)
-                        throws Exception {
+        try (Response response = client.newCall(request).execute()) {
+            if (response.isSuccessful()) {
+                // Handle successful response
 
-                Map<String, Object> resultDatas = new HashMap<>();
+                ResponseBody responseBody = response.body();
+                if (responseBody != null) {
+                    responseString = responseBody.string();
+                    // System.out.println(responseString);
+                    // 将 JSON 响应转换为 JSONObject 对象
+                    JSONObject json = new JSONObject(responseString);
 
-                String responseString = null;
-                OrderParameters orderParameters = null;
+                    String protocol = json.getString("protocol");
+                    System.out.println("protocol:" + protocol);
+                    JSONObject fulfillment_data = json.getJSONObject("fulfillment_data");
+                    // System.out.println(fulfillment_data);
+                    JSONObject transaction = fulfillment_data.getJSONObject("transaction");
+                    BigInteger chain = transaction.getBigInteger("chain");
+                    System.out.println("chain:" + chain);
 
-                OkHttpClient client = new OkHttpClient();
+                    String to = transaction.getString("to");
+                    System.out.println("to:" + to);
+                    BigInteger value = transaction.getBigInteger("value");
+                    System.out.println("value:" + value);
+                    JSONObject input_data = transaction.getJSONObject("input_data");
 
-                MediaType mediaType = MediaType.parse("application/json");
+                    JSONObject parameters = input_data.getJSONObject("parameters");
 
-                String requestBodyString = "{\"listing\":{\"hash\":\"" + hash +
-                                "\",\"chain\":\"" + chainName
-                                + "\",\"protocol_address\":\"" + protocolAddress +
-                                "\"},\"fulfiller\":{\"address\":\""
-                                + fulfiller + "\"}}";
+                    // System.out.println(parameters);
 
-                RequestBody requestBody = RequestBody.Companion.create(requestBodyString, mediaType);
-                chainName = chainName.toLowerCase();
-                Request request = null;
-                if (chainName.equals("goerli")) {
-                        request = new Request.Builder()
-                                        .url("https://testnets-api.opensea.io/v2/listings/fulfillment_data")
-                                        .post(requestBody)
-                                        .addHeader("content-type", "application/json")
-                                        .build();
+                    String considerationToken = parameters.getString("considerationToken");
 
-                        // test network need wait 1s
-                        Thread.sleep(1000);
-                        System.out.println(new Date());
+                    BigInteger considerationIdentifier = new BigInteger(
+                            parameters.getString("considerationIdentifier"));
 
-                }
-                if (chainName.equals("ethereum")) {
+                    BigInteger considerationAmount = new BigInteger(parameters.getString("considerationAmount"));
 
-                        request = new Request.Builder()
-                                        .url("https://api.opensea.io/v2/listings/fulfillment_data")
-                                        .post(requestBody)
-                                        .addHeader("content-type", "application/json")
-                                        .addHeader("X-API-KEY", OPENSEA_API_KEY)
-                                        .build();
-                }
+                    String offerer = parameters.getString("offerer");
 
-                try (Response response = client.newCall(request).execute()) {
-                        if (response.isSuccessful()) {
-                                // Handle successful response
+                    String zone = parameters.getString("zone");
 
-                                ResponseBody responseBody = response.body();
-                                if (responseBody != null) {
-                                        responseString = responseBody.string();
-                                        System.out.println(responseString);
-                                        // 将 JSON 响应转换为 JSONObject 对象
-                                        JSONObject json = new JSONObject(responseString);
+                    String offerToken = parameters.getString("offerToken");
 
-                                        String protocol = json.getString("protocol");
-                                        System.out.println("protocol:" + protocol);
-                                        JSONObject fulfillment_data = json.getJSONObject("fulfillment_data");
-                                        // System.out.println(fulfillment_data);
-                                        // orders
-                                        JSONArray orders = fulfillment_data
-                                                        .getJSONArray("orders");
-                                        if (orders.length() == 0) {
-                                                // Handle unsuccessful response
-                                                throw new Exception(
-                                                                "Failed to get fulfillment data");
-                                        }
-                                        JSONObject order = orders.getJSONObject(0);
+                    BigInteger offerIdentifier = new BigInteger(parameters.getString("offerIdentifier"));
 
-                                        String signature = order.getString("signature");
-                                        JSONObject parameters = order.getJSONObject("parameters");
+                    BigInteger offerAmount = new BigInteger(parameters.getString("offerAmount"));
 
-                                        // data
-                                        String offerer = parameters.getString("offerer");
-                                        String zone = parameters.getString("zone");
+                    BigInteger basicOrderType = parameters.getBigInteger("basicOrderType");
 
-                                        List<OfferItem> offer = new ArrayList<>();
-                                        JSONArray offerArray = parameters.getJSONArray("offer");
-                                        for (int i = 0; i < offerArray.length(); i++) {
-                                                JSONObject offerObject = offerArray.getJSONObject(i);
-                                                BigInteger itemType = offerObject.getBigInteger("itemType");
+                    BigInteger startTime = new BigInteger(parameters.getString("startTime"));
 
-                                                String token = offerObject.getString("token");
+                    BigInteger endTime = new BigInteger(parameters.getString("endTime"));
 
-                                                BigInteger identifierOrCriteria = offerObject
-                                                                .getBigInteger("identifierOrCriteria");
+                    byte[] zoneHash = convertBytes(parameters.getString("zoneHash"));
 
-                                                BigInteger startAmount = offerObject.getBigInteger("startAmount");
+                    BigInteger salt = new BigInteger(parameters.getString("salt"));
 
-                                                BigInteger endAmount = offerObject.getBigInteger("endAmount");
-                                                OfferItem offerItem = new OfferItem(itemType, token,
-                                                                identifierOrCriteria, startAmount, endAmount);
+                    byte[] offererConduitKey = convertBytes(parameters.getString("offererConduitKey"));
 
-                                                offer.add(offerItem);
+                    byte[] fulfillerConduitKey = convertBytes(parameters.getString("fulfillerConduitKey"));
 
-                                        }
-                                        List<ConsiderationItem> consideration = new ArrayList<>();
-                                        ;
-                                        JSONArray considerationArray = parameters.getJSONArray("consideration");
-                                        for (int i = 0; i < considerationArray.length(); i++) {
-                                                JSONObject considerationObject = considerationArray.getJSONObject(i);
-                                                BigInteger itemType = considerationObject.getBigInteger("itemType");
+                    BigInteger totalOriginalAdditionalRecipients = new BigInteger(
+                            parameters.getString("totalOriginalAdditionalRecipients"));
 
-                                                String token = considerationObject.getString("token");
+                    List<AdditionalRecipient> additionalRecipients = new ArrayList<>();
 
-                                                BigInteger identifierOrCriteria = considerationObject
-                                                                .getBigInteger("identifierOrCriteria");
+                    JSONArray additionalRecipientsArray = parameters.getJSONArray("additionalRecipients");
 
-                                                BigInteger startAmount = considerationObject
-                                                                .getBigInteger("startAmount");
+                    for (int i = 0; i < additionalRecipientsArray.length(); i++) {
+                        JSONObject additionalRecipientObject = additionalRecipientsArray.getJSONObject(i);
 
-                                                BigInteger endAmount = considerationObject.getBigInteger("endAmount");
-                                                String recipient = considerationObject.getString("recipient");
-                                                ConsiderationItem considerationItem = new ConsiderationItem(itemType,
-                                                                token, identifierOrCriteria, startAmount, endAmount,
-                                                                recipient);
-                                                consideration.add(considerationItem);
+                        BigInteger amount = new BigInteger(additionalRecipientObject.getString("amount"));
+                        String recipient = additionalRecipientObject.getString("recipient");
+                        AdditionalRecipient additionalRecipient = new AdditionalRecipient(amount, recipient);
+                        additionalRecipients.add(additionalRecipient);
+                    }
 
-                                        }
+                    byte[] signature = convertBytes(parameters.getString("signature"));
+                    basicOrderParameters = new BasicOrderParameters(considerationToken, considerationIdentifier,
+                            considerationAmount, offerer, zone, offerToken, offerIdentifier, offerAmount,
+                            basicOrderType, startTime, endTime, zoneHash, salt, offererConduitKey, fulfillerConduitKey,
+                            totalOriginalAdditionalRecipients, additionalRecipients, signature);
 
-                                        BigInteger orderType = parameters.getBigInteger("orderType");
-
-                                        BigInteger startTime = parameters.getBigInteger("startTime");
-
-                                        BigInteger endTime = parameters.getBigInteger("endTime");
-
-                                        byte[] zoneHash = convertBytes(parameters.getString("zoneHash"));
-                                        String saltString = parameters.getString("salt");
-
-                                        BigInteger salt = new BigInteger("0");
-                                        if (saltString.matches("^0x[0-9A-Fa-f]+$")) {
-                                                salt = Numeric.toBigInt(saltString);
-
-                                        } else {
-                                                salt = new BigInteger(saltString);
-                                        }
-
-                                        byte[] conduitKey = convertBytes(parameters.getString("conduitKey"));
-
-                                        BigInteger totalOriginalConsiderationItems = parameters
-                                                        .getBigInteger("totalOriginalConsiderationItems");
-
-                                        orderParameters = new OrderParameters(offerer, zone, offer, consideration,
-                                                        orderType,
-                                                        startTime,
-                                                        endTime,
-                                                        zoneHash, salt, conduitKey,
-                                                        totalOriginalConsiderationItems);
-
-                                        resultDatas.put("orderParameters", orderParameters);
-                                        resultDatas.put("signature", signature);
-
-                                } else {
-                                        // Handle unsuccessful response
-                                        throw new Exception(
-                                                        "Failed to get fulfillment data");
-                                }
-
-                        } else {
-                                // Handle unsuccessful response
-                                throw new Exception(
-                                                "Failed to get fulfillment data");
-                        }
-                } catch (Exception e) {
-                        // Handle exception
-
-                        throw new Exception(e);
+                } else {
+                    // Handle unsuccessful response
+                    throw new Exception("Failed to get fulfillment data");
                 }
 
-                return resultDatas;
+            } else {
+                // Handle unsuccessful response
+                throw new Exception("Failed to get fulfillment data");
+            }
+        } catch (Exception e) {
+            // Handle exception
+            System.out.println("Order invalid");
+            throw new Exception(e);
         }
 
-        public static String getSignature(String orderHash, String chainName,
-                        String protocolAddress,
-                        String fulfiller)
-                        throws Exception {
+        return basicOrderParameters;
+    }
 
-                String signature = null;
+    public static Map<String, Object> getOrderParametersAndSignature(String hash, String chainName,
+            String protocolAddress, String fulfiller) throws Exception {
 
-                String responseString = null;
+        Map<String, Object> resultDatas = new HashMap<>();
 
-                OkHttpClient client = new OkHttpClient();
+        String responseString = null;
+        OrderParameters orderParameters = null;
 
-                MediaType mediaType = MediaType.parse("application/json");
+        OkHttpClient client = new OkHttpClient();
 
-                String requestBodyString = "{\"listing\":{\"hash\":\"" + orderHash +
-                                "\",\"chain\":\"" + chainName
-                                + "\",\"protocol_address\":\"" + protocolAddress +
-                                "\"},\"fulfiller\":{\"address\":\""
-                                + fulfiller + "\"}}";
+        MediaType mediaType = MediaType.parse("application/json");
 
-                RequestBody requestBody = RequestBody.Companion.create(requestBodyString, mediaType);
-                chainName = chainName.toLowerCase();
-                Request request = null;
-                if (chainName.equals("goerli")) {
-                        request = new Request.Builder()
-                                        .url("https://testnets-api.opensea.io/v2/listings/fulfillment_data")
-                                        .post(requestBody)
-                                        .addHeader("content-type", "application/json")
-                                        .build();
+        String requestBodyString = "{\"listing\":{\"hash\":\"" + hash + "\",\"chain\":\"" + chainName
+                + "\",\"protocol_address\":\"" + protocolAddress + "\"},\"fulfiller\":{\"address\":\"" + fulfiller
+                + "\"}}";
 
-                        // test network need wait 1s
-                        Thread.sleep(1000);
-                        System.out.println(new Date());
+        RequestBody requestBody = RequestBody.Companion.create(requestBodyString, mediaType);
+        chainName = chainName.toLowerCase();
+        Request request = null;
+        if (chainName.equals("goerli")) {
+            request = new Request.Builder().url("https://testnets-api.opensea.io/v2/listings/fulfillment_data")
+                    .post(requestBody).addHeader("content-type", "application/json").build();
 
-                }
-                if (chainName.equals("ethereum")) {
+            // test network need wait 1s
+            Thread.sleep(1000);
+            System.out.println(new Date());
 
-                        request = new Request.Builder()
-                                        .url("https://api.opensea.io/v2/listings/fulfillment_data")
-                                        .post(requestBody)
-                                        .addHeader("content-type", "application/json")
-                                        .addHeader("X-API-KEY", OPENSEA_API_KEY)
-                                        .build();
-                }
-
-                try (Response response = client.newCall(request).execute()) {
-                        if (response.isSuccessful()) {
-                                // Handle successful response
-
-                                ResponseBody responseBody = response.body();
-                                if (responseBody != null) {
-                                        responseString = responseBody.string();
-                                        System.out.println(responseString);
-                                        // 将 JSON 响应转换为 JSONObject 对象
-                                        JSONObject json = new JSONObject(responseString);
-
-                                        String protocol = json.getString("protocol");
-
-                                        JSONObject fulfillment_data = json.getJSONObject("fulfillment_data");
-                                        // System.out.println(fulfillment_data);
-                                        // orders
-                                        JSONArray orders = fulfillment_data
-                                                        .getJSONArray("orders");
-                                        if (orders.length() == 0) {
-                                                // Handle unsuccessful response
-                                                throw new Exception(
-                                                                "Failed to get fulfillment data");
-                                        }
-                                        JSONObject order = orders.getJSONObject(0);
-
-                                        signature = order.getString("signature");
-                                        System.out.println("signature: " + signature);
-                                        // JSONObject parameters = order.getJSONObject("parameters");
-                                        // System.out.println(parameters);
-
-                                } else {
-                                        // Handle unsuccessful response
-                                        throw new Exception(
-                                                        "Failed to get fulfillment data");
-                                }
-
-                        } else {
-                                // Handle unsuccessful response
-                                throw new Exception(
-                                                "Failed to get fulfillment data");
-                        }
-                } catch (Exception e) {
-                        // Handle exception
-
-                        throw new Exception(e);
-                }
-
-                return signature;
         }
+        if (chainName.equals("ethereum")) {
+
+            request = new Request.Builder().url("https://api.opensea.io/v2/listings/fulfillment_data").post(requestBody)
+                    .addHeader("content-type", "application/json").addHeader("X-API-KEY", OPENSEA_API_KEY).build();
+        }
+
+        try (Response response = client.newCall(request).execute()) {
+            if (response.isSuccessful()) {
+                // Handle successful response
+
+                ResponseBody responseBody = response.body();
+                if (responseBody != null) {
+                    responseString = responseBody.string();
+                    System.out.println(responseString);
+                    // 将 JSON 响应转换为 JSONObject 对象
+                    JSONObject json = new JSONObject(responseString);
+
+                    String protocol = json.getString("protocol");
+                    System.out.println("protocol:" + protocol);
+                    JSONObject fulfillment_data = json.getJSONObject("fulfillment_data");
+                    // System.out.println(fulfillment_data);
+                    // orders
+                    JSONArray orders = fulfillment_data.getJSONArray("orders");
+                    if (orders.length() == 0) {
+                        // Handle unsuccessful response
+                        throw new Exception("Failed to get fulfillment data");
+                    }
+                    JSONObject order = orders.getJSONObject(0);
+
+                    String signature = order.getString("signature");
+                    JSONObject parameters = order.getJSONObject("parameters");
+
+                    // data
+                    String offerer = parameters.getString("offerer");
+                    String zone = parameters.getString("zone");
+
+                    List<OfferItem> offer = new ArrayList<>();
+                    JSONArray offerArray = parameters.getJSONArray("offer");
+                    for (int i = 0; i < offerArray.length(); i++) {
+                        JSONObject offerObject = offerArray.getJSONObject(i);
+                        BigInteger itemType = offerObject.getBigInteger("itemType");
+
+                        String token = offerObject.getString("token");
+
+                        BigInteger identifierOrCriteria = offerObject.getBigInteger("identifierOrCriteria");
+
+                        BigInteger startAmount = offerObject.getBigInteger("startAmount");
+
+                        BigInteger endAmount = offerObject.getBigInteger("endAmount");
+                        OfferItem offerItem = new OfferItem(itemType, token, identifierOrCriteria, startAmount,
+                                endAmount);
+
+                        offer.add(offerItem);
+
+                    }
+                    List<ConsiderationItem> consideration = new ArrayList<>();
+                    ;
+                    JSONArray considerationArray = parameters.getJSONArray("consideration");
+                    for (int i = 0; i < considerationArray.length(); i++) {
+                        JSONObject considerationObject = considerationArray.getJSONObject(i);
+                        BigInteger itemType = considerationObject.getBigInteger("itemType");
+
+                        String token = considerationObject.getString("token");
+
+                        BigInteger identifierOrCriteria = considerationObject.getBigInteger("identifierOrCriteria");
+
+                        BigInteger startAmount = considerationObject.getBigInteger("startAmount");
+
+                        BigInteger endAmount = considerationObject.getBigInteger("endAmount");
+                        String recipient = considerationObject.getString("recipient");
+                        ConsiderationItem considerationItem = new ConsiderationItem(itemType, token,
+                                identifierOrCriteria, startAmount, endAmount, recipient);
+                        consideration.add(considerationItem);
+
+                    }
+
+                    BigInteger orderType = parameters.getBigInteger("orderType");
+
+                    BigInteger startTime = parameters.getBigInteger("startTime");
+
+                    BigInteger endTime = parameters.getBigInteger("endTime");
+
+                    byte[] zoneHash = convertBytes(parameters.getString("zoneHash"));
+                    String saltString = parameters.getString("salt");
+
+                    BigInteger salt = new BigInteger("0");
+                    if (saltString.matches("^0x[0-9A-Fa-f]+$")) {
+                        salt = Numeric.toBigInt(saltString);
+
+                    } else {
+                        salt = new BigInteger(saltString);
+                    }
+
+                    byte[] conduitKey = convertBytes(parameters.getString("conduitKey"));
+
+                    BigInteger totalOriginalConsiderationItems = parameters
+                            .getBigInteger("totalOriginalConsiderationItems");
+
+                    orderParameters = new OrderParameters(offerer, zone, offer, consideration, orderType, startTime,
+                            endTime, zoneHash, salt, conduitKey, totalOriginalConsiderationItems);
+
+                    resultDatas.put("orderParameters", orderParameters);
+                    resultDatas.put("signature", signature);
+
+                } else {
+                    // Handle unsuccessful response
+                    throw new Exception("Failed to get fulfillment data");
+                }
+
+            } else {
+                // Handle unsuccessful response
+                throw new Exception("Failed to get fulfillment data");
+            }
+        } catch (Exception e) {
+            // Handle exception
+
+            throw new Exception(e);
+        }
+
+        return resultDatas;
+    }
+
+    public static String getSignature(String orderHash, String chainName, String protocolAddress, String fulfiller)
+            throws Exception {
+
+        String signature = null;
+
+        String responseString = null;
+
+        OkHttpClient client = new OkHttpClient();
+
+        MediaType mediaType = MediaType.parse("application/json");
+
+        String requestBodyString = "{\"listing\":{\"hash\":\"" + orderHash + "\",\"chain\":\"" + chainName
+                + "\",\"protocol_address\":\"" + protocolAddress + "\"},\"fulfiller\":{\"address\":\"" + fulfiller
+                + "\"}}";
+
+        RequestBody requestBody = RequestBody.Companion.create(requestBodyString, mediaType);
+        chainName = chainName.toLowerCase();
+        Request request = null;
+        if (chainName.equals("goerli")) {
+            request = new Request.Builder().url("https://testnets-api.opensea.io/v2/listings/fulfillment_data")
+                    .post(requestBody).addHeader("content-type", "application/json").build();
+
+            // test network need wait 1s
+            Thread.sleep(1000);
+            System.out.println(new Date());
+
+        }
+        if (chainName.equals("ethereum")) {
+
+            request = new Request.Builder().url("https://api.opensea.io/v2/listings/fulfillment_data").post(requestBody)
+                    .addHeader("content-type", "application/json").addHeader("X-API-KEY", OPENSEA_API_KEY).build();
+        }
+
+        try (Response response = client.newCall(request).execute()) {
+            if (response.isSuccessful()) {
+                // Handle successful response
+
+                ResponseBody responseBody = response.body();
+                if (responseBody != null) {
+                    responseString = responseBody.string();
+                    System.out.println(responseString);
+                    // 将 JSON 响应转换为 JSONObject 对象
+                    JSONObject json = new JSONObject(responseString);
+
+                    String protocol = json.getString("protocol");
+
+                    JSONObject fulfillment_data = json.getJSONObject("fulfillment_data");
+                    // System.out.println(fulfillment_data);
+                    // orders
+                    JSONArray orders = fulfillment_data.getJSONArray("orders");
+                    if (orders.length() == 0) {
+                        // Handle unsuccessful response
+                        throw new Exception("Failed to get fulfillment data");
+                    }
+                    JSONObject order = orders.getJSONObject(0);
+
+                    signature = order.getString("signature");
+                    System.out.println("signature: " + signature);
+                    // JSONObject parameters = order.getJSONObject("parameters");
+                    // System.out.println(parameters);
+
+                } else {
+                    // Handle unsuccessful response
+                    throw new Exception("Failed to get fulfillment data");
+                }
+
+            } else {
+                // Handle unsuccessful response
+                throw new Exception("Failed to get fulfillment data");
+            }
+        } catch (Exception e) {
+            // Handle exception
+
+            throw new Exception(e);
+        }
+
+        return signature;
+    }
 
 }
